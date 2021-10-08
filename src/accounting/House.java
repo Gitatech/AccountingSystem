@@ -5,8 +5,9 @@ import java.util.*;
 public class House
 {
     private int floorsCount = 0;
-    private static int flatsPerFloor = 0;
-
+    private  int flatsPerFloor = 0;
+    private static int currentHouseNumber;
+    private int houseNumber;
 
    private List<Floor> floors = new ArrayList<>();
 
@@ -23,20 +24,47 @@ public class House
             private double flatSquare;
             private int residentsCount;
             private int flatNumber;
+            private int roomsCount;
+            private int currentRoomsCount = 0;
+            private List<Room> rooms = new ArrayList<>();
 
+            public class Room
+            {
+                private int roomNumber;
+                private double roomSquare;
+                Room()
+                {
+                    this.roomNumber = currentRoomsCount+1;
+                    Scanner roomScanner = new Scanner(System.in);
+                    System.out.print("Введите площадь " + Integer.toString(roomNumber) + " комнаты: ");
+                   roomSquare =  roomScanner.nextDouble();
+                    currentRoomsCount++;
+                }
+
+            }
             Flat()
             {
-
                 this.flatNumber = currentFlatsCount+1;
                 this.residentsCount = 2;
                 if(floorNumber == 1)
                 {
-                    System.out.print("Введите площадь "+Integer.toString(flatNumber)+" квартиры на этаже: ");
-                     this.flatSquare = Double.valueOf(scannerFlat.nextLine());
+                    System.out.print("Введите количество комнат "+Integer.toString(flatNumber)+" квартиры на этаже: ");
+                    this.roomsCount =scannerFlat.nextInt();
+                    for(int i=0;i<roomsCount;i++)
+                    {
+                        this.rooms.add(new Room());
+                    }
                 }
+                this.findFlatSquare();
                 currentFlatsCount++;
             }
-
+            private void findFlatSquare()
+            {
+                for(int i =0; i <roomsCount;i++)
+                {
+                    this.flatSquare+=rooms.get(i).roomSquare;
+                }
+            }
             @Override
             public boolean equals(Object o)
             {
@@ -47,8 +75,14 @@ public class House
             }
 
             @Override
-            public String toString() {
-                return "Номер квартиры: " + Integer.toString(this.flatNumber) + " " + "Площадь квартиры: " + Double.toString(this.flatSquare) + " " + "Количество жильцов: " + Integer.toString(this.residentsCount);
+            public String toString()
+            {
+                String result = "";
+                result+= "Номер квартиры: " + Integer.toString(this.flatNumber) +"\nКоличество комнат: "+Integer.toString(this.roomsCount);
+                for(int i = 0; i <this.roomsCount;i++)
+                result+="\nПлощадь " +Integer.toString(i+1) +" квартиры: " + this.rooms.get(i).roomSquare;
+                result+="\nОбщая площадь квартиры: " + Double.toString(this.flatSquare) +  "\nКоличество жильцов: " + Integer.toString(this.residentsCount);
+                return result;
             }
         }
          Floor(int floorNumber)
@@ -61,13 +95,14 @@ public class House
         }
         public Flat getFlat(int flatNumber)
         {
-            flatNumber -= (this.floorNumber-1)*flatsPerFloor;
+            flatNumber -= (this.floorNumber)*flatsPerFloor;
             flatNumber--;
            return this.flats.get(flatNumber);
         }
     }
     public House()
     {
+        this.houseNumber = currentHouseNumber+1;
         Scanner scannerHouse = new Scanner(System.in);
         System.out.print("Введите количество этажей в доме: ");
         this.floorsCount =  scannerHouse.nextInt();
@@ -77,18 +112,13 @@ public class House
         {
             this.floors.add(new Floor(i));
         }
-
-    }
-
-    public int getFloorsCount()
-    {
-        return this.floorsCount;
+        System.out.println("Дом номер "+ Integer.toString(currentHouseNumber+1)+ " успешно добавлен!");
+        currentHouseNumber++;
     }
    public  void setFloorsCount(int floorsCount)
     {
         this.floorsCount = floorsCount;
     }
-
     @Override
     public boolean equals(Object o)
     {
@@ -127,8 +157,17 @@ public class House
     {
         return this.floors.get(floorNumber-1);
     }
+    public int getFloorsCount()
+    {
+        return this.floorsCount;
+    }
+    public int getFlatsPerFloor()
+    {
+        return this.flatsPerFloor;
+    }
 
-    public static int getFlatsPerFloor() {
-        return flatsPerFloor;
+    public String toString()
+    {
+        return "--------------------------------------------------------------------------------"+"\nНомер дома: "+Integer.toString(this.houseNumber)+"\nКоличество этажей: "+Integer.toString(this.floorsCount)+"\nКоличество квартир на одном этаже: "+Integer.toString(this.floors.get(0).currentFlatsCount)+"\nОбщая площадь дома: "+Double.toString(this.totalHouseSquare())+"\nОбщее количество жильцов: "+Integer.toString(this.totalHouseResidentsCount()) + "\n--------------------------------------------------------------------------------";
     }
 }
