@@ -17,6 +17,7 @@
             <groupId>org.testng</groupId>
             <artifactId>testng-jdk14</artifactId>
             <version>4.4.7</version>
+            <scope>main</scope>
         </dependency>
     </dependencies>
 

@@ -18,8 +18,13 @@ public class House {
         }
     }
 
-    public int getN_man_in_flat(int ground,int flat) {
-        return grounds[ground].getFlat(flat);
+    public int get_N_man(){
+        int KOL = 0;
+        for(int i = 0;i<grounds.length;i++)
+        {
+            KOL += grounds[i].get_Man_Ground();
+        }
+        return KOL;
     }
 
     public double House_area(){

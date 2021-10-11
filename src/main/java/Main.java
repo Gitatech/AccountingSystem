@@ -25,7 +25,7 @@ import java.util.ArrayList;
                             System.out.println("Too much:");
                             break;
                         }
-                        System.out.println("Area of " + l++ +" House: " + houses.get(l).House_area());
+                        System.out.println("Number of residents in  " + ++l +" house: " + houses.get(--l).get_N_man());
                         break;
                     case(3):
                         System.out.println("What number of house:");

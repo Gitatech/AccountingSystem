@@ -18,8 +18,13 @@ public class Ground {
         }
     }
 
-    public int getFlat(int i) {
-        return flat[i].getN_human();
+    public int get_Man_Ground( )
+    {
+        int kol = 0;
+        for(int i = 0;i< flat.length;i++){
+            kol += flat[i].getN_human();
+        }
+        return kol;
     }
 
     public double Ground_area(){
