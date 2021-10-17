@@ -6,18 +6,64 @@ import static java.lang.System.*;
 public class house {
     private double totalSquare;
     private int residents;
-    private int numberOfFloors;
 
-    private int flatsPerFloor;//the number of flats per floor
+    private int flatsPerFloor; //the number of flats per floor
     private int flatNumber; //the total number of flats in the house
-
-    public class flat {
+    
+    public class flatFactory {
         private int room;
         private double square;
         private int person;
-        flat(){
 
+        flatFactory() {
+            int size; //flat size
+            do {
+                try {
+                    out.println("Input the size of an apartment from 1 to 4:");
+                    Scanner in = new Scanner(System.in);
+                    size = in.nextInt();
+                    in.close();
+                    switch (size) {
+                        case 1:
+                            this.room = 1;
+                            //the number of people living in the apartment varies in the range of 0-3
+                            this.person = (int) (Math.random() * 10) % 4;
+                            //the area of the apartment varies in the range of 27-30 square meters
+                            this.square = (Math.random() * 100) % 4 + 27;
+                            break;
+                        case 2:
+                            this.room = 2;
+                            this.person = (int) (Math.random() * 10) % 5;
+                            this.square = (Math.random() * 100) % 6 + 45;
+                            break;
+                        case 3:
+                            this.room = 3;
+                            this.person = (int) (Math.random() * 10) % 6;
+                            this.square = (Math.random() * 100) % 6 + 60;
+                            break;
+                        case 4:
+                            this.room = 4;
+                            this.person = (int) (Math.random() * 10) % 7;
+                            this.square = (Math.random() * 100) % 6 + 75;
+                            break;
+                        default:
+                            throw new Exception("It's not the flat type.");
+                    }
+                } catch (Exception ex) {
+                    out.println(ex.getMessage() + " Input new flat type from 1 to 4:");
+                    Scanner in = new Scanner(System.in);
+                    size = in.nextInt();
+                    in.close();
+                }
+            } while (size < 1 || size > 4);
         }
+    }
+    void NumberOfFloors(){
+        out.printf("The house consists of %d floors\n", flatNumber/flatsPerFloor);
+    }
+    void TotalSquare(){
+        flatFactory[] Flat = new flatFactory[flatsPerFloor]; //one-floor apartments
+
     }
     house() {
         Scanner in = new Scanner(System.in);
@@ -48,7 +94,5 @@ public class house {
             }
         }while(flatNumber % flatsPerFloor != 0 || flatNumber < 1 || flatsPerFloor > flatNumber);
         in.close();
-
-        flat[] Flat = new flat[flatNumber];
     }
 }
