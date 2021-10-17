@@ -1,68 +1,86 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Command extends Program{
-    String[] commands={"build house","delete house","compare houses", "compare apartments","house information","city information", "help", "exit"};
-    String[] houseParameters={"Square","Population","Floors"};
-    String[] apartParameters={"Square","Population"};
+public class Command{
+    Program program;
+    private final String[] commands={"build house","delete house","compare houses",
+            "compare apartments","house information","city information", "help", "exit"};
     protected  String command;
 
     public Command(){
         this.command=null;
     }
 
-    protected void command(String command){
-        this.command=command;
+    private House get(int number){
+        for(House house : program.city){
+            if(house.getNumber()==number)
+                return house;
+        }
+        return null;
     }
 
-    private void exit(Program program){
+    protected void command(String command){
+        for(String string: commands)
+            if(command.equalsIgnoreCase(string)){
+                this.command=string;
+                return;
+            }
+        this.command=null;
+    }
+
+    private void exit(){
         program.status=false;
     }
 
     private void help(){
-        System.out.println("""
-                                 Possible commands 
-                                 build house
-                                 delete house
-                                 compare houses
-                                 compare apartments
-                                 house information
-                                 city information
-                                 help
-                                 exit
-                                 """
-        );
+        System.out.println("Possible commands");
+        for(String command: commands)
+            System.out.println(command);
     }
 
     private void buildHouse(){
         Scanner in = new Scanner(System.in);
-        System.out.print("Input a budget: ");
-        double budget = in.nextDouble();
-        System.out.print("Input a price for per square metre: ");
-        double sqrMPrice = in.nextDouble();
-        System.out.print("Input a number of apartments per floor: ");
-        int apartments = in.nextInt();
-        House house = new House(budget, sqrMPrice, apartments);
-        city.add(house);
-        System.out.println("You build house");
+        try {
+            System.out.print("Input a budget: ");
+            double budget = in.nextDouble();
+            System.out.print("Input a price for per square metre: ");
+            double sqrMPrice = in.nextDouble();
+            System.out.print("Input a number of apartments per floor: ");
+            int apartments = in.nextInt();
+            if(sqrMPrice!=0 && budget/sqrMPrice >= apartments && apartments!=0) {
+                House house = new House(budget, sqrMPrice, apartments);
+                program.city.add(house);
+                System.out.println("You build house");
+            }else
+                System.out.println("You cant build house with that parameters.");
+        }catch (InputMismatchException e){
+            System.err.println("Command stopped due to incorrect data entry!");
+        }
     }
 
     private void deleteHouse() {
         System.out.print("Put houses number ");
         Scanner in=new Scanner(System.in);
         int number=in.nextInt();
-        int floors = city.get(number).getFloors();
-        int apartPerFloor = city.get(number).apartPerFloor;
-        for (int i = floors-1; i >=0; i--) {
-            for(int j=apartPerFloor-1;j>=0;j--) {
-                city.get(number).floors.get(i).apart.remove(j);
+        House house=this.get(number);
+        if(house!=null){
+            int floors = house.getFloors();
+            int apartPerFloor = house.apartPerFloor;
+            for (int i = floors-1; i >=0; i--) {
+                if (apartPerFloor > 0) {
+                    house.floors.get(i).apart.subList(0, apartPerFloor).clear();
+                }
+                house.floors.remove(i);
             }
-            city.get(number).floors.remove(i);
+            program.city.remove(house);
+            System.out.println("You delete house №"+number);
         }
-        city.remove(number);
-        System.out.println("You delete house №"+number);
+        else
+            System.err.println("The selected house does not exist!");
     }
 
     private void compareHouses()  {
+        try {
             Scanner in = new Scanner(System.in);
             System.out.println("Put houses numbers:");
             int number1 = in.nextInt();
@@ -73,91 +91,125 @@ public class Command extends Program{
                     2.Floors
                     3.Tenants""");
             int parameter = in.nextInt();
+            House house1 = this.get(number1);
+            House house2 = this.get(number2);
+            if (house1 != null && house2 != null) {
                 switch (parameter) {
                     case (1) -> {
-                        int i = city.get(number1).compHousePop(city.get(number2));
+                        int i = house1.compHousePop(house2);
                         if (i == 1) {
-                            System.out.println("First house has more number of tenants than second house");
+                            System.out.printf("%d house has more number of tenants than %d house\n",number1,number2);
                         } else if (i == -1) {
-                            System.out.println("First house has less number of tenants than second house");
+                            System.out.printf("%d house has less number of tenants than %d house\n",number1,number2);
                         } else
-                            System.out.println("First and second houses have the same number of tenants");
+                            System.out.printf("%d and %d houses have the same number of tenants\n",number1,number2);
 
                     }
                     case (2) -> {
-                        int i = city.get(number1).compHouseSqr(city.get(number2));
+                        int i = house1.compHouseSqr(house2);
                         if (i == 1) {
-                            System.out.println("First house has more square than second house");
+                            System.out.printf("%d house has more square than %d house\n",number1,number2);
                         } else if (i == -1) {
-                            System.out.println("First house has less square than second house");
+                            System.out.printf("%d house has less square than %d house\n",number1,number2);
                         } else
-                            System.out.println("First and second houses have the same square");
+                            System.out.printf("%d and %d houses have the same square\n",number1,number2);
                     }
                     case (3) -> {
-                        int i = city.get(number1).compHouseFlor(city.get(number2));
+                        int i = house1.compHouseFlor(house2);
                         if (i == 1) {
-                            System.out.println("First house has more numbers of floors than second house");
+                            System.out.printf("%d house has more numbers of floors than %d house\n",number1,number2);
                         } else if (i == -1) {
-                            System.out.println("First house has less number of floors than second house");
+                            System.out.printf("%d house has less number of floors than %d house\n",number1,number2);
                         } else
-                            System.out.println("First and second houses have the same number of floors");
+                            System.out.printf("%d and %d houses have the same number of floors\n",number1,number2);
                     }
+                    default -> System.err.println("The selected option does not exist");
                 }
-    }
-
-    private void compareApartments() {
-        System.out.print("Put house number:");
-        Scanner in = new Scanner(System.in);
-        int houseNumber = in.nextInt();
-        System.out.print("Put apartments numbers:");
-        int apart1Number = in.nextInt() - 1;
-        int apart2Number = in.nextInt() - 1;
-        System.out.println("""
-                Select a parameter and enter its number
-                1.Square
-                2.Tenants""");
-        int parameter = in.nextInt();
-        switch (parameter) {
-            case (1) -> {
-                int i = city.get(houseNumber).getApart(apart1Number).compApartSqr(city.get(houseNumber).getApart(apart2Number));
-                if (i == 1) {
-                    System.out.println("The square of the first apartment is larger than that of the second");
-                } else if (i == -1) {
-                    System.out.println("First apartment has less number of tenants than second");
-                } else
-                    System.out.println("First and second apartments have the same square");
-
-            }
-            case (2) -> {
-                int i = city.get(houseNumber).getApart(apart1Number).compApartTen(city.get(houseNumber).getApart(apart2Number));
-                if (i == 1) {
-                    System.out.println("The number of tenants of the first apartment is larger than that of the second");
-                } else if (i == -1) {
-                    System.out.println("First apartment has less number of tenants than second");
-                } else
-                    System.out.println("First and second apartments have the same number of tenants");
-            }
+            } else
+                System.err.println("One or both of the selected houses do not exist!");
+        }catch (InputMismatchException e){
+            System.err.println("Command stopped due to incorrect data entry!");
         }
     }
 
+    private void compareApartments(){
+        try {
+            System.out.print("Put house number:");
+            Scanner in = new Scanner(System.in);
+            int houseNumber = in.nextInt();
+            House house = this.get(houseNumber);
+            System.out.print("Put apartments numbers:");
+            int apart1Number = in.nextInt() - 1;
+            int apart2Number = in.nextInt() - 1;
+            System.out.println("""
+                    Select a parameter and enter its number
+                    1.Square
+                    2.Tenants""");
+            int parameter = in.nextInt();
+            if (house != null) {
+                switch (parameter) {
+                    case (1) -> {
+                        try {
+                            int i = house.getApart(apart1Number).compApartSqr(house.getApart(apart2Number));
+                            if (i == 1) {
+                                System.out.printf("The square of the %d apartment is larger than that of the %d\n", apart1Number, apart2Number);
+                            } else if (i == -1) {
+                                System.out.printf("%d apartment has less number of tenants than %d\n", apart1Number, apart2Number);
+                            } else
+                                System.out.printf("%d and %d apartments have the same square\n", apart1Number, apart2Number);
+                        } catch (InputMismatchException e) {
+                            System.err.println("The selected apartments do not exist!");
+                        }
+                    }
+                    case (2) -> {
+                        try {
+                            int i = house.getApart(apart1Number).compApartTen(house.getApart(apart2Number));
+                            if (i == 1) {
+                                System.out.printf("The number of tenants of the %d apartment is larger than that of the %d\n", apart1Number, apart2Number);
+                            } else if (i == -1) {
+                                System.out.printf("%d apartment has less number of tenants than %d\n", apart1Number, apart2Number);
+                            } else
+                                System.out.printf("%d and %d apartments have the same number of tenants\n", apart1Number, apart2Number);
+                        } catch (InputMismatchException e) {
+                            System.err.println("One or both of the selected apartments do not exist!");
+                        }
+                    }
+                    default -> System.err.println("The selected option does not exist");
+                }
+            } else
+                System.out.println("The selected house does not exist!");
+        }catch(InputMismatchException e){
+            System.out.println("Command stopped due to incorrect data entry!");
+        }
+    }
 
     private void houseInformation(){
         System.out.print("Put houses number:");
         Scanner in=new Scanner(System.in);
         int number=in.nextInt();
-            System.out.println("Number: " + city.get(number).getNumber());
-            System.out.println("Square: " + city.get(number).getSqr());
-            System.out.println("Population: " + city.get(number).getTenants());
-            System.out.println("Floors: " + city.get(number).getFloors());
-            System.out.println("Apartments: " + city.get(number).getApartments());
+        House house=this.get(number);
+        if(house!=null) {
+            System.out.println("Number: " + house.getNumber());
+            System.out.println("Square: " + house.getSqr());
+            System.out.println("Population: " + house.getTenants());
+            System.out.println("Floors: " + house.getFloors());
+            System.out.println("Apartments: " + house.getApartments());
+        }
+        else
+            System.err.println("Selected house does not exist!");
     }
 
     private void cityInformation(){
-        System.out.println("Number of house is "+city.size());
+        System.out.println("Number of house is "+program.city.size());
+        if(!program.city.isEmpty()) {
+            System.out.print("House numbers are:");
+            for (House house : program.city)
+                System.out.println("№" + house.getNumber() + " ");
+        }
     }
 
-    protected void accept(String command,Program program){
-        switch (command) {
+    protected void accept(){
+        switch (this.command) {
             case ("build house") -> this.buildHouse();
             case ("delete house") -> this.deleteHouse();
             case ("compare houses") -> this.compareHouses();
@@ -165,7 +217,11 @@ public class Command extends Program{
             case ("house information") -> this.houseInformation();
             case ("city information") -> this.cityInformation();
             case ("help") -> this.help();
-            case ("exit") -> this.exit(program);
+            case ("exit") -> this.exit();
         }
+    }
+
+    public String[] getCommands(){
+        return commands;
     }
 }

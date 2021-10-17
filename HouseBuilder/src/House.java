@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class House extends Command{
+public class House{
     private final int number;
     private final int tenants;
     private final int floor;
@@ -10,6 +10,56 @@ public class House extends Command{
     protected final int apartPerFloor;
     protected ArrayList<Floor> floors=new ArrayList<>();
 
+    class Floor{
+        protected ArrayList<Apartment> apart=new ArrayList<>();
+
+        class Apartment{
+            private final double square;
+            private final int tenants;
+            private final int numb;
+            private static int counter=0;
+            public final int MIN_SQR=10;//minimal sqr for per person
+
+
+            protected Apartment(){
+                this.square=10+Math.random()*50;
+                this.tenants=(int)Math.floor(this.square/MIN_SQR);
+                this.numb=++counter;
+            }
+
+            protected int getTenants(){
+                return tenants;
+            }
+
+            protected double getSquare() {
+                return square;
+            }
+
+            protected int getNumb() {
+                return numb;
+            }
+
+            protected int compApartSqr(Apartment apartment){
+                return Double.compare(apartment.getSquare(), this.getSquare());
+            }
+
+            protected int compApartTen(Apartment apartment) {
+                return Integer.compare(apartment.getTenants(), this.getTenants());
+            }
+        }
+
+        public Floor(int apartPerFloor){
+            for(int i=0;i<apartPerFloor;i++) {
+                Apartment apartment = new Apartment();
+                apart.add(apartment);
+            }
+        }
+
+        protected Apartment getApart(int i){
+            return apart.get(i);
+        }
+    }
+
     protected House(double budget, double perSqrM, int apartPerFloor) {
         this.apartPerFloor=apartPerFloor;
         double planHouseSqr = Math.ceil(budget / perSqrM);
@@ -17,11 +67,13 @@ public class House extends Command{
             Floor floor = new Floor(apartPerFloor);
             floors.add(floor);
         }
+        floors.remove(floors.size()-1);
         this.tenants =this.countTenants();
         this.square=this.countSqr();
         this.number=++counter;
         this.floor=floors.size();
         this.apartments=this.floor*apartPerFloor;
+        Floor.Apartment.counter=0;
     }
 
     protected double getSqr(){
@@ -64,7 +116,7 @@ public class House extends Command{
         return sqr;
     }
 
-    public Apartment getApart(int number) {
+    public Floor.Apartment getApart(int number) {
         if(number<this.apartments) {
             for (Floor floor : floors) {
                 for (int i = 0; i < this.apartPerFloor; i++) {
@@ -73,7 +125,7 @@ public class House extends Command{
                 }
             }
         }
-            return null;
+        return null;
     }
 
     protected int compHouseSqr(House h){

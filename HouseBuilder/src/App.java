@@ -7,34 +7,26 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args){
-        Program program=new Program();
-        program.command=new Command();
+        Command command = new Command();
+        command.program =new Program();
         Scanner in=new Scanner(System.in);
-        System.out.println("""
-                                       Possible commands
-                                       build house
-                                       delete house
-                                       compare houses
-                                       compare apartments
-                                       house information
-                                       city information
-                                       help
-                                       exit
-                                       """
-        );
+        String[] commands=command.getCommands();
+        System.out.println("Possible commands:");
+        for(String cmnd : commands)
+            System.out.println(cmnd);
         do{
             String inputs = in.nextLine();
             if (inputs.isBlank()) {
                 continue;
             }
-            program.command.command(inputs);
-            if(program.command.command!=null){
-                program.command.accept(inputs,program);
+            command.command(inputs);
+            if(command.command!=null){
+                command.accept();
             }
             else{
                 System.err.println("Incorrect command!Try again.");
             }
             //program is true until the exit command is entered
-        }while(program.isRunning());
+        }while(command.program.isRunning());
     }
 }
