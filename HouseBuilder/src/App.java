@@ -1,17 +1,40 @@
 import java.util.Scanner;
 
+/*in this program the construction of a house
+  is based on the total budget, the price per square meter
+  and the number of apartments per floor
+*/
+
 public class App {
     public static void main(String[] args){
-        Scanner in = new Scanner(System.in);
-        System.out.println("Input a budget: ");
-        double budget = in.nextDouble();
-        System.out.println("Input a price for per square metre: ");
-        double sqrMPrice =in.nextDouble();
-        System.out.println("Input a number of apartments per floor: ");
-        int apartments =in.nextInt();
-        House house1=new House(budget,sqrMPrice,apartments);
-        System.out.println("Full square of house is " + house1.getSqr());
-        System.out.println("Full population of house is  " + house1.getPopulation());
-        System.out.println("Number of floors is " + house1.getFloors());
+        Program program=new Program();
+        program.command=new Command();
+        Scanner in=new Scanner(System.in);
+        System.out.println("""
+                                       Possible commands
+                                       build house
+                                       delete house
+                                       compare houses
+                                       compare apartments
+                                       house information
+                                       city information
+                                       help
+                                       exit
+                                       """
+        );
+        do{
+            String inputs = in.nextLine();
+            if (inputs.isBlank()) {
+                continue;
+            }
+            program.command.command(inputs);
+            if(program.command.command!=null){
+                program.command.accept(inputs,program);
+            }
+            else{
+                System.err.println("Incorrect command!Try again.");
+            }
+            //program is true until the exit command is entered
+        }while(program.isRunning());
     }
 }

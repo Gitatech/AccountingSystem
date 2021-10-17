@@ -1,25 +1,35 @@
-public class Apartment {
-    private double square;
-    private int tenants;
+public class Apartment extends Command{
+    private final double square;
+    private final int tenants;
     private final int numb;
-    public final int MIN_SQR=10;//minimal sqr for per person
     private static int counter=0;
+    public final int MIN_SQR=10;//minimal sqr for per person
 
-    public Apartment(){
+
+    protected Apartment(){
         this.square=10+Math.random()*50;
         this.tenants=(int)Math.floor(this.square/MIN_SQR);
         this.numb=++counter;
     }
 
-    public int getTenants(){
+    protected int getTenants(){
         return tenants;
     }
 
-    public double getSquare() {
+    protected double getSquare() {
         return square;
     }
 
-    public int getNumb() {
+    protected int getNumb() {
         return numb;
     }
+
+    protected int compApartSqr(Apartment apartment){
+        return Double.compare(apartment.getSquare(), this.getSquare());
+    }
+
+    protected int compApartTen(Apartment apartment) {
+        return Integer.compare(apartment.getTenants(), this.getTenants());
+    }
 }
+
