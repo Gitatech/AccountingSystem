@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class House {
     //private int N_ground;
-    Ground[]grounds;
+    private Ground[]grounds;
 
     public House() {
         System.out.println("Enter number of grounds:");
@@ -11,11 +11,28 @@ public class House {
         this.grounds = new Ground[in.nextInt()];
         System.out.println("Enter number of flats in ground:");
         int k = in.nextInt();
-        //Ground[] grounds = new Ground[N_ground];
-        for (int i = 0; i < grounds.length; i++) {
-            grounds[i] = new Ground(k);
-
+        System.out.println("How do you want to populate:\n1.Random\n2.Input");
+        int How = in.nextInt();
+        switch (How)
+        {
+            case (1):
+                for (int i = 0; i < grounds.length; i++) {
+                    grounds[i] = new Ground(k,false);
+                }
+                    break;
+            case (2):
+                for (int i = 0; i < grounds.length; i++) {
+                    grounds[i] = new Ground(k, true);
+                }
+                    break;
+            default:
+                System.out.println("Incorrect value.Random filing");
+                for (int i = 0; i < grounds.length; i++) {
+                    grounds[i] = new Ground(k, false);
+                }
+                    break;
         }
+        this.grounds[1].NUM(0);
     }
 
     public int get_N_man(){
@@ -35,41 +52,43 @@ public class House {
         }
         return SQ;
     }
-    public double Flat_area(int Ground,int flat) {
-        return grounds[--Ground].flat_area(flat);
+    public double Flat_area(int i) {
+        int gr = i / (grounds[0].flat_on_ground());
+        return grounds[gr].flat_area(i);
     }
-    public int get_Man_falt(int Ground,int flat){
-        return grounds[--Ground].get_Man_Flat(flat);
+    public int get_Man_falt(int i){
+        int gr = i / (grounds[0].flat_on_ground());
+        return grounds[gr].get_Man_Flat(i);
     }
 
-    public void Compare_flats(int Ground1,int flat1,int Ground2,int flat2) {
-        if(this.Flat_area(Ground1,flat1) > this.Flat_area(Ground2,flat2)){
-            System.out.println("The area on the first flat is larger: "+ this.Flat_area(++Ground1,++flat1));
+    public void Compare_flats(int Number1,int Number2) {
+        if(this.Flat_area(Number1) > this.Flat_area(Number2)){
+            System.out.println("The area on the first flat is larger: "+ this.Flat_area(Number1));
         }
-        else if(this.Flat_area(Ground1,flat1) < this.Flat_area(Ground2,flat2)){
-            System.out.println("The area on the second flat is larger: "+ this.Flat_area(++Ground2,++flat2));
-        }
-        else{
-            System.out.println("Areas are equal: " + this.Flat_area(++Ground1,++flat1));
-        }
-        if(this.get_Man_falt(Ground1,flat1) > this.get_Man_falt(Ground2,flat2)){
-            System.out.println("There are more people on the first flat: "+ this.get_Man_falt(++Ground1,++flat1));
-        }
-        else if(this.get_Man_falt(Ground1,flat1) < this.get_Man_falt(Ground2,flat2)){
-            System.out.println("There are more people on the second flat: "+ this.get_Man_falt(++Ground2,++flat2));
+        else if(this.Flat_area(Number1) < this.Flat_area(Number2)){
+            System.out.println("The area on the second flat is larger: "+ this.Flat_area(Number2));
         }
         else{
-            System.out.println("Residents equally: " + this.get_Man_falt(++Ground1,++flat1));
+            System.out.println("Areas are equal: " + this.Flat_area(Number1));
+        }
+        if(this.get_Man_falt(Number1) > this.get_Man_falt(Number2)){
+            System.out.println("There are more people on the first flat: "+ this.get_Man_falt(Number1));
+        }
+        else if(this.get_Man_falt(Number1) < this.get_Man_falt(Number2)){
+            System.out.println("There are more people on the second flat: "+ this.get_Man_falt(Number2));
+        }
+        else{
+            System.out.println("Residents equally: " + this.get_Man_falt(Number1));
         }
     }
 
     public  void compare_houses(House house2)
     {
         if(this.House_area() > house2.House_area()){
-            System.out.println("House 1 bigger with area "+ this.House_area());
+            System.out.println("House 1 bigger with the area "+ this.House_area());
         }
         else  if(this.House_area() < house2.House_area()){
-            System.out.println("House 2 bigger with area "+ house2.House_area());
+            System.out.println("House 2 bigger with the area "+ house2.House_area());
         }
         else{
             System.out.println("Areas are the same: " +house2.House_area());

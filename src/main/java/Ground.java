@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Ground {
-    Flat[] flat;
+    private Flat[] flat;
 
     public Ground(){
         System.out.print("Enter number of flats on ground:");
@@ -11,13 +11,18 @@ public class Ground {
             flat[i] = new Flat();
         }
     }
-    public Ground(int k){
+    public Ground(int k,boolean l) {
         flat = new Flat[k];
-        for(int i = 0;i< k;i++){
-            flat[i] = new Flat();
+        if (l == true)
+            for (int i = 0; i < k; i++) {
+                flat[i] = new Flat(l);
+            }
+        else {
+            for (int i = 0; i < k; i++) {
+                flat[i] = new Flat();
+            }
         }
     }
-
     public int get_Man_Ground( )
     {
         int kol = 0;
@@ -35,11 +40,21 @@ public class Ground {
         return sq;
     }
     public double flat_area(int i){
-
-        return flat[i--].getN_human();
+        int k = i % ((flat.length));
+        return flat[k].get_sqrt();
     }
     public int get_Man_Flat(int i)
     {
-        return flat[i--].getN_human();
+        i = i % (flat.length);
+        return flat[i].getN_human();
+    }
+    public void NUM(int k)
+    {
+        this.flat[1].NUM(1);
+    }
+    public int flat_on_ground()
+    {
+        return flat.length;
+
     }
 }

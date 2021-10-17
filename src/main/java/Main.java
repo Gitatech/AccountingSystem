@@ -1,37 +1,8 @@
-
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.ArrayList;
 
     public class Main {
-
-        public static  void compare_houses(House house1,House house2)
-        {
-            if(house1.House_area() > house2.House_area()){
-                System.out.println("House 1 bigger with area "+ house1.House_area());
-            }
-            else  if(house1.House_area() < house2.House_area()){
-                System.out.println("House 2 bigger with area "+ house2.House_area());
-            }
-            else{
-                System.out.println("Areas are the same: " +house2.House_area());
-            }
-
-
-            if(house1.get_N_man() > house2.get_N_man()){
-                System.out.println("There are more people in the first house: "+ house1.get_N_man() +" vs "+house2.get_N_man());
-            }
-            else  if(house1.get_N_man() < house2.get_N_man()){
-                System.out.println("There are more people in the first house: "+ house2.get_N_man() +" vs "+house1.get_N_man());
-            }
-            else{
-                System.out.println("Equal number of residents: " +house2.get_N_man());
-            }
-        }
-
-
-
-
         public static void main(String[] args){
             Scanner in = new Scanner(System.in);
             ArrayList<House> houses = new ArrayList<House>();
@@ -101,13 +72,12 @@ import java.util.ArrayList;
                         }
                         System.out.println("Enter number of House");
                         int HOUSE = in.nextInt();
-                        System.out.println("Enter ground of the first flat and number of this flat on the ground");
-                        int GROUND1 = in.nextInt();
-                        int FLAT1 = in.nextInt();
-                        System.out.println("Enter ground of the second flat and number of this flat on the ground");
-                        int GROUND2 = in.nextInt();
-                        int FLAT2 = in.nextInt();
-                        houses.get(HOUSE).Compare_flats(GROUND1,FLAT1,GROUND2,FLAT2);
+                        HOUSE--;
+                        System.out.println("Enter Number of the first flat");
+                        int NUMBER1 = in.nextInt();
+                        System.out.println("Enter Number of the second flat");
+                        int NUMBER2 = in.nextInt();
+                        houses.get(HOUSE).Compare_flats(NUMBER1,NUMBER2);
                         break;
                     case(6):
                         break;
