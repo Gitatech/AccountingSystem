@@ -34,4 +34,12 @@ public class Ground {
         }
         return sq;
     }
+    public double flat_area(int i){
+
+        return flat[i--].getN_human();
+    }
+    public int get_Man_Flat(int i)
+    {
+        return flat[i--].getN_human();
+    }
 }
