@@ -5,21 +5,56 @@ import static java.lang.System.out;
 
 public class house {
     private double totalSquare;
-    private int residents;
+    private int lodgers;
     private int Floors;
+    public flat[] f;
 
     private int flatsPerFloor; //the number of flats per floor
     private int flatNumber; // the total number of flats in the house
 
-    void ResSquFlo(){
-        flat[] f = new flat[flatNumber];
+    void lodgersSquareFloors(){
+        f = new flat[flatNumber];
         for(int i = 0; i < flatNumber; i++){
             f[i] = new flat();
-            this.residents += f[i].person;
+            this.lodgers += f[i].person;
             this.totalSquare += f[i].square;
         }
         this.Floors = flatNumber/flatsPerFloor;
-        out.printf("The house has %d floors, %d residents and %f square\n", Floors, residents, totalSquare);
+        out.printf("The house has %d floors, %d lodgers and %f square\n", Floors, lodgers, totalSquare);
+    }
+    void compare_house(house h){
+        out.printf("first house: apartments - %d, height - %d floors\n", this.flatNumber, this.Floors);
+        out.printf("second house: apartments - %d, height - %d floors\n", h.flatNumber, h.Floors);
+
+        if(this.flatNumber > h.flatNumber){
+            out.println("The first house has more apartments than the second");
+        }
+        if(this.flatNumber < h.flatNumber){
+            out.println("The second house has more apartments than the first");
+        }
+        else if(this.flatNumber == h.flatNumber){
+            out.println("Both house has the same number of apartments");
+        }
+
+        if(this.Floors > h.Floors){
+            out.println("The first house higher than the second");
+        }
+        if(this.Floors < h.Floors){
+            out.println("The second house higher than the first");
+        }
+        else if(this.Floors == h.Floors){
+            out.println("Both house has the same height");
+        }
+
+        if(this.lodgers > h.lodgers){
+            out.println("The first house has more lodgers than the second");
+        }
+        if(this.lodgers < h.lodgers){
+            out.println("The second house has more lodgers than the first");
+        }
+        else if(this.lodgers == h.lodgers){
+            out.println("Both house has the same number of lodgers");
+        }
     }
     public class flat {
         private double square;
@@ -28,6 +63,31 @@ public class house {
 
         void print() {
             out.printf("%d people live in %d-room flat with %f square\n", person, size, square);
+        }
+
+        void compare_flats(flat f){
+            out.printf("first apartment: person - %d, square - %f\n", this.person, this.square);
+            out.printf("second apartment: person - %d, square - %f\n", f.person, f.square);
+
+            if(this.person > f.person){
+                out.println("More people live in the first flat than in the second");
+            }
+            if(this.person < f.person){
+                out.println("More people live in the second flat than in the first");
+            }
+            else if(this.person == f.person){
+                out.println("The same number of people live in both apartments");
+            }
+
+            if(this.square > f.square){
+                out.println("The first flat has bigger square than the second");
+            }
+            if(this.square < f.square){
+                out.println("The second flat has bigger square than the first");
+            }
+            else if(this.square == f.square){
+                out.println("Both flats have the same square");
+            }
         }
 
         flat() {
