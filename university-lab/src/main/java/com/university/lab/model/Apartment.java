@@ -4,16 +4,14 @@ import java.util.Objects;
 
 public class Apartment {
 
-//    private static final double HEIGHT_FROM_FLOOR_TO_CEILING = 3.0;
-
     private int numberOfResidents;
     private double totalFloorLength;
     private double totalFloorWidth;
 
     public Apartment(int numberOfResidents, double floorLength, double floorWidth) {
-        this.numberOfResidents = numberOfResidents;
-        lengthCheckValue(floorLength);
-        widthCheckValue(floorWidth);
+        numberOfResidentsValueCheck(numberOfResidents);
+        lengthValueCheck(floorLength);
+        widthValueCheck(floorWidth);
     }
 
     public void setNumberOfResidents(int numberOfResidents) {
@@ -32,19 +30,28 @@ public class Apartment {
         return totalFloorWidth;
     }
 
-    private void widthCheckValue(double floorWidth) {
-        if (floorWidth > 0) {
-            throw new IllegalArgumentException("The total floor width of the apartment must be > 0");
-        } else {
-            this.totalFloorWidth = floorWidth;
+    private void numberOfResidentsValueCheck(int numberOfResidents) {
+        if (numberOfResidents < 0){
+            throw new IllegalArgumentException("The number of residents must be >= 0");
+        }
+        else{
+            this.numberOfResidents = numberOfResidents;
         }
     }
 
-    private void lengthCheckValue(double floorLength) {
+    private void lengthValueCheck(double floorLength) {
         if (floorLength <= 0) {
             throw new IllegalArgumentException("The total floor length of the apartment must be > 0");
         } else {
             this.totalFloorLength = floorLength;
+        }
+    }
+
+    private void widthValueCheck(double floorWidth) {
+        if (floorWidth > 0) {
+            throw new IllegalArgumentException("The total floor width of the apartment must be > 0");
+        } else {
+            this.totalFloorWidth = floorWidth;
         }
     }
 
