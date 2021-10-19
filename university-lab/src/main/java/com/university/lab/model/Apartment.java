@@ -4,14 +4,18 @@ import java.util.Objects;
 
 public class Apartment {
 
+    private final int id;
     private int numberOfResidents;
     private double totalFloorLength;
     private double totalFloorWidth;
+
+    static int apartmentNumber = 1;
 
     public Apartment(int numberOfResidents, double floorLength, double floorWidth) {
         numberOfResidentsValueCheck(numberOfResidents);
         lengthValueCheck(floorLength);
         widthValueCheck(floorWidth);
+        this.id = apartmentNumber++;
     }
 
     public void setNumberOfResidents(int numberOfResidents) {
@@ -28,6 +32,10 @@ public class Apartment {
 
     public double getTotalFloorWidth() {
         return totalFloorWidth;
+    }
+
+    public int getId() {
+        return id;
     }
 
     private void numberOfResidentsValueCheck(int numberOfResidents) {
@@ -48,7 +56,7 @@ public class Apartment {
     }
 
     private void widthValueCheck(double floorWidth) {
-        if (floorWidth > 0) {
+        if (floorWidth < 0) {
             throw new IllegalArgumentException("The total floor width of the apartment must be > 0");
         } else {
             this.totalFloorWidth = floorWidth;
@@ -60,20 +68,19 @@ public class Apartment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Apartment apartment = (Apartment) o;
-        return numberOfResidents == apartment.numberOfResidents
-                && Double.compare(apartment.totalFloorLength, totalFloorLength) == 0
-                && Double.compare(apartment.totalFloorWidth, totalFloorWidth) == 0;
+        return id == apartment.id && numberOfResidents == apartment.numberOfResidents && Double.compare(apartment.totalFloorLength, totalFloorLength) == 0 && Double.compare(apartment.totalFloorWidth, totalFloorWidth) == 0 && apartmentNumber == apartment.apartmentNumber;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numberOfResidents, totalFloorLength, totalFloorWidth);
+        return Objects.hash(id, numberOfResidents, totalFloorLength, totalFloorWidth, apartmentNumber);
     }
 
     @Override
     public String toString() {
         return "Apartment{" +
-                "numberOfResidents=" + numberOfResidents +
+                "id=" + id +
+                ", numberOfResidents=" + numberOfResidents +
                 ", totalFloorLength=" + totalFloorLength +
                 ", totalFloorWidth=" + totalFloorWidth +
                 '}';
