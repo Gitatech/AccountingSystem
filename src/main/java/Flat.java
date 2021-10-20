@@ -12,7 +12,7 @@ public class Flat {
     }
 
     public Flat(boolean how){
-        if(how == true){
+        if(how){
             this.num = NUM;
             Scanner in = new Scanner(System.in);
             System.out.println("Number of human on the flat #" +NUM);

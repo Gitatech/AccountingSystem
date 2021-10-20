@@ -2,11 +2,18 @@ import java.util.Scanner;
 
 public class Ground {
     private Flat[] flat;
+    private int N_flats;
 
     public Ground(){
         System.out.print("Enter number of flats on ground:");
         Scanner in = new Scanner(System.in);
-        flat = new Flat[in.nextInt()];
+        N_flats = in.nextInt();
+        while(N_flats<=0) {
+            System.out.println("Nice try.");
+            System.out.println("Enter number of flats in ground:");
+            N_flats = in.nextInt();
+        }
+        flat = new Flat[N_flats];
         for(int i = 0;i< flat.length;i++){
             flat[i] = new Flat();
         }

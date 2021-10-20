@@ -4,13 +4,27 @@ import java.util.Scanner;
 public class House {
     //private int N_ground;
     private Ground[]grounds;
+    private final int height = 3;
+    private int N_grounds;
 
     public House() {
-        System.out.println("Enter number of grounds:");
+        System.out.print("Enter height of house:");
         Scanner in = new Scanner(System.in);
-        this.grounds = new Ground[in.nextInt()];
+        N_grounds = (in.nextInt())/height;
+        while (N_grounds <= 0) {
+            System.out.println("Height too low.");
+            System.out.print("Enter height of house again:");
+            N_grounds = (in.nextInt())/height;
+        }
+        System.out.println("It turned out "+ N_grounds +" floors");
+        this.grounds = new Ground[N_grounds];
         System.out.println("Enter number of flats in ground:");
         int k = in.nextInt();
+        while(k<=0) {
+            System.out.println("Nice try.");
+            System.out.println("Enter number of flats in ground:");
+            k = in.nextInt();
+        }
         System.out.println("How do you want to populate:\n1.Random\n2.Input");
         int How = in.nextInt();
         switch (How)
@@ -85,13 +99,13 @@ public class House {
     public  void compare_houses(House house2)
     {
         if(this.House_area() > house2.House_area()){
-            System.out.println("House 1 bigger with the area "+ this.House_area());
+            System.out.println("House 1 bigger with the area " + this.House_area() + ". Area of the 2 house: " + house2.House_area());
         }
         else  if(this.House_area() < house2.House_area()){
-            System.out.println("House 2 bigger with the area "+ house2.House_area());
+            System.out.println("House 2 bigger with the area " + house2.House_area() + ". Area of the 1 house: " + this.House_area());
         }
         else{
-            System.out.println("Areas are the same: " +house2.House_area());
+            System.out.println("Areas are the same: " + house2.House_area());
         }
 
 
@@ -105,4 +119,12 @@ public class House {
             System.out.println("Equal number of residents: " +house2.get_N_man());
         }
     }
+    public int N_house_grounds(){
+        return this.N_grounds;
+    }
+    public int N_flats_in_house()
+    {
+        return (this.N_grounds * grounds[0].flat_on_ground());
+    }
 }
+
