@@ -5,21 +5,23 @@ import java.util.Objects;
 
 public class House {
 
-    private final boolean roof;
+    private final String name;
     private final double length;
     private final double width;
     private final double height;
+    private final boolean roof;
+    public ArrayList<Apartment> apartments = new ArrayList<>();
 
-    ArrayList<Apartment> apartments = new ArrayList<>();
-
-    public House(double length, double width, double height) {
+    public House(String name, double length, double width, double height) {
+        this.name = name;
         this.length = length;
         this.width = width;
         this.height = height;
         roof = false;
     }
 
-    public House(boolean roof, double length, double width, double height) {
+    public House(String name, double length, double width, double height, boolean roof) {
+        this.name = name;
         this.roof = roof;
         this.length = length;
         this.width = width;
@@ -38,6 +40,14 @@ public class House {
         return height;
     }
 
+    public ArrayList<Apartment> getApartments() {
+        return apartments;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public boolean isRoof() {
         return roof;
     }
@@ -47,26 +57,26 @@ public class House {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         House house = (House) o;
-        return roof == house.roof
-                && Double.compare(house.length, length) == 0
+        return Double.compare(house.length, length) == 0
                 && Double.compare(house.width, width) == 0
                 && Double.compare(house.height, height) == 0
+                && roof == house.roof
+                && Objects.equals(name, house.name)
                 && Objects.equals(apartments, house.apartments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roof, length, width, height, apartments);
+        return Objects.hash(name, length, width, height, roof, apartments);
     }
 
     @Override
     public String toString() {
-        return "House{" +
-                "roof=" + roof +
-                ", length=" + length +
+        return getName() +
+                "{length=" + length +
                 ", width=" + width +
                 ", height=" + height +
-                ", apartments=" + apartments +
+                ", roof=" + roof +
                 '}';
     }
 }

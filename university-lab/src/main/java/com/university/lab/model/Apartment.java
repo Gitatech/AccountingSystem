@@ -4,6 +4,12 @@ import java.util.Objects;
 
 public class Apartment {
 
+    private static final String CHECKING_THE_VALID_VALUE_FOR_THE_FLOOR_LENGTH =
+            "The total floor length of the apartment must be > 0";
+    private static final String CHECKING_THE_VALID_VALUE_FOR_THE_FLOOR_WIDTH =
+            "The total floor width of the apartment must be > 0";
+    private static final String CHECKING_THE_VALID_VALUE_OF_RESIDENTS = "The number of residents must be >= 0";
+
     private final int id;
     private int numberOfResidents;
     private double totalFloorLength;
@@ -40,7 +46,7 @@ public class Apartment {
 
     private void numberOfResidentsValueCheck(int numberOfResidents) {
         if (numberOfResidents < 0){
-            throw new IllegalArgumentException("The number of residents must be >= 0");
+            throw new IllegalArgumentException(CHECKING_THE_VALID_VALUE_OF_RESIDENTS);
         }
         else{
             this.numberOfResidents = numberOfResidents;
@@ -49,7 +55,7 @@ public class Apartment {
 
     private void lengthValueCheck(double floorLength) {
         if (floorLength <= 0) {
-            throw new IllegalArgumentException("The total floor length of the apartment must be > 0");
+            throw new IllegalArgumentException(CHECKING_THE_VALID_VALUE_FOR_THE_FLOOR_LENGTH);
         } else {
             this.totalFloorLength = floorLength;
         }
@@ -57,7 +63,7 @@ public class Apartment {
 
     private void widthValueCheck(double floorWidth) {
         if (floorWidth < 0) {
-            throw new IllegalArgumentException("The total floor width of the apartment must be > 0");
+            throw new IllegalArgumentException(CHECKING_THE_VALID_VALUE_FOR_THE_FLOOR_WIDTH);
         } else {
             this.totalFloorWidth = floorWidth;
         }
@@ -68,7 +74,11 @@ public class Apartment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Apartment apartment = (Apartment) o;
-        return id == apartment.id && numberOfResidents == apartment.numberOfResidents && Double.compare(apartment.totalFloorLength, totalFloorLength) == 0 && Double.compare(apartment.totalFloorWidth, totalFloorWidth) == 0 && apartmentNumber == apartment.apartmentNumber;
+        return id == apartment.id 
+                && numberOfResidents == apartment.numberOfResidents 
+                && Double.compare(apartment.totalFloorLength, totalFloorLength) == 0 
+                && Double.compare(apartment.totalFloorWidth, totalFloorWidth) == 0 
+                && apartmentNumber == apartment.apartmentNumber;
     }
 
     @Override
