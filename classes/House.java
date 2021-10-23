@@ -6,9 +6,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class House implements Comparable<House>, Serializable {
-    private int number;
+    private final int number;
 
-    private SortedSet<Apartment> apartments;
+    private final SortedSet<Apartment> apartments;
 
     public House(int number) {
         this.number = number;
@@ -23,13 +23,13 @@ public class House implements Comparable<House>, Serializable {
         return new House(Integer.MIN_VALUE);
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public boolean isApartmentThere(int number) {
+        return apartments.stream().anyMatch(e -> e.getNumber() == number);
     }
 
     public void addApartmentByConsole() {
         Apartment apartment = Apartment.createByConsole();
-        if (apartments.contains(apartment)) {
+        if (isApartmentThere(apartment.getNumber())) {
             System.out.println(ColorScheme.ANSI_RED + "Квартира уже есть в доме!" + ColorScheme.ANSI_RESET);
         } else {
             apartments.add(apartment);
@@ -37,8 +37,12 @@ public class House implements Comparable<House>, Serializable {
         }
     }
 
-    public SortedSet<Apartment> getApartments() {
-        return apartments;
+    public Apartment[] getApartments() {
+        return apartments.toArray(Apartment[]::new);
+    }
+
+    public void removeApartment(Apartment apartment) {
+        apartments.remove(apartment);
     }
 
     public int calculatePopulation() {

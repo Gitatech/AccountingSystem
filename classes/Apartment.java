@@ -18,10 +18,6 @@ public class Apartment implements Comparable<Apartment>, Serializable {
         this.square = square;
     }
 
-    public static int compareByNumber(Apartment apartment1, Apartment apartment2) {
-        return Integer.compare(apartment1.number, apartment2.number);
-    }
-
     public static int compareByFloor(Apartment apartment1, Apartment apartment2) {
         return Integer.compare(apartment1.floor, apartment2.floor);
     }
@@ -82,7 +78,7 @@ public class Apartment implements Comparable<Apartment>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Apartment apartment = (Apartment) o;
-        return number == apartment.number && floor == apartment.floor;
+        return number == apartment.number;
     }
 
     @Override

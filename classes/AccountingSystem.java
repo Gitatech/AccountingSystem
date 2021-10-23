@@ -1,10 +1,7 @@
 package AccountingSystem.classes;
 
 import java.io.*;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class AccountingSystem {
 
@@ -110,7 +107,7 @@ public class AccountingSystem {
                                 case "info" -> {
                                     System.out.println(ColorScheme.ANSI_CYAN + "Общая информация о доме " + chosenHouse.getNumber() + ":" + ColorScheme.ANSI_RESET);
                                     System.out.printf("Этажность: %d, кол-во квартир: %d, общая площадь: %.1f м^2, количество жильцов: %d\n\n",
-                                            chosenHouse.calculateFloors(), chosenHouse.getApartments().size(), chosenHouse.calculateFullSquare(), chosenHouse.calculatePopulation());
+                                            chosenHouse.calculateFloors(), chosenHouse.getApartments().length, chosenHouse.calculateFullSquare(), chosenHouse.calculatePopulation());
                                 }
                                 case "remove" -> {
                                     accountingSystem.getHouses().remove(chosenHouse);
@@ -123,14 +120,20 @@ public class AccountingSystem {
                                 }
                                 case "show" -> {
                                     System.out.println(ColorScheme.ANSI_CYAN + "Квартиры дома " + chosenHouse.getNumber() + ":" + ColorScheme.ANSI_RESET);
-                                    chosenHouse.getApartments().forEach(a -> System.out.printf("" +
+                                    Arrays.stream(chosenHouse.getApartments()).forEach(a -> System.out.printf(Locale.US, "" +
                                                     "этаж: %d, номер: %d, кол-во жильцов: %d, площадь: %.1f м^2\n", a.getFloor(),
                                             a.getNumber(), a.getResidentsNumber(), a.getSquare()));
                                     System.out.println();
                                 }
                                 case "choose" -> {
+                                    System.out.println(ColorScheme.ANSI_CYAN + "Квартиры дома " + chosenHouse.getNumber() + ":" + ColorScheme.ANSI_RESET);
+                                    Arrays.stream(chosenHouse.getApartments()).forEach(a -> System.out.printf(Locale.US,
+                                                    "этаж: %d, номер: %d, кол-во жильцов: %d, площадь: %.1f м^2\n", a.getFloor(),
+                                            a.getNumber(), a.getResidentsNumber(), a.getSquare()));
+                                    System.out.println();
+                                    System.out.print("Введите номер квартиры: ");
                                     int number = in.nextInt();
-                                    if (chosenHouse.getApartments().stream().anyMatch(e -> e.getNumber() == number)) {
+                                    if (Arrays.stream(chosenHouse.getApartments()).anyMatch(e -> e.getNumber() == number)) {
                                         Apartment chosenApartment = Apartment.templateApartment();
                                         for (Apartment apartment : chosenHouse.getApartments()) {
                                             if (apartment.getNumber() == number) {
@@ -154,7 +157,7 @@ public class AccountingSystem {
                                             switch (choice) {
                                                 case "info" -> {
                                                     System.out.println(ColorScheme.ANSI_CYAN + "Информация о квартире: " + ColorScheme.ANSI_RESET);
-                                                    System.out.printf("Этаж: %d, номер: %d, кол-во жильцов: %d, площадь: %.1f\n\n",
+                                                    System.out.printf(Locale.US, "Этаж: %d, номер: %d, кол-во жильцов: %d, площадь: %.1f\n\n",
                                                             chosenApartment.getFloor(), chosenApartment.getNumber(),
                                                             chosenApartment.getResidentsNumber(), chosenApartment.getSquare());
                                                 }
@@ -165,7 +168,7 @@ public class AccountingSystem {
                                                     System.out.println(ColorScheme.ANSI_GREEN + "Кол-во жильцов было изменено\n" + ColorScheme.ANSI_RESET);
                                                 }
                                                 case "remove" -> {
-                                                    chosenHouse.getApartments().remove(chosenApartment);
+                                                    chosenHouse.removeApartment(chosenApartment);
                                                     System.out.println(ColorScheme.ANSI_GREEN + "Квартира была удалена\n\n" + ColorScheme.ANSI_RESET);
                                                     continueApartmentLoop = false;
                                                 }
@@ -234,14 +237,14 @@ public class AccountingSystem {
                                             house1.calculateFloors(), floors, house2.calculateFloors());
                                     System.out.printf("%20s %6d %4s %6d\n", "Кол-во жителей",
                                             house1.calculatePopulation(), population, house2.calculatePopulation());
-                                    System.out.printf("%20s %6.1f %4s %6.1f\n", "Общая площадь",
+                                    System.out.printf(Locale.US, "%20s %6.1f %4s %6.1f\n", "Общая площадь",
                                             house1.calculateFullSquare(), square, house2.calculateFullSquare());
                                     System.out.println();
                                 }
                             }
                             case "apartment" -> {
                                 if (accountingSystem.getHouses().size() == 0 || accountingSystem.getHouses().stream()
-                                        .mapToInt(e -> e.getApartments().size()).sum() == 0) {
+                                        .mapToInt(e -> e.getApartments().length).sum() == 0) {
                                     System.out.println(ColorScheme.ANSI_RED + "В системе учёта нет квартир" + ColorScheme.ANSI_RESET);
                                 } else {
                                     System.out.println(ColorScheme.ANSI_CYAN + "Дома:" + ColorScheme.ANSI_RESET);
@@ -271,11 +274,11 @@ public class AccountingSystem {
                                             " и квартиры " + apartment2.getNumber() + " по параметрам:" + ColorScheme.ANSI_RESET);
                                     System.out.printf("%20s %6s %4s %6s\n", "Квартира", apartment1.getNumber(),
                                             " ", apartment2.getNumber());
-                                    System.out.printf("%20s %6d %4s %6d\n", "Этажность",
+                                    System.out.printf("%20s %6d %4s %6d\n", "Этаж",
                                             apartment1.getFloor(), floors, apartment2.getFloor());
                                     System.out.printf("%20s %6d %4s %6d\n", "Кол-во жителей",
                                             apartment1.getResidentsNumber(), population, apartment2.getResidentsNumber());
-                                    System.out.printf("%20s %6.1f %4s %6.1f\n", "Общая площадь",
+                                    System.out.printf(Locale.US, "%20s %6.1f %4s %6.1f\n", "Площадь",
                                             apartment1.getSquare(), square, apartment2.getSquare());
                                     System.out.println();
 
@@ -320,15 +323,15 @@ public class AccountingSystem {
                         break;
                     }
                 }
-                if (chosenHouse.getApartments().isEmpty()) {
+                if (chosenHouse.getApartments().length == 0) {
                     System.out.println(ColorScheme.ANSI_RED + "Дом " + chosenHouse.getNumber() +
                             " не содержит квартир" + ColorScheme.ANSI_RESET);
                     continue;
                 } else {
                     System.out.println(ColorScheme.ANSI_CYAN + "Квартиры дома " + chosenHouse.getNumber()
                             + ":" + ColorScheme.ANSI_RESET);
-                    chosenHouse.getApartments().forEach(a ->
-                            System.out.printf("Этаж: %d, номер: %d, кол-во жильцов: %d, площадь: %.1f\n",
+                    Arrays.stream(chosenHouse.getApartments()).forEach(a ->
+                            System.out.printf(Locale.US, "Этаж: %d, номер: %d, кол-во жильцов: %d, площадь: %.1f\n",
                                     a.getFloor(), a.getNumber(), a.getResidentsNumber(), a.getSquare()));
                     System.out.println();
                 }
