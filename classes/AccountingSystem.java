@@ -1,3 +1,5 @@
+package AccountingSystem.classes;
+
 import java.io.*;
 import java.util.Locale;
 import java.util.Scanner;
@@ -7,7 +9,7 @@ import java.util.TreeSet;
 public class AccountingSystem {
 
     private SortedSet<House> houses;
-    final String path = "C:\\Javap\\AccountingSystem\\AccountingSystem\\accountingSystemData\\data.bin";
+    final String path = "C:\\Javap\\AccountingSystem\\src\\AccountingSystem\\accountingSystemData\\data.bin";
 
     public AccountingSystem() {
         this.houses = new TreeSet<>();
@@ -39,7 +41,8 @@ public class AccountingSystem {
     public void load() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(path))) {
             houses = (TreeSet<House>) in.readObject();
-        } catch (InvalidClassException | ClassNotFoundException ignored) {
+        }
+        catch (EOFException | InvalidClassException | ClassNotFoundException ignored) {
         } catch (IOException e) {
             e.printStackTrace();
         }
