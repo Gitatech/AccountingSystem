@@ -20,14 +20,8 @@ public class Ground {
     }
     public Ground(int k,boolean l) {
         flat = new Flat[k];
-        if (l == true)
-            for (int i = 0; i < k; i++) {
-                flat[i] = new Flat(l);
-            }
-        else {
-            for (int i = 0; i < k; i++) {
-                flat[i] = new Flat();
-            }
+        for (int i = 0; i < k; i++) {
+            flat[i] = new Flat(l);
         }
     }
     public int get_Man_Ground( )
