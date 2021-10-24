@@ -24,6 +24,13 @@ public class Apartment {
         this.id = apartmentNumber++;
     }
 
+    public Apartment(int id, int numberOfResidents, double totalFloorLength, double totalFloorWidth) {
+        this.id = id;
+        this.numberOfResidents = numberOfResidents;
+        this.totalFloorLength = totalFloorLength;
+        this.totalFloorWidth = totalFloorWidth;
+    }
+
     public void setNumberOfResidents(int numberOfResidents) {
         this.numberOfResidents = numberOfResidents;
     }
