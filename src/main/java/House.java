@@ -46,7 +46,18 @@ public class House {
                 }
                     break;
         }
-        this.grounds[1].NUM(0);
+        this.grounds[0].NUM(0);
+    }
+
+    public House(int k) {
+        N_grounds = k/height;
+        System.out.println("It turned out "+ N_grounds +" floors");
+        this.grounds = new Ground[N_grounds];
+        int p = 4;
+        for (int i = 0; i < grounds.length; i++) {
+            grounds[i] = new Ground(p,false);
+        }
+        this.grounds[0].NUM(0);
     }
 
     public int get_N_man(){

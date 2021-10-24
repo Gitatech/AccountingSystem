@@ -6,29 +6,31 @@ import static org.junit.Assert.*;
 public class HouseTest {
 
     private House house;
-    @Before
 
+    @Before
+    public void initHouse() {
+         house = new House(3);
+         house = new House(3);
+    }
     @Test
     public void get_N_man() {
+        assertEquals(house.get_N_man(),20);
     }
 
     @Test
     public void house_area() {
+        assertEquals(house.House_area(),100,0);
+
     }
 
     @Test
     public void flat_area() {
+        assertEquals(house.Flat_area(1),25,0);
     }
 
     @Test
     public void get_Man_falt() {
+        assertEquals(house.get_Man_falt(1),5);
     }
 
-    @Test
-    public void compare_flats() {
-    }
-
-    @Test
-    public void compare_houses() {
-    }
 }

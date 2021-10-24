@@ -7,8 +7,8 @@ public class Flat {
     private int num;
 
     public Flat(){
-        this.n_human = (int) (Math.random()*5);
-        this.sqrt = Math.random()*60;
+        this.n_human = 5;
+        this.sqrt = 25;
     }
 
     public Flat(boolean how){
