@@ -6,7 +6,7 @@ import java.util.*;
 public class AccountingSystem {
 
     private SortedSet<House> houses;
-    final String path = "C:\\Javap\\AccountingSystem\\src\\AccountingSystem\\accountingSystemData\\data.bin";
+    final String path = "accountingSystemData\\data.bin";
 
     public AccountingSystem() {
         this.houses = new TreeSet<>();
@@ -39,10 +39,7 @@ public class AccountingSystem {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(path))) {
             houses = (TreeSet<House>) in.readObject();
         }
-        catch (EOFException | InvalidClassException | ClassNotFoundException ignored) {
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        catch (IOException | ClassNotFoundException ignored) {}
     }
 
     public static void main(String[] args) {

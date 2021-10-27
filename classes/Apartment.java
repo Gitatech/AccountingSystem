@@ -11,7 +11,7 @@ public class Apartment implements Comparable<Apartment>, Serializable {
     private final float square;
     private int residentsNumber;
 
-    public Apartment(int number, int floor,  float square, int residentsNumber) {
+    public Apartment(int number, int floor, float square, int residentsNumber) {
         this.number = number;
         this.floor = floor;
         this.residentsNumber = residentsNumber;
@@ -93,9 +93,6 @@ public class Apartment implements Comparable<Apartment>, Serializable {
 
     @Override
     public int compareTo(Apartment o) {
-        if (floor == o.floor) {
-            return Integer.compare(number, o.number);
-        }
-        return Integer.compare(floor, o.floor);
+        return Integer.compare(number, o.number);
     }
 }
