@@ -1,12 +1,10 @@
-package AccountingSystem.classes;
-
 import java.io.*;
 import java.util.*;
 
 public class AccountingSystem {
 
     private SortedSet<House> houses;
-    final String path = "accountingSystemData\\data.bin";
+    final String path = "src/main/resources/data.bin";
 
     public AccountingSystem() {
         this.houses = new TreeSet<>();

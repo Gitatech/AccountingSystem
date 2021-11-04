@@ -1,5 +1,3 @@
-package AccountingSystem.classes;
-
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
