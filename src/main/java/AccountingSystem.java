@@ -14,8 +14,16 @@ public class AccountingSystem {
         houses.add(new House(number));
     }
 
-    public SortedSet<House> getHouses() {
-        return houses;
+    public void removeHouse(int number) {
+        houses.remove(new House(number));
+    }
+
+    public boolean isContainsHouse(int number) {
+        return houses.contains(new House(number));
+    }
+
+    public House[] getHouses() {
+        return houses.toArray(House[]::new);
     }
 
     public void printHouses() {
@@ -36,8 +44,8 @@ public class AccountingSystem {
     public void load() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(path))) {
             houses = (TreeSet<House>) in.readObject();
+        } catch (IOException | ClassNotFoundException ignored) {
         }
-        catch (IOException | ClassNotFoundException ignored) {}
     }
 
     public static void main(String[] args) {
@@ -75,7 +83,7 @@ public class AccountingSystem {
                     accountingSystem.printHouses();
                     System.out.print("Введите номер дома: ");
                     int houseNumber = in.nextInt();
-                    if (accountingSystem.getHouses().contains(new House(houseNumber))) {
+                    if (accountingSystem.isContainsHouse(houseNumber)) {
                         House chosenHouse = House.templateHouse();
                         for (House house : accountingSystem.getHouses()) {
                             if (house.equals(new House(houseNumber))) {
@@ -105,7 +113,7 @@ public class AccountingSystem {
                                             chosenHouse.calculateFloors(), chosenHouse.getApartments().length, chosenHouse.calculateFullSquare(), chosenHouse.calculatePopulation());
                                 }
                                 case "remove" -> {
-                                    accountingSystem.getHouses().remove(chosenHouse);
+                                    accountingSystem.removeHouse(chosenHouse.getNumber());
                                     System.out.println(ColorScheme.ANSI_GREEN + "Дом " + chosenHouse.getNumber() + " был удалён\n\n");
                                     continueHouseLoop = false;
                                 }
@@ -123,7 +131,7 @@ public class AccountingSystem {
                                 case "choose" -> {
                                     System.out.println(ColorScheme.ANSI_CYAN + "Квартиры дома " + chosenHouse.getNumber() + ":" + ColorScheme.ANSI_RESET);
                                     Arrays.stream(chosenHouse.getApartments()).forEach(a -> System.out.printf(Locale.US,
-                                                    "этаж: %d, номер: %d, кол-во жильцов: %d, площадь: %.1f м^2\n", a.getFloor(),
+                                            "этаж: %d, номер: %d, кол-во жильцов: %d, площадь: %.1f м^2\n", a.getFloor(),
                                             a.getNumber(), a.getResidentsNumber(), a.getSquare()));
                                     System.out.println();
                                     System.out.print("Введите номер квартиры: ");
@@ -199,7 +207,7 @@ public class AccountingSystem {
                             case "house" -> {
                                 System.out.println(ColorScheme.ANSI_CYAN + "Дома:" + ColorScheme.ANSI_RESET);
                                 accountingSystem.printHouses();
-                                if (accountingSystem.getHouses().size() < 2) {
+                                if (accountingSystem.getHouses().length < 2) {
                                     System.out.println(ColorScheme.ANSI_RED + "Недостаточное количество домов\n" + ColorScheme.ANSI_RESET);
                                     continueCompareLoop = false;
                                 } else {
@@ -238,7 +246,7 @@ public class AccountingSystem {
                                 }
                             }
                             case "apartment" -> {
-                                if (accountingSystem.getHouses().size() == 0 || accountingSystem.getHouses().stream()
+                                if (accountingSystem.getHouses().length == 0 || Arrays.stream(accountingSystem.getHouses())
                                         .mapToInt(e -> e.getApartments().length).sum() == 0) {
                                     System.out.println(ColorScheme.ANSI_RED + "В системе учёта нет квартир" + ColorScheme.ANSI_RESET);
                                 } else {
@@ -286,7 +294,7 @@ public class AccountingSystem {
                 }
                 case "output" -> {
                     System.out.println(ColorScheme.ANSI_CYAN + "Дома: " + ColorScheme.ANSI_RESET);
-                    accountingSystem.getHouses().forEach(h -> System.out.println("Дом " + h.getNumber()));
+                    Arrays.stream(accountingSystem.getHouses()).forEach(h -> System.out.println("Дом " + h.getNumber()));
                     System.out.println();
                 }
                 case "exit" -> {
