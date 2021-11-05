@@ -45,7 +45,7 @@ public class Apartment implements Comparable<Apartment>, Serializable {
         floor = in.nextInt();
         System.out.print("Введите площадь квартиры: ");
         square = in.nextFloat();
-        System.out.print("Введите количество жильцов: ");
+        System.out.print("Введите кол-во жителей: ");
         residentsNumber = in.nextInt();
         return new Apartment(number, floor, square, residentsNumber);
     }
@@ -86,7 +86,7 @@ public class Apartment implements Comparable<Apartment>, Serializable {
 
     @Override
     public String toString() {
-        return "номер: " + number + ", этаж: " + floor + ", количество жильцов: " + residentsNumber;
+        return "номер: " + number + ", этаж: " + floor + ", кол-во жителей: " + residentsNumber;
     }
 
     @Override

@@ -28,7 +28,7 @@ public class House implements Comparable<House>, Serializable {
     public void addApartmentByConsole() {
         Apartment apartment = Apartment.createByConsole();
         if (isApartmentThere(apartment.getNumber())) {
-            System.out.println(ColorScheme.ANSI_RED + "Квартира уже есть в доме!" + ColorScheme.ANSI_RESET);
+            System.out.println(ColorScheme.ANSI_RED + "Квартира с таким номером уже есть в доме!" + ColorScheme.ANSI_RESET);
         } else {
             apartments.add(apartment);
             System.out.println(ColorScheme.ANSI_GREEN + "Квартира была добавлена в дом" + ColorScheme.ANSI_RESET);
@@ -84,7 +84,7 @@ public class House implements Comparable<House>, Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Дом номер ").append(number).append(":\n");
+        sb.append("Дом ").append(number).append(":\n");
         for (Apartment apartment : apartments) {
             sb.append(apartment).append("\n");
         }

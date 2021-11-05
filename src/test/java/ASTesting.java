@@ -37,12 +37,12 @@ public class ASTesting {
     }
 
     @Test
-    public void isContainsHouse() {
+    public void containsHouse() {
         AccountingSystem accountingSystem = new AccountingSystem();
         accountingSystem.addHouse(1);
         accountingSystem.addHouse(2);
         accountingSystem.addHouse(3);
-        Assert.assertTrue(accountingSystem.isContainsHouse(2) && !accountingSystem.isContainsHouse(5));
+        Assert.assertTrue(accountingSystem.containsHouse(2) && !accountingSystem.containsHouse(5));
     }
 
 }
