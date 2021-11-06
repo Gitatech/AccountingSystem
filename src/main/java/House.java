@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -21,17 +22,17 @@ public class House implements Comparable<House>, Serializable {
         return new House(Integer.MIN_VALUE);
     }
 
-    public boolean isApartmentThere(int number) {
+    public boolean containsApartment(int number) {
         return apartments.stream().anyMatch(e -> e.getNumber() == number);
     }
 
     public void addApartmentByConsole() {
         Apartment apartment = Apartment.createByConsole();
-        if (isApartmentThere(apartment.getNumber())) {
-            System.out.println(ColorScheme.ANSI_RED + "Квартира с таким номером уже есть в доме!" + ColorScheme.ANSI_RESET);
+        if (containsApartment(apartment.getNumber())) {
+            System.out.println(ColorScheme.ANSI_RED + "Квартира с таким номером уже есть в доме!\n" + ColorScheme.ANSI_RESET);
         } else {
             apartments.add(apartment);
-            System.out.println(ColorScheme.ANSI_GREEN + "Квартира была добавлена в дом" + ColorScheme.ANSI_RESET);
+            System.out.println(ColorScheme.ANSI_GREEN + "Квартира была добавлена в дом\n" + ColorScheme.ANSI_RESET);
         }
     }
 
@@ -41,6 +42,21 @@ public class House implements Comparable<House>, Serializable {
 
     public void removeApartment(Apartment apartment) {
         apartments.remove(apartment);
+    }
+
+    public void printInformationAboutHouse() {
+        System.out.println(ColorScheme.ANSI_CYAN + "Общая информация о доме " + number + ":" + ColorScheme.ANSI_RESET);
+        System.out.printf(Locale.US, "Этажность: %d, кол-во квартир: %d, общая площадь: %.1f м^2, кол-во жителей: %d\n\n",
+                calculateFloors(), getApartments().length, calculateFullSquare(), calculatePopulation());
+    }
+
+    public void printApartments() {
+        System.out.println(ColorScheme.ANSI_CYAN + "Квартиры дома " + number + ":" + ColorScheme.ANSI_RESET);
+        apartments.forEach(System.out::println);
+    }
+
+    public Apartment getApartmentByNumber(int number) {
+        return apartments.stream().filter(e -> e.getNumber() == number).findFirst().orElse(null);
     }
 
     public int calculatePopulation() {

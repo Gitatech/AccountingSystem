@@ -86,7 +86,8 @@ public class Apartment implements Comparable<Apartment>, Serializable {
 
     @Override
     public String toString() {
-        return "номер: " + number + ", этаж: " + floor + ", кол-во жителей: " + residentsNumber;
+        return String.format(Locale.US, "Этаж: %d, номер: %d, кол-во жителей: %d, площадь: %.1f м^2",
+                floor, number, residentsNumber, square);
     }
 
     @Override
