@@ -14,6 +14,7 @@ public class AccountingSystem {
     }
 
     public AccountingSystem() {
+        this.houses = new TreeSet<>();
     }
 
     public House getHouseByNumber(int houseNumber) {
