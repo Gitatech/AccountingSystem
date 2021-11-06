@@ -3,7 +3,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class ACController {
-    public AccountingSystem accountingSystem;
+    private AccountingSystem accountingSystem;
 
     public ACController(AccountingSystem accountingSystem) {
         this.accountingSystem = accountingSystem;
@@ -12,6 +12,14 @@ public class ACController {
     public static void main(String[] args) {
         ACController controller = new ACController(new AccountingSystem("src/main/resources/data.bin"));
         controller.launch();
+    }
+
+    public AccountingSystem getAccountingSystem() {
+        return accountingSystem;
+    }
+
+    public void setAccountingSystem(AccountingSystem accountingSystem) {
+        this.accountingSystem = accountingSystem;
     }
 
     public void launch() {
