@@ -42,13 +42,22 @@ import java.util.ArrayList;
                         System.out.println("Enter number of House");
                         int HOUSE = in.nextInt();
                         HOUSE--;
-                        System.out.println("Enter Number of the first flat");
+                        System.out.println("Enter Number of the first flat " + "(" +houses.get(HOUSE).N_flats_in_house()+" flats in this house)");
                         int NUMBER1 = in.nextInt();
-                        System.out.println("Enter Number of the second flat");
+                        System.out.println("Enter Number of the second flat "+ "(" +houses.get(HOUSE).N_flats_in_house()+" flats in this house)");
                         int NUMBER2 = in.nextInt();
+                        if(NUMBER1 >houses.get(HOUSE).N_flats_in_house() || NUMBER2 > houses.get(HOUSE).N_flats_in_house())
+                        {
+                            System.out.println("Can't compare");
+                            break;
+                        }
                         houses.get(HOUSE).Compare_flats(NUMBER1,NUMBER2);
                         break;
                     case(4):
+                        if(houses.isEmpty()){
+                            System.out.println("There is no one house");
+                            break;
+                        }
                         System.out.println("What number of house:");
                         int l = in.nextInt();
                         l--;

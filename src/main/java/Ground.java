@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Scanner;
 
 public class Ground {
@@ -5,7 +6,7 @@ public class Ground {
     private int N_flats;
 
     public Ground(){
-        System.out.print("Enter number of flats on ground:");
+        System.out.print("Enter number of flats in ground:");
         Scanner in = new Scanner(System.in);
         N_flats = in.nextInt();
         while(N_flats<=0) {
@@ -18,10 +19,10 @@ public class Ground {
             flat[i] = new Flat();
         }
     }
-    public Ground(int k,boolean l) {
-        flat = new Flat[k];
-        for (int i = 0; i < k; i++) {
-            flat[i] = new Flat(l);
+    public Ground(Ground ground0){
+        flat = new Flat[ground0.N_flats];
+        for(int i = 0;i< flat.length;i++){
+            flat[i] = new Flat(ground0.flat[i]);
         }
     }
     public int get_Man_Ground( )
@@ -33,14 +34,14 @@ public class Ground {
         return kol;
     }
 
-    public double Ground_area(){
+    public double Ground_area(){ // возвращает площадь этажа
         int sq = 0;
         for(int i = 0;i< flat.length;i++){
             sq += flat[i].get_sqrt();
         }
         return sq;
     }
-    public double flat_area(int i){
+    public double flat_area(int i){ // возвращает площадь квартиры по её номеру на этаже
         int k = i % ((flat.length));
         return flat[k].get_sqrt();
     }
@@ -51,11 +52,10 @@ public class Ground {
     }
     public void NUM(int k)
     {
-        this.flat[1].NUM(1);
-    }
+        this.flat[1].NUM(k);
+    } //для зануление сатической переменной в flat
     public int flat_on_ground()
     {
         return flat.length;
-
     }
 }

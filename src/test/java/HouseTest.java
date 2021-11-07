@@ -8,10 +8,10 @@ public class HouseTest {
     private House house;
 
     @Before
-    public void initHouse() {
-         house = new House(3);
-         house = new House(3);
-    }
+   // public void initHouse() {
+    //     house = new House(3);
+     //    house = new House(3);
+   // }
     @Test
     public void get_N_man() {
         assertEquals(house.get_N_man(),20);

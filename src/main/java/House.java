@@ -2,14 +2,13 @@
 import java.util.Scanner;
 
 public class House {
-    //private int N_ground;
     private Ground[]grounds;
     private final int height = 3;
     private int N_grounds;
 
     public House() {
         System.out.print("Enter height of house:");
-        Scanner in = new Scanner(System.in);
+        Scanner in = new Scanner(System.in);  //высчитывается кол. этажей
         N_grounds = (in.nextInt())/height;
         while (N_grounds <= 0) {
             System.out.println("Height too low.");
@@ -18,49 +17,15 @@ public class House {
         }
         System.out.println("It turned out "+ N_grounds +" floors");
         this.grounds = new Ground[N_grounds];
-        System.out.println("Enter number of flats in ground:");
-        int k = in.nextInt();
-        while(k<=0) {
-            System.out.println("Nice try.");
-            System.out.println("Enter number of flats in ground:");
-            k = in.nextInt();
+        grounds[0] = new Ground();
+        for(int i = 1;i< grounds.length;i++) {
+            grounds[i] = new Ground(grounds[0]);
         }
-        System.out.println("How do you want to populate:\n1.Random\n2.Input");
-        int How = in.nextInt();
-        switch (How)
-        {
-            case (1):
-                for (int i = 0; i < grounds.length; i++) {
-                    grounds[i] = new Ground(k,false);
-                }
-                    break;
-            case (2):
-                for (int i = 0; i < grounds.length; i++) {
-                    grounds[i] = new Ground(k, true);
-                }
-                    break;
-            default:
-                System.out.println("Incorrect value.Random filing");
-                for (int i = 0; i < grounds.length; i++) {
-                    grounds[i] = new Ground(k, false);
-                }
-                    break;
-        }
+
         this.grounds[0].NUM(0);
     }
 
-    public House(int k) {
-        N_grounds = k/height;
-        System.out.println("It turned out "+ N_grounds +" floors");
-        this.grounds = new Ground[N_grounds];
-        int p = 4;
-        for (int i = 0; i < grounds.length; i++) {
-            grounds[i] = new Ground(p,false);
-        }
-        this.grounds[0].NUM(0);
-    }
-
-    public int get_N_man(){
+    public int get_N_man(){  // возвращает общее число жильцов
         int KOL = 0;
         for(int i = 0;i<grounds.length;i++)
         {
@@ -77,11 +42,11 @@ public class House {
         }
         return SQ;
     }
-    public double Flat_area(int i) {
+    public double Flat_area(int i) { // возвращает площадь квартиры по её номеру
         int gr = i / (grounds[0].flat_on_ground());
         return grounds[gr].flat_area(i);
     }
-    public int get_Man_falt(int i){
+    public int get_Man_falt(int i){ //возвращает кол. жильцов в квартире через номер квартиры
         int gr = i / (grounds[0].flat_on_ground());
         return grounds[gr].get_Man_Flat(i);
     }

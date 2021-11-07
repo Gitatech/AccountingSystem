@@ -6,29 +6,21 @@ public class Flat {
     private static int NUM = 0;
     private int num;
 
-    public Flat(){
-        this.n_human = 5;
-        this.sqrt = 25;
+    public Flat(){  //создаёт квартиру с площадью из консоли
+        this.num = NUM;
+        Scanner in = new Scanner(System.in);
+        System.out.println("Area of flat #" + NUM);
+        this.sqrt = in.nextInt();
+        this.n_human = (int)(Math.random()*4)+1;
+        NUM++;
     }
 
-    public Flat(boolean how){
-        if(how){
+    public Flat(Flat flat1){
             this.num = NUM;
-            Scanner in = new Scanner(System.in);
-            System.out.println("Number of human on the flat #" +NUM);
-            int num = in.nextInt();
-            System.out.println("Area of flat #" + NUM);
-            int are = in.nextInt();
-            this.n_human = num;
-            this.sqrt = are;
+            this.sqrt = flat1.get_sqrt();
+            this.n_human = (int)(Math.random()*5);
             NUM++;
-        }
-        else{
-            this.n_human = (int) (Math.random()*5);
-            this.sqrt = Math.random()*60;
-            this.num = NUM;
-            NUM++;
-        }
+
     }
 
     public int getN_human() {
