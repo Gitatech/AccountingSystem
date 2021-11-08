@@ -13,8 +13,8 @@ public class Apartment {
 
     private final int id;
     private int numberOfResidents;
-    private double totalFloorLength;
-    private double totalFloorWidth;
+    private double totalApartmentLength;
+    private double totalApartmentWidth;
 
 //    public static int apartmentNumber = 1;
 //
@@ -25,33 +25,29 @@ public class Apartment {
 //        this.id = apartmentNumber++;
 //    }
 
-    public Apartment(int id, int numberOfResidents, double totalFloorLength, double totalFloorWidth) {
+    public Apartment(int id, int numberOfResidents, double totalApartmentLength, double totalApartmentWidth) {
         numberOfResidentsValueCheck(numberOfResidents);
-        lengthValueCheck(totalFloorLength);
-        widthValueCheck(totalFloorWidth);
+        lengthValueCheck(totalApartmentLength);
+        widthValueCheck(totalApartmentWidth);
         if (id <= 0) {
             throw new IllegalArgumentException(ILLEGAL_ID);
         }
         this.id = id;
         this.numberOfResidents = numberOfResidents;
-        this.totalFloorLength = totalFloorLength;
-        this.totalFloorWidth = totalFloorWidth;
-    }
-
-    public void setNumberOfResidents(int numberOfResidents) {
-        this.numberOfResidents = numberOfResidents;
+        this.totalApartmentLength = totalApartmentLength;
+        this.totalApartmentWidth = totalApartmentWidth;
     }
 
     public int getNumberOfResidents() {
         return numberOfResidents;
     }
 
-    public double getTotalFloorLength() {
-        return totalFloorLength;
+    public double getTotalApartmentLength() {
+        return totalApartmentLength;
     }
 
-    public double getTotalFloorWidth() {
-        return totalFloorWidth;
+    public double getTotalApartmentWidth() {
+        return totalApartmentWidth;
     }
 
     public int getId() {
@@ -70,7 +66,7 @@ public class Apartment {
         if (floorLength <= 0) {
             throw new IllegalArgumentException(CHECKING_THE_VALID_VALUE_FOR_THE_FLOOR_LENGTH);
         } else {
-            this.totalFloorLength = floorLength;
+            this.totalApartmentLength = floorLength;
         }
     }
 
@@ -78,7 +74,7 @@ public class Apartment {
         if (floorWidth < 0) {
             throw new IllegalArgumentException(CHECKING_THE_VALID_VALUE_FOR_THE_FLOOR_WIDTH);
         } else {
-            this.totalFloorWidth = floorWidth;
+            this.totalApartmentWidth = floorWidth;
         }
     }
 
@@ -89,13 +85,13 @@ public class Apartment {
         if (o == null || getClass() != o.getClass()) return false;
         Apartment apartment = (Apartment) o;
         return id == apartment.id && numberOfResidents == apartment.numberOfResidents
-                && Double.compare(apartment.totalFloorLength, totalFloorLength) == 0
-                && Double.compare(apartment.totalFloorWidth, totalFloorWidth) == 0;
+                && Double.compare(apartment.totalApartmentLength, totalApartmentLength) == 0
+                && Double.compare(apartment.totalApartmentWidth, totalApartmentWidth) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, numberOfResidents, totalFloorLength, totalFloorWidth);
+        return Objects.hash(id, numberOfResidents, totalApartmentLength, totalApartmentWidth);
     }
 
     @Override
@@ -103,8 +99,8 @@ public class Apartment {
         return "Apartment{" +
                 "id=" + id +
                 ", numberOfResidents=" + numberOfResidents +
-                ", totalFloorLength=" + totalFloorLength +
-                ", totalFloorWidth=" + totalFloorWidth +
+                ", totalFloorLength=" + totalApartmentLength +
+                ", totalFloorWidth=" + totalApartmentWidth +
                 '}';
     }
 }
