@@ -1,3 +1,5 @@
+package AccountingSystem;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,15 +11,14 @@ public class Home {
     private ArrayList<Apartment> apartments = new ArrayList<Apartment>();
 
     public Home() {
+    }
+
+    public Home(String console) {
         System.out.println("Введите номер дома, количество квартир, количество этажей");
         Scanner input = new Scanner(System.in);
         this.number = input.nextInt();
         this.apartmentCount = input.nextInt();
         this.floorCount = input.nextInt();
-    }
-
-    public Home(String s) {
-
     }
 
 
@@ -35,7 +36,7 @@ public class Home {
                 return i;
             }
         }
-        Apartment temp = new Apartment("empty");
+        Apartment temp = new Apartment();
         temp.setNumber(-1);
         return temp;
     }
@@ -56,7 +57,7 @@ public class Home {
     }
 
     public String getSign(int x, int y) {
-        switch (Integer.compare(x,y)) {
+        switch (Integer.compare(x, y)) {
             case 1 -> {
                 return ">";
             }
@@ -89,7 +90,7 @@ public class Home {
         int sqareOne = countSqare(this);
         int sqareTwo = countSqare(home);
         System.out.println("Общая площадь");
-        sign = getSign(sqareOne,sqareTwo);
+        sign = getSign(sqareOne, sqareTwo);
         System.out.println("     " + sign);
     }
 

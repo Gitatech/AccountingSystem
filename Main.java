@@ -1,3 +1,5 @@
+package AccountingSystem;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -46,14 +48,14 @@ public class Main {
                 }
                 case 4 -> {
                     System.out.println("Введите номер дома и квартиры");
-                    accountingSystem.removeApartment(input.nextInt(),input.nextInt());
+                    accountingSystem.removeApartment(input.nextInt(), input.nextInt());
                 }
                 case 5 -> {
                     System.out.println("Введите номер дома");
                     int numberOfHomeOne = input.nextInt();
                     System.out.println("Введите номер дома");
                     int numberOfHomeTwo = input.nextInt();
-                    accountingSystem.compareHome(numberOfHomeOne,numberOfHomeTwo);
+                    accountingSystem.compareHome(numberOfHomeOne, numberOfHomeTwo);
                 }
                 case 6 -> {
                     System.out.println("Введите номер дома и квартиры");
@@ -62,7 +64,7 @@ public class Main {
                     System.out.println("Введите номер дома и квартиры");
                     int numberOfHome2 = input.nextInt();
                     int numberOfApartment2 = input.nextInt();
-                    accountingSystem.compareApartment(numberOfHome1,numberOfHome2,numberOfApartment1,numberOfApartment2);
+                    accountingSystem.compareApartment(numberOfHome1, numberOfHome2, numberOfApartment1, numberOfApartment2);
                 }
                 case 7 -> {
                     System.out.println("Введите номер дома");

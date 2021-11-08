@@ -1,3 +1,5 @@
+package AccountingSystem;
+
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -9,6 +11,9 @@ public class Apartment {
     private int floor; // этаж
 
     public Apartment() {
+    }
+
+    Apartment(String console) {
         Scanner input = new Scanner(System.in);
         System.out.println("введите площадь, количество жильцов, количество комнат, номер квартиры и этаж\n");
         this.sqare = input.nextInt();
@@ -16,9 +21,6 @@ public class Apartment {
         this.cntRooms = input.nextInt();
         this.number = input.nextInt();
         this.floor = input.nextInt();
-    }
-
-    Apartment(String empty) {
     }
 
     public String getSign(int x, int y) {
@@ -42,7 +44,7 @@ public class Apartment {
         System.out.println("квартира" + this.number + sign + "квартира" + apartmentNumber);
     }
 
-    public void compareBy( Apartment apartment) {
+    public void compareBy(Apartment apartment) {
 
         String sign = new String("");
 
@@ -111,19 +113,6 @@ public class Apartment {
 
     public int getFloor() {
         return floor;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Apartment apartment = (Apartment) o;
-        return sqare == apartment.sqare && roomer == apartment.roomer && cntRooms == apartment.cntRooms;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(sqare, roomer, cntRooms);
     }
 
 

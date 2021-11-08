@@ -1,3 +1,5 @@
+package AccountingSystem;
+
 import java.util.*;
 
 public class AccountingSystem {
@@ -9,7 +11,7 @@ public class AccountingSystem {
                 return i;
             }
         }
-        Home temp = new Home("empty");
+        Home temp = new Home();
         temp.setApartmentCount(-1);
         return temp;
     }
@@ -20,7 +22,7 @@ public class AccountingSystem {
                 return i;
             }
         }
-        Apartment temp = new Apartment("empty");
+        Apartment temp = new Apartment();
         temp.setNumber(-1);
         return temp;
     }
@@ -43,7 +45,7 @@ public class AccountingSystem {
             System.out.println("Дома с таким номером не существует");
             return;
         } else {
-            Apartment tempApartment = new Apartment();
+            Apartment tempApartment = new Apartment("inputFromConsole");
             temp.addApartment(tempApartment);
             System.out.println("Квартира успешно добавлена");
         }
@@ -56,7 +58,7 @@ public class AccountingSystem {
             return;
         }
         Apartment temp2 = temp.getApartment(numberOfApartment);
-        if (temp.getNumber() == -1) {
+        if (temp2.getNumber() == -1) {
             System.out.println("Такой квартиры не существует");
             return;
         }
