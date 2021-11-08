@@ -17,13 +17,24 @@ public class House {
         }
         System.out.println("It turned out "+ N_grounds +" floors");
         this.grounds = new Ground[N_grounds];
-        grounds[0] = new Ground();
+        System.out.print("Enter number of flats in ground:");
+        int k = in.nextInt();
+        while(k<1){
+            System.out.print("Incorrect value.");
+            System.out.print("Enter number of flats in ground:");
+            k = in.nextInt();
+        }
+        grounds[0] = new Ground(k);
         for(int i = 1;i< grounds.length;i++) {
             grounds[i] = new Ground(grounds[0]);
         }
 
         this.grounds[0].NUM(0);
     }
+
+
+
+
 
     public int get_N_man(){  // возвращает общее число жильцов
         int KOL = 0;
@@ -42,10 +53,12 @@ public class House {
         }
         return SQ;
     }
+
     public double Flat_area(int i) { // возвращает площадь квартиры по её номеру
         int gr = i / (grounds[0].flat_on_ground());
         return grounds[gr].flat_area(i);
     }
+
     public int get_Man_falt(int i){ //возвращает кол. жильцов в квартире через номер квартиры
         int gr = i / (grounds[0].flat_on_ground());
         return grounds[gr].get_Man_Flat(i);

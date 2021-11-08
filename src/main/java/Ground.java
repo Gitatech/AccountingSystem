@@ -1,22 +1,23 @@
-import javax.swing.*;
+
 import java.util.Scanner;
 
 public class Ground {
     private Flat[] flat;
     private int N_flats;
 
-    public Ground(){
-        System.out.print("Enter number of flats in ground:");
+    public Ground(int p){ //p - число квартир на этаже
         Scanner in = new Scanner(System.in);
-        N_flats = in.nextInt();
-        while(N_flats<=0) {
-            System.out.println("Nice try.");
-            System.out.println("Enter number of flats in ground:");
-            N_flats = in.nextInt();
-        }
-        flat = new Flat[N_flats];
+        N_flats = p;
+        flat = new Flat[p];
         for(int i = 0;i< flat.length;i++){
-            flat[i] = new Flat();
+            System.out.print("Area of flat #" + i +": ");
+            int k = in.nextInt();
+            while(k<1){
+                System.out.print("Area too low. Enter again.");
+                System.out.print("Area of flat #" + i +": ");
+                k = in.nextInt();
+
+            }            flat[i] = new Flat(k);
         }
     }
     public Ground(Ground ground0){

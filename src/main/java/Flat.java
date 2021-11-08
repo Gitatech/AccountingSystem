@@ -6,18 +6,16 @@ public class Flat {
     private static int NUM = 0;
     private int num;
 
-    public Flat(){  //создаёт квартиру с площадью из консоли
+    public Flat(int k){  //создаёт квартиру с площадью из консоли
         this.num = NUM;
-        Scanner in = new Scanner(System.in);
-        System.out.println("Area of flat #" + NUM);
-        this.sqrt = in.nextInt();
-        this.n_human = (int)(Math.random()*4)+1;
+        this.sqrt = k;
+        this.n_human = (int)(Math.random()*5);
         NUM++;
     }
 
     public Flat(Flat flat1){
             this.num = NUM;
-            this.sqrt = flat1.get_sqrt();
+            this.sqrt = flat1.sqrt;
             this.n_human = (int)(Math.random()*5);
             NUM++;
 
