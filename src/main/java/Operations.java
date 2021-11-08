@@ -83,7 +83,7 @@ public interface Operations {
         System.out.println("House number you want to delete(Press 0 to exit):");
         int del = in.nextInt();
         del--;
-        while((del <-1) && (del >= houses.size())){
+        while((del <-1) || (del >= houses.size())){
             System.out.println("Incorrect value.Try again");
             System.out.println("House number you want to delete(Press 0 to exit):");
             del = in.nextInt();
