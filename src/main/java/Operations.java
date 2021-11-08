@@ -34,11 +34,11 @@ public interface Operations {
         System.out.println("Enter number of House");
         int HOUSE = in.nextInt();
         HOUSE--;
-        System.out.println("Enter Number of the first flat " + "(" + houses.get(HOUSE).N_flats_in_house() + " flats in this house)");
+        System.out.println("Enter Number of the first flat " + "(" + (houses.get(HOUSE).N_flats_in_house()-1) + " flats in this house)");
         int NUMBER1 = in.nextInt();
-        System.out.println("Enter Number of the second flat " + "(" + houses.get(HOUSE).N_flats_in_house() + " flats in this house)");
+        System.out.println("Enter Number of the second flat " + "(" + (houses.get(HOUSE).N_flats_in_house()-1) + " flats in this house)");
         int NUMBER2 = in.nextInt();
-        if (NUMBER1 > houses.get(HOUSE).N_flats_in_house() || NUMBER2 > houses.get(HOUSE).N_flats_in_house()) {
+        if (NUMBER1 >= houses.get(HOUSE).N_flats_in_house() || NUMBER2 >= houses.get(HOUSE).N_flats_in_house()) {
             System.out.println("Can't compare");
             return;
         }
@@ -62,5 +62,34 @@ public interface Operations {
         System.out.println("House #" + ++l + " has " + houses.get(--l).N_flats_in_house() + " flats");
         System.out.println("Number of residents in the " + ++l + " house: " + houses.get(--l).get_N_man());
         System.out.println("Area of the " + ++l + " House: " + houses.get(--l).House_area());
+    }
+
+    static void Delete_house(ArrayList<House> houses){
+        Scanner in = new Scanner(System.in);
+        if (houses.isEmpty()) {
+            System.out.println("There is no one house");
+            return;
+        }
+        System.out.println("-----------------------------------------------------------------------------");
+        for(int i =0;i<houses.size();i++)
+        {
+            System.out.println("HOUSE #" + ++i);
+            System.out.println("Number of residents: " +houses.get(--i).get_N_man());
+            System.out.println("Area: " + houses.get(i).House_area());
+            System.out.println("-----------------------------------------------------------------------------");
+        }
+        System.out.println("House number you want to delete(Press 0 to exit):");
+        int del = in.nextInt();
+        del--;
+        while(del <-1 && del >= houses.size()){
+            System.out.println("Incorrect value.Try again");
+            System.out.println("House number you want to delete(Press 0 to exit):");
+            del = in.nextInt();
+            del--;
+        }
+        if(del == -1){
+            return;
+        }
+        houses.remove(del);
     }
 }

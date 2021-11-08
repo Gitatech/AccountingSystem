@@ -10,9 +10,10 @@ public class Interface implements Operations {
                 "\n2.Compare" +
                 "\n3.Compare flats" +
                 "\n4.Al information about house" +
-                "\n5.Exit");
+                "\n5.Delete house" +
+                "\n6.Exit");
         int k = in.nextInt();
-        while (k != 5) {
+        while (k != 6) {
             switch (k) {
                 case (1):
                    Operations.Create_new_house(houses);
@@ -27,6 +28,9 @@ public class Interface implements Operations {
                    Operations.Info_house(houses);
                     break;
                 case (5):
+                    Operations.Delete_house(houses);
+                    break;
+                case (6):
                     break;
                 default:
                     System.out.println("Try again");
@@ -37,7 +41,8 @@ public class Interface implements Operations {
                     "\n2.Compare" +
                     "\n3.Compare flats" +
                     "\n4.Al information about house" +
-                    "\n5.Exit");
+                    "\n5.Delete house" +
+                    "\n6.Exit");
             k = in.nextInt();
 
         }
