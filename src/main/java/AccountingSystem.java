@@ -37,11 +37,13 @@ public class AccountingSystem {
         return houses.toArray(House[]::new);
     }
 
+    public int getNumberOfApartments() {
+        return houses.stream().mapToInt(e -> e.getApartments().length).sum();
+    }
+
     public void printHouses() {
         System.out.println(ColorScheme.ANSI_CYAN + "Дома: " + ColorScheme.ANSI_RESET);
-        for (House house : houses) {
-            System.out.println("Дом " + house.getNumber());
-        }
+        houses.forEach(System.out::println);
         System.out.println();
     }
 

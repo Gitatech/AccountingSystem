@@ -8,6 +8,7 @@ public class Apartment implements Comparable<Apartment>, Serializable {
     private final int floor;
     private final float square;
     private int residentsNumber;
+    static final long SerialVersionUID = 14256;
 
     public Apartment(int number, int floor, float square, int residentsNumber) {
         this.number = number;
@@ -26,10 +27,6 @@ public class Apartment implements Comparable<Apartment>, Serializable {
 
     public static int compareByResidentsNumber(Apartment apartment1, Apartment apartment2) {
         return Integer.compare(apartment1.residentsNumber, apartment2.residentsNumber);
-    }
-
-    public static Apartment templateApartment() {
-        return new Apartment(Integer.MAX_VALUE, Integer.MAX_VALUE, Float.MIN_VALUE, Integer.MAX_VALUE);
     }
 
     public static Apartment createByConsole() {

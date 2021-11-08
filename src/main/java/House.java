@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 public class House implements Comparable<House>, Serializable {
     private final int number;
+    static final long SerialVersionUID = 14256;
 
     private final SortedSet<Apartment> apartments;
 
@@ -16,10 +17,6 @@ public class House implements Comparable<House>, Serializable {
 
     public int getNumber() {
         return number;
-    }
-
-    public static House templateHouse() {
-        return new House(Integer.MIN_VALUE);
     }
 
     public boolean containsApartment(int number) {
@@ -60,19 +57,11 @@ public class House implements Comparable<House>, Serializable {
     }
 
     public int calculatePopulation() {
-        int population = 0;
-        for (Apartment apartment : apartments) {
-            population += apartment.getResidentsNumber();
-        }
-        return population;
+        return apartments.stream().mapToInt(Apartment::getResidentsNumber).sum();
     }
 
     public int calculateFloors() {
-        if (apartments.isEmpty()) {
-            return 0;
-        } else {
-            return apartments.last().getFloor();
-        }
+        return apartments.isEmpty() ? 0 : apartments.last().getFloor();
     }
 
     public float calculateFullSquare() {
@@ -99,13 +88,7 @@ public class House implements Comparable<House>, Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Дом ").append(number).append(":\n");
-        for (Apartment apartment : apartments) {
-            sb.append(apartment).append("\n");
-        }
-        sb.append('\n');
-        return sb.toString();
+        return "Дом " + number;
     }
 
     @Override

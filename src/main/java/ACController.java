@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -107,23 +108,9 @@ public class ACController {
             House house1 = getHouseFromAccountingSystem("первого", in);
             House house2 = getHouseFromAccountingSystem("второго", in);
 
-            char floors = ' ', population = ' ', square = ' ';
-            switch (House.compareByFloors(house1, house2)) {
-                case -1 -> floors = '<';
-                case 0 -> floors = '=';
-                case 1 -> floors = '>';
-            }
-            switch (House.compareByPopulation(house1, house2)) {
-                case -1 -> population = '<';
-                case 0 -> population = '=';
-                case 1 -> population = '>';
-            }
-            switch (House.compareByFullSquare(house1, house2)) {
-                case -1 -> square = '<';
-                case 0 -> square = '=';
-                case 1 -> square = '>';
-            }
-
+            char floors = getCompareSign(house1, house2, House::compareByFloors);
+            char population = getCompareSign(house1, house2, House::compareByPopulation);
+            char square = getCompareSign(house1, house2, House::compareByFullSquare);
 
             System.out.println(ColorScheme.ANSI_CYAN + "Сравнение дома " + house1.getNumber() +
                     " и дома " + house2.getNumber() + " по параметрам:" + ColorScheme.ANSI_RESET);
@@ -144,7 +131,7 @@ public class ACController {
 
     private boolean compareApartments(Scanner in) {
         boolean continueCompareLoop = true;
-        if (Arrays.stream(accountingSystem.getHouses()).mapToInt(e -> e.getApartments().length).sum() == 0) {
+        if (accountingSystem.getNumberOfApartments() == 0) {
             System.out.println(ColorScheme.ANSI_RED + "В систему учёта не было добавлено ни одной квартиры!\n" + ColorScheme.ANSI_RESET);
             continueCompareLoop = false;
         } else {
@@ -158,22 +145,9 @@ public class ACController {
             Apartment apartment2 = (Apartment) app2[0];
             int ap2HouseNumber = (Integer) app2[1];
 
-            char floors = ' ', population = ' ', square = ' ';
-            switch (Apartment.compareByFloor(apartment1, apartment2)) {
-                case -1 -> floors = '<';
-                case 0 -> floors = '=';
-                case 1 -> floors = '>';
-            }
-            switch (Apartment.compareByResidentsNumber(apartment1, apartment2)) {
-                case -1 -> population = '<';
-                case 0 -> population = '=';
-                case 1 -> population = '>';
-            }
-            switch (Apartment.compareBySquare(apartment1, apartment2)) {
-                case -1 -> square = '<';
-                case 0 -> square = '=';
-                case 1 -> square = '>';
-            }
+            char floors = getCompareSign(apartment1, apartment2, Apartment::compareByFloor);
+            char population = getCompareSign(apartment1, apartment2, Apartment::compareByResidentsNumber);
+            char square = getCompareSign(apartment1, apartment2, Apartment::compareBySquare);
 
             System.out.println(ColorScheme.ANSI_CYAN + "Сравнение квартиры " + apartment1.getNumber() +
                     " и квартиры " + apartment2.getNumber() + " по параметрам:" + ColorScheme.ANSI_RESET);
@@ -274,7 +248,7 @@ public class ACController {
     }
 
     private House getHouseFromAccountingSystem(String num, Scanner in) {
-        House house = House.templateHouse();
+        House house = null;
         boolean continueHouseLoop = true;
         while (continueHouseLoop) {
             System.out.print("Введите номер " + num + " дома:");
@@ -287,7 +261,7 @@ public class ACController {
 
     private Object[] getApartmentFromAccountingSystem(String num, Scanner in) {   //возвращает массив из двух элементов:
         boolean continueHouseLoop = true;                             //1 - квартира, 2 - номер дома в котором расположена квартира
-        Apartment apartment = Apartment.templateApartment();
+        Apartment apartment = null;
         int houseNumber = 0;
         while (continueHouseLoop) {
             System.out.print("Выберите дом где расположена " + num + " квартира:");
@@ -316,5 +290,14 @@ public class ACController {
                 System.out.println(ColorScheme.ANSI_RED + "Дома с таким номером не было найдено" + ColorScheme.ANSI_RESET);
         }
         return new Object[]{apartment, houseNumber};
+    }
+
+    private <T> char getCompareSign(T a, T b, Comparator<T> comparator) {
+        return switch (comparator.compare(a, b)) {
+            case -1 -> '<';
+            case 0 -> '=';
+            case 1 -> '>';
+            default -> throw new IllegalStateException("Unexpected value: " + comparator.compare(a, b));
+        };
     }
 }
