@@ -39,13 +39,15 @@ public class HouseService {
                 && house.getWidth() > apartment.getTotalFloorWidth();
         if (comparison) {
             house.apartments.add(apartment);
+        } else {
+            LOGGER.error(apartment);
         }
     }
 
     public double totalHouseArea(House house) {
         double area = 0;
         ApartmentService apartmentService = new ApartmentService();
-        for(int i = 0; i < house.apartments.size(); i++){
+        for (int i = 0; i < house.apartments.size(); i++) {
             area += apartmentService.getTotalApartmentArea(house.apartments.get(i));
         }
         return area;

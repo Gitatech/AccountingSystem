@@ -9,22 +9,29 @@ public class Apartment {
     private static final String CHECKING_THE_VALID_VALUE_FOR_THE_FLOOR_WIDTH =
             "The total floor width of the apartment must be > 0";
     private static final String CHECKING_THE_VALID_VALUE_OF_RESIDENTS = "The number of residents must be >= 0";
+    private static final String ILLEGAL_ID = "id must be > 0";
 
     private final int id;
     private int numberOfResidents;
     private double totalFloorLength;
     private double totalFloorWidth;
 
-    static int apartmentNumber = 1;
-
-    public Apartment(int numberOfResidents, double floorLength, double floorWidth) {
-        numberOfResidentsValueCheck(numberOfResidents);
-        lengthValueCheck(floorLength);
-        widthValueCheck(floorWidth);
-        this.id = apartmentNumber++;
-    }
+//    public static int apartmentNumber = 1;
+//
+//    public Apartment(int numberOfResidents, double floorLength, double floorWidth) {
+//        numberOfResidentsValueCheck(numberOfResidents);
+//        lengthValueCheck(floorLength);
+//        widthValueCheck(floorWidth);
+//        this.id = apartmentNumber++;
+//    }
 
     public Apartment(int id, int numberOfResidents, double totalFloorLength, double totalFloorWidth) {
+        numberOfResidentsValueCheck(numberOfResidents);
+        lengthValueCheck(totalFloorLength);
+        widthValueCheck(totalFloorWidth);
+        if (id <= 0) {
+            throw new IllegalArgumentException(ILLEGAL_ID);
+        }
         this.id = id;
         this.numberOfResidents = numberOfResidents;
         this.totalFloorLength = totalFloorLength;
@@ -52,10 +59,9 @@ public class Apartment {
     }
 
     private void numberOfResidentsValueCheck(int numberOfResidents) {
-        if (numberOfResidents < 0){
+        if (numberOfResidents < 0) {
             throw new IllegalArgumentException(CHECKING_THE_VALID_VALUE_OF_RESIDENTS);
-        }
-        else{
+        } else {
             this.numberOfResidents = numberOfResidents;
         }
     }
@@ -76,21 +82,20 @@ public class Apartment {
         }
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Apartment apartment = (Apartment) o;
-        return id == apartment.id 
-                && numberOfResidents == apartment.numberOfResidents 
-                && Double.compare(apartment.totalFloorLength, totalFloorLength) == 0 
-                && Double.compare(apartment.totalFloorWidth, totalFloorWidth) == 0 
-                && apartmentNumber == apartment.apartmentNumber;
+        return id == apartment.id && numberOfResidents == apartment.numberOfResidents
+                && Double.compare(apartment.totalFloorLength, totalFloorLength) == 0
+                && Double.compare(apartment.totalFloorWidth, totalFloorWidth) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, numberOfResidents, totalFloorLength, totalFloorWidth, apartmentNumber);
+        return Objects.hash(id, numberOfResidents, totalFloorLength, totalFloorWidth);
     }
 
     @Override
