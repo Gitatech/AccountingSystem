@@ -1,4 +1,6 @@
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Scanner;
 
 public class Ground {
@@ -20,7 +22,7 @@ public class Ground {
             }            flat[i] = new Flat(k);
         }
     }
-    public Ground(Ground ground0){
+    public Ground(@NotNull Ground ground0){
         flat = new Flat[ground0.N_flats];
         for(int i = 0;i< flat.length;i++){
             flat[i] = new Flat(ground0.flat[i]);

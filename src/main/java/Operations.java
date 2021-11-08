@@ -1,14 +1,16 @@
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 public interface Operations {
-    static void Create_new_house(ArrayList<House> houses)
+    static void Create_new_house(@NotNull ArrayList<House> houses)
     {
         House house = new House();
         houses.add(house);
     }
 
-    static void Compare_houses(ArrayList<House> houses){
+    static void Compare_houses(@NotNull ArrayList<House> houses){
         Scanner in = new Scanner(System.in);
         if (houses.size() < 2) {
             System.out.println("Not enough houses to compare");
@@ -25,7 +27,7 @@ public interface Operations {
         houses.get(--m).compare_houses(houses.get(--f));
     }
 
-    static void Compare_flats(ArrayList<House> houses){
+    static void Compare_flats(@NotNull ArrayList<House> houses){
         Scanner in = new Scanner(System.in);
         if (houses.isEmpty()) {
             System.out.println("There is no one house");
@@ -45,7 +47,7 @@ public interface Operations {
         houses.get(HOUSE).Compare_flats(NUMBER1, NUMBER2);
     }
 
-    static void Info_house(ArrayList<House> houses){
+    static void Info_house(@NotNull ArrayList<House> houses){
         Scanner in = new Scanner(System.in);
         if (houses.isEmpty()) {
             System.out.println("There is no one house");
@@ -64,7 +66,7 @@ public interface Operations {
         System.out.println("Area of the " + ++l + " House: " + houses.get(--l).House_area());
     }
 
-    static void Delete_house(ArrayList<House> houses){
+    static void Delete_house(@NotNull ArrayList<House> houses){
         Scanner in = new Scanner(System.in);
         if (houses.isEmpty()) {
             System.out.println("There is no one house");
@@ -81,7 +83,7 @@ public interface Operations {
         System.out.println("House number you want to delete(Press 0 to exit):");
         int del = in.nextInt();
         del--;
-        while(del <-1 && del >= houses.size()){
+        while((del <-1) && (del >= houses.size())){
             System.out.println("Incorrect value.Try again");
             System.out.println("House number you want to delete(Press 0 to exit):");
             del = in.nextInt();

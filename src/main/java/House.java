@@ -1,4 +1,6 @@
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Scanner;
 
 public class House {
@@ -85,7 +87,7 @@ public class House {
         }
     }
 
-    public  void compare_houses(House house2)
+    public  void compare_houses(@NotNull House house2)
     {
         if(this.House_area() > house2.House_area()){
             System.out.println("House 1 bigger with the area " + this.House_area() + ". Area of the 2 house: " + house2.House_area());

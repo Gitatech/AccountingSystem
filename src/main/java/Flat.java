@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Scanner;
 
 public class Flat {
@@ -13,7 +15,7 @@ public class Flat {
         NUM++;
     }
 
-    public Flat(Flat flat1){
+    public Flat(@NotNull Flat flat1){
             this.num = NUM;
             this.sqrt = flat1.sqrt;
             this.n_human = (int)(Math.random()*5);
