@@ -11,10 +11,10 @@ public class HouseService {
     private static final Logger LOGGER = LogManager.getLogger(HouseService.class);
 
     private static final String THE_PROBLEM_IN_CREATING_A_HOME =
-            "The height of the house must be at least equal to %s metres to create a house";
+            "The height(m) of the house must be at least equal to %s metres to create a house";
     private static final String NUMBER_OF_RESIDENTS_IN_THE_HOUSE = "Number of residents in the house: %s";
     private static final String APARTMENTS = "Apartments in the \"%s\":%n";
-    private static final String NUMBER_OF_FLOORS_IN_THE_HOUSE = "Number of floors in the house: %s";
+    private static final String NUMBER_OF_FLOORS_IN_THE_HOUSE = "Number of residential floors in the house: %s";
     private static final String HOUSE_AREA = "Total living house area: %.2f";
 
     public int numberOfFloors(House house, Floor floor) {
@@ -23,6 +23,9 @@ public class HouseService {
         if (amount == 0) {
             throw new ArithmeticException(String.format(THE_PROBLEM_IN_CREATING_A_HOME, floor.getFloorHeight()));
         }
+//        if (house.getHeight() % floor.getFloorHeight() != 0) {
+//            amount++;
+//        }
         return amount;
     }
 
@@ -35,8 +38,8 @@ public class HouseService {
     }
 
     public void addApartment(House house, Apartment apartment) {
-        final boolean comparison = house.getLength() > apartment.getTotalFloorLength()
-                && house.getWidth() > apartment.getTotalFloorWidth();
+        final boolean comparison = house.getLength() > apartment.getTotalApartmentLength()
+                && house.getWidth() > apartment.getTotalApartmentWidth();
         if (comparison) {
             house.apartments.add(apartment);
         } else {

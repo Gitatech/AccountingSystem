@@ -1,23 +1,21 @@
 package com.university.lab.service;
 
 import com.university.lab.model.Floor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import java.util.Scanner;
 
 public class FloorService {
 
-//    private static final Logger LOGGER = LogManager.getLogger(FloorService.class);
-//
-//
-//    public double getTotalFloorArea(Floor floor) {
-//        return floor.getFloorLength() * floor.getFloorWidth();
-//    }
-//
-//    public void viewFloorApartments(Floor floor){
-//        System.out.println("Apartments on the floor:");
-//        for (int i = 0; i < floor.floorApartments.size(); i++) {
-//            LOGGER.info(floor.floorApartments.get(i));
-//        }
-//    }
+    private static final String HEIGHT_OF_THE_FLOOR_MSG = "Set the height(m) of the floor: ";
+
+    Scanner scanner = new Scanner(System.in);
+
+    public Floor createFloor() {
+        System.out.print(HEIGHT_OF_THE_FLOOR_MSG);
+        double height = scanner.nextDouble();
+        System.out.println();
+        return new Floor(height);
+    }
+
 
 }
