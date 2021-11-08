@@ -8,7 +8,7 @@ public class Apartment implements Comparable<Apartment>, Serializable {
     private final int floor;
     private final float square;
     private int residentsNumber;
-    static final long SerialVersionUID = 14256;
+    private static final long SerialVersionUID = 14256;
 
     public Apartment(int number, int floor, float square, int residentsNumber) {
         this.number = number;

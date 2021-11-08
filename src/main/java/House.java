@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 public class House implements Comparable<House>, Serializable {
     private final int number;
-    static final long SerialVersionUID = 14256;
+    private static final long SerialVersionUID = 14256;
 
     private final SortedSet<Apartment> apartments;
 
