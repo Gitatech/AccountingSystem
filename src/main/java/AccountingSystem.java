@@ -6,27 +6,21 @@ import java.util.TreeSet;
 public class AccountingSystem {
 
     private SortedSet<House> houses;
-    private String path;
-
-    public AccountingSystem(String path) {
-        this.path = path;
-        this.houses = new TreeSet<>();
-    }
 
     public AccountingSystem() {
         this.houses = new TreeSet<>();
     }
 
     public House getHouseByNumber(int houseNumber) {
-        return houses.stream().filter(e -> e.getNumber() == houseNumber).findFirst().orElse(null);
+        return houses.parallelStream().filter(e -> e.getNumber() == houseNumber).findFirst().orElse(null);
     }
 
     public void addHouse(int number) {
         houses.add(new House(number));
     }
 
-    public void removeHouse(int number) {
-        houses.remove(new House(number));
+    public void removeHouse(House house) {
+        houses.remove(house);
     }
 
     public boolean containsHouse(int number) {
@@ -37,35 +31,25 @@ public class AccountingSystem {
         return houses.toArray(House[]::new);
     }
 
+    public int getNumberOfHouses() {
+        return houses.size();
+    }
+
     public int getNumberOfApartments() {
         return houses.stream().mapToInt(e -> e.getApartments().length).sum();
     }
 
-    public void printHouses() {
-        System.out.println(ColorScheme.ANSI_CYAN + "Дома: " + ColorScheme.ANSI_RESET);
-        houses.forEach(System.out::println);
-        System.out.println();
-    }
-
-    public void save() {
-        if (path != null) {
-            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path))) {
-                out.writeObject(houses.toArray(House[]::new));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void save(String path) throws IOException {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path))) {
+            out.writeObject(houses.toArray(House[]::new));
         }
     }
 
-    public void load() {
-        if (path != null) {
-            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(path))) {
-                houses = new TreeSet<>(Set.of((House[]) in.readObject()));
-            } catch (ClassNotFoundException ignored) {
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void load(String path) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(path))) {
+            houses = new TreeSet<>(Set.of((House[]) in.readObject()));
         }
+
     }
 
 }

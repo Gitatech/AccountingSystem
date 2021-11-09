@@ -1,12 +1,12 @@
 import java.io.Serializable;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class House implements Comparable<House>, Serializable {
-    private final int number;
-    private static final long SerialVersionUID = 14256;
+    private static final long SerialVersionUID = 1110L;
+
+    private int number;
 
     private final SortedSet<Apartment> apartments;
 
@@ -15,22 +15,17 @@ public class House implements Comparable<House>, Serializable {
         apartments = new TreeSet<>();
     }
 
+    public void addApartment(Apartment apartment) {
+        apartments.add(apartment);
+    }
+
     public int getNumber() {
         return number;
     }
 
     public boolean containsApartment(int number) {
-        return apartments.stream().anyMatch(e -> e.getNumber() == number);
-    }
-
-    public void addApartmentByConsole() {
-        Apartment apartment = Apartment.createByConsole();
-        if (containsApartment(apartment.getNumber())) {
-            System.out.println(ColorScheme.ANSI_RED + "Квартира с таким номером уже есть в доме!\n" + ColorScheme.ANSI_RESET);
-        } else {
-            apartments.add(apartment);
-            System.out.println(ColorScheme.ANSI_GREEN + "Квартира была добавлена в дом\n" + ColorScheme.ANSI_RESET);
-        }
+        if (number < 1) return false;
+        return apartments.contains(new Apartment(number, 1, 1, 1, 1));
     }
 
     public Apartment[] getApartments() {
@@ -41,19 +36,8 @@ public class House implements Comparable<House>, Serializable {
         apartments.remove(apartment);
     }
 
-    public void printInformationAboutHouse() {
-        System.out.println(ColorScheme.ANSI_CYAN + "Общая информация о доме " + number + ":" + ColorScheme.ANSI_RESET);
-        System.out.printf(Locale.US, "Этажность: %d, кол-во квартир: %d, общая площадь: %.1f м^2, кол-во жителей: %d\n\n",
-                calculateFloors(), getApartments().length, calculateFullSquare(), calculatePopulation());
-    }
-
-    public void printApartments() {
-        System.out.println(ColorScheme.ANSI_CYAN + "Квартиры дома " + number + ":" + ColorScheme.ANSI_RESET);
-        apartments.forEach(System.out::println);
-    }
-
     public Apartment getApartmentByNumber(int number) {
-        return apartments.stream().filter(e -> e.getNumber() == number).findFirst().orElse(null);
+        return apartments.parallelStream().filter(e -> e.getNumber() == number).findFirst().orElse(null);
     }
 
     public int calculatePopulation() {
