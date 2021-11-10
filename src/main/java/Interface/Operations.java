@@ -3,10 +3,11 @@ package Interface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import Bilding.*;
 public interface Operations {
-    static void Create_new_house(@NotNull ArrayList<House> houses)
+    static void Create_new_house(@NotNull List<House> houses)
     {
         Scanner in = new Scanner(System.in);
         House house = new House();
@@ -41,7 +42,7 @@ public interface Operations {
         houses.add(house);
     }
 
-    static void Compare_houses(@NotNull ArrayList<House> houses){
+    static void Compare_houses(@NotNull List<House> houses){
         Scanner in = new Scanner(System.in);
         if (houses.size() < 2) {
             System.out.println("Not enough houses to compare");
@@ -58,7 +59,7 @@ public interface Operations {
         houses.get(--m).compare_houses(houses.get(--f));
     }
 
-    static void Compare_flats(@NotNull ArrayList<House> houses){
+    static void Compare_flats(@NotNull List<House> houses){
         Scanner in = new Scanner(System.in);
         if (houses.isEmpty()) {
             System.out.println("There is no one house");
@@ -78,7 +79,7 @@ public interface Operations {
         houses.get(HOUSE).Compare_flats(NUMBER1, NUMBER2);
     }
 
-    static void Info_house(@NotNull ArrayList<House> houses){
+    static void Info_house(@NotNull List<House> houses){
         Scanner in = new Scanner(System.in);
         if (houses.isEmpty()) {
             System.out.println("There is no one house");
@@ -97,7 +98,7 @@ public interface Operations {
         System.out.println("Area of the " + ++l + " House: " + houses.get(--l).House_area());
     }
 
-    static void Delete_house(@NotNull ArrayList<House> houses){
+    static void Delete_house(@NotNull List<House> houses){
         Scanner in = new Scanner(System.in);
         if (houses.isEmpty()) {
             System.out.println("There is no one house");

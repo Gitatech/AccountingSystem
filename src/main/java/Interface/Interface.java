@@ -1,13 +1,14 @@
 package Interface;
 
 import java.util.Scanner;
+import java.util.List;
 import java.util.ArrayList;
 import Bilding.*;
 
 public class Interface implements Operations {
     public void begin() {
         Scanner in = new Scanner(System.in);
-        ArrayList<House> houses = new ArrayList<House>();
+        List<House> houses = new ArrayList<House>();
         System.out.println("What do you want to do:" +
                  "\n1.Create new house" +
                  "\n2.Compare" +
