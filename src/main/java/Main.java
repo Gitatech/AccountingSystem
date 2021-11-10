@@ -1,4 +1,3 @@
-package Main;
 import Interface.*;
 
 public class Main {
