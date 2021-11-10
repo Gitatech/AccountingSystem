@@ -10,6 +10,7 @@ public class House implements Comparable<House>, Serializable {
     private final SortedSet<Apartment> apartments;
 
     public House(int number) {
+        if (number < 0) throw new IllegalArgumentException("Номер дома не может быть отрицательным");
         this.number = number;
         apartments = new TreeSet<>();
     }
@@ -43,7 +44,7 @@ public class House implements Comparable<House>, Serializable {
         return apartments.stream().mapToInt(Apartment::getResidentsNumber).sum();
     }
 
-    public int calculateFloors() {
+    public int calculateNumberOfFloors() {
         return apartments.isEmpty() ? 0 : apartments.last().getFloor();
     }
 
@@ -61,7 +62,7 @@ public class House implements Comparable<House>, Serializable {
     }
 
     public static int compareByFloors(House house1, House house2) {
-        return Integer.compare(house1.calculateFloors(), house2.calculateFloors());
+        return Integer.compare(house1.calculateNumberOfFloors(), house2.calculateNumberOfFloors());
     }
 
     public static int compareByFullSquare(House house1, House house2) {

@@ -15,8 +15,8 @@ public class AccountingSystem {
         return houses.parallelStream().filter(e -> e.getNumber() == houseNumber).findFirst().orElse(null);
     }
 
-    public void addHouse(int number) {
-        houses.add(new House(number));
+    public void addHouse(House house) {
+        houses.add(house);
     }
 
     public void removeHouse(House house) {

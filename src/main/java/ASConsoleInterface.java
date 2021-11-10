@@ -173,7 +173,7 @@ public class ASConsoleInterface {
                                                 
                             """,
                     "Номер дома", house1.getNumber(), ' ', house2.getNumber(),
-                    "Этажность", house1.calculateFloors(), floorSign, house2.calculateFloors(),
+                    "Этажность", house1.calculateNumberOfFloors(), floorSign, house2.calculateNumberOfFloors(),
                     "Кол-во жителей", house1.calculatePopulation(), populationSign, house2.calculatePopulation(),
                     "Площадь", house1.calculateFullSquare(), squareSign, house2.calculateFullSquare());
         } else {
@@ -188,8 +188,13 @@ public class ASConsoleInterface {
         if (accountingSystem.containsHouse(number)) {
             System.out.println(ColorScheme.ANSI_RED + "Дом с таким номером уже есть в системе" + ColorScheme.ANSI_RESET);
         } else {
-            accountingSystem.addHouse(number);
-            System.out.println(ColorScheme.ANSI_GREEN + "Дом " + number + " был добавлен в систему" + ColorScheme.ANSI_RESET);
+            try {
+                accountingSystem.addHouse(new House(number));
+                System.out.println(ColorScheme.ANSI_GREEN + "Дом " + number + " был добавлен в систему" + ColorScheme.ANSI_RESET);
+            } catch (IllegalArgumentException e) {
+                System.out.println(ColorScheme.ANSI_RED + e.getMessage());
+            }
+
         }
         System.out.println();
     }
@@ -321,7 +326,7 @@ public class ASConsoleInterface {
 
     private void goToShowHouseInfoCase(House house) {
         System.out.println(ColorScheme.ANSI_CYAN + "_ОБЩАЯ ИНФОРМАЦИЯ О ДОМЕ " + house.getNumber() + "_" + ColorScheme.ANSI_RESET);
-        System.out.println("Этажность: " + house.calculateFloors());
+        System.out.println("Этажность: " + house.calculateNumberOfFloors());
         System.out.println("Кол-во квартир: " + house.getApartments().length);
         System.out.println("Общая площадь: " + house.calculateFullSquare());
         System.out.println("Кол-во жильцов: " + house.calculatePopulation());
