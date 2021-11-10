@@ -8,7 +8,36 @@ import Bilding.*;
 public interface Operations {
     static void Create_new_house(@NotNull ArrayList<House> houses)
     {
+        Scanner in = new Scanner(System.in);
         House house = new House();
+        System.out.println("Move in the house?" +
+                "\n1.Yes" +
+                "\n2.No");
+        int k = in.nextInt();
+        switch (k)
+        {
+            case 1:
+                System.out.println("Random or from the console?" +
+                        "\n1.Random" +
+                        "\n2.Console");
+                int p = in.nextInt();
+                if(p == 1){
+                    house.InitPersonsRandom();
+                }
+                else if(p == 2) {
+                    house.InitPersons();
+                }
+                else{
+                    System.out.println("Incorrect value.Residents not listed");
+                }
+                break;
+            case 2:
+                System.out.println("Ok.Residents not listed");
+                break;
+            default:
+                System.out.println("Incorrect value.Residents not listed");
+                break;
+        }
         houses.add(house);
     }
 

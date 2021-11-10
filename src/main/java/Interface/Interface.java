@@ -9,12 +9,12 @@ public class Interface implements Operations {
         Scanner in = new Scanner(System.in);
         ArrayList<House> houses = new ArrayList<House>();
         System.out.println("What do you want to do:" +
-                "\n1.Create new house" +
-                "\n2.Compare" +
-                "\n3.Compare flats" +
-                "\n4.Al information about house" +
-                "\n5.Delete house" +
-                "\n6.Exit");
+                 "\n1.Create new house" +
+                 "\n2.Compare" +
+                 "\n3.Compare flats" +
+                 "\n4.Al information about house" +
+                 "\n5.Delete house" +
+                 "\n6.Exit");
         int k = in.nextInt();
         while (k != 6) {
             switch (k) {

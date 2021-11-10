@@ -2,10 +2,12 @@ package Bilding;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.List;
 
 public class House {
-    private Ground[]grounds;
+    private List<Ground> grounds;
     private final int height = 3;
     private int N_grounds;
 
@@ -19,7 +21,7 @@ public class House {
             N_grounds = (in.nextInt())/height;
         }
         System.out.println("It turned out "+ N_grounds +" floors");
-        this.grounds = new Ground[N_grounds];
+        grounds = new ArrayList<Ground>();
         System.out.print("Enter number of flats in ground:");
         int k = in.nextInt();
         while(k<1){
@@ -27,12 +29,14 @@ public class House {
             System.out.print("Enter number of flats in ground:");
             k = in.nextInt();
         }
-        grounds[0] = new Ground(k);
-        for(int i = 1;i< grounds.length;i++) {
-            grounds[i] = new Ground(grounds[0]);
+        Ground F = new Ground(k);
+        grounds.add(F);
+        for(int i = 1;i< N_grounds;i++) {
+            Ground P = new Ground(grounds.get(0));
+            grounds.add(P);
         }
 
-        this.grounds[0].NUM(0);
+        this.grounds.get(0).NUM(0);
     }
 
 
@@ -41,30 +45,30 @@ public class House {
 
     public int get_N_man(){  // возвращает общее число жильцов
         int KOL = 0;
-        for(int i = 0;i<grounds.length;i++)
+        for(int i = 0;i<N_grounds;i++)
         {
-            KOL += grounds[i].get_Man_Ground();
+            KOL += grounds.get(i).get_Man_Ground();
         }
         return KOL;
     }
 
     public double House_area(){
         int SQ = 0;
-        for(int i = 0;i<grounds.length;i++)
+        for(int i = 0;i<N_grounds;i++)
         {
-            SQ += grounds[i].Ground_area();
+            SQ += grounds.get(i).Ground_area();
         }
         return SQ;
     }
 
     public double Flat_area(int i) { // возвращает площадь квартиры по её номеру
-        int gr = i / (grounds[0].flat_on_ground());
-        return grounds[gr].flat_area(i);
+        int gr = i / (grounds.get(0).flat_on_ground());
+        return grounds.get(gr).flat_area(i);
     }
 
     public int get_Man_falt(int i){ //возвращает кол. жильцов в квартире через номер квартиры
-        int gr = i / (grounds[0].flat_on_ground());
-        return grounds[gr].get_Man_Flat(i);
+        int gr = i / (grounds.get(0).flat_on_ground());
+        return grounds.get(gr).get_Man_Flat(i);
     }
 
     public void Compare_flats(int Number1,int Number2) {
@@ -116,6 +120,18 @@ public class House {
     }
     public int N_flats_in_house()
     {
-        return (this.N_grounds * grounds[0].flat_on_ground());
+        return (this.N_grounds * grounds.get(0).flat_on_ground());
+    }
+    public void InitPersons(){
+        Scanner in = new Scanner(System.in);
+        for(int i =0;i<N_grounds;i++){
+            grounds.get(i).initPersons();
+        }
+    }
+    public void InitPersonsRandom(){
+        Scanner in = new Scanner(System.in);
+        for(int i =0;i<N_grounds;i++){
+            grounds.get(i).initPersonsRandom();
+        }
     }
 }
