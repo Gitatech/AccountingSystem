@@ -300,7 +300,7 @@ public class ASConsoleInterface {
                 Random r = new Random(System.currentTimeMillis());
                 for (int number = 1; number <= numberOfApartments; number++) {
                     house.addApartment(new Apartment(number, number / apartmentsInFloor + 1, r.nextInt(5) + 1,
-                            r.nextInt(6), r.nextFloat() * 50 + 15));
+                            r.nextInt(6), (r.nextInt() * 500 + 150) / 10.0f));
                 }
                 System.out.println(ColorScheme.ANSI_GREEN + numberOfApartments + " квартир было добавлено в " + house + ColorScheme.ANSI_RESET);
             } else {
