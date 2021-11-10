@@ -3,7 +3,6 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class Apartment implements Comparable<Apartment>, Serializable {
-    private static final long SerialVersionUID = 1L;
 
     private final int number;
     private int floor;

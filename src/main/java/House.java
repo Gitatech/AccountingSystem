@@ -4,7 +4,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class House implements Comparable<House>, Serializable {
-    private static final long SerialVersionUID = 1110L;
 
     private int number;
 

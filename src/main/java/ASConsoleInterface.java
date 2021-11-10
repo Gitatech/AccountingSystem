@@ -210,7 +210,7 @@ public class ASConsoleInterface {
     }
 
     private void goToLoadASCase() {
-        System.out.println(ColorScheme.ANSI_CYAN + "_ЗАГРУЗКА СИСТЕМЫ ИЗ ФАЙЛА_" + ColorScheme.ANSI_RESET);
+        System.out.println(ColorScheme.ANSI_CYAN + "_ЗАГРУЗКА СИСТЕМЫ УЧЁТА ИЗ ФАЙЛА_" + ColorScheme.ANSI_RESET);
         System.out.print(ColorScheme.ANSI_YELLOW + "Введите путь к файлу: " + ColorScheme.ANSI_RESET);
         Path path = Paths.get(in.next());
         try {
@@ -227,7 +227,7 @@ public class ASConsoleInterface {
     }
 
     private void goToSaveASCase() {
-        System.out.println(ColorScheme.ANSI_CYAN + "_СОХРАНЕНИЕ СИСТЕМЫ В ФАЙЛ_" + ColorScheme.ANSI_RESET);
+        System.out.println(ColorScheme.ANSI_CYAN + "_СОХРАНЕНИЕ СИСТЕМЫ УЧЁТА В ФАЙЛ_" + ColorScheme.ANSI_RESET);
         System.out.print(ColorScheme.ANSI_YELLOW + "Введите путь к файлу: " + ColorScheme.ANSI_RESET);
         Path path = Paths.get(in.next());
         try {
