@@ -1,64 +1,88 @@
 package Bilding;
 
 import org.jetbrains.annotations.NotNull;
-import java.util.Scanner;
 
-public class Ground {
-    private Flat[] flat;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Iterator;
+import java.util.Scanner;
+import Bilding.flatbilder.FlatBilderImpl;
+
+public class Ground  {
+    private Set<Flat> flat;
     private int N_flats;
 
     public Ground(int p){ //p - число квартир на этаже
         Scanner in = new Scanner(System.in);
         N_flats = p;
-        flat = new Flat[p];
-        for(int i = 0;i< flat.length;i++){
+        flat = new HashSet<Flat>();
+        for(int i = 0;i<N_flats;i++){
             System.out.print("Area of flat #" + i +": ");
             int k = in.nextInt();
             while(k<1){
                 System.out.print("Area too low. Enter again.");
                 System.out.print("Area of flat #" + i +": ");
                 k = in.nextInt();
-
-            }            flat[i] = new Flat(k);
+            }
+            //int kol = (int)(Math.random()*5);
+            Flat F =  new FlatBilderImpl().Set_Sqrt(k).Set_num(k).bilder();
+            flat.add(F);
         }
     }
     public Ground(@NotNull Ground ground0){
-        flat = new Flat[ground0.N_flats];
-        for(int i = 0;i< flat.length;i++){
-            flat[i] = new Flat(ground0.flat[i]);
+        this.flat = new HashSet<Flat>();
+        this.N_flats = ground0.N_flats;
+        for(int i = 0;i< N_flats;i++){
+            //int kol = (int)(Math.random()*5);
+            Flat F =  new FlatBilderImpl().Set_Sqrt(ground0.flat_area(i)).bilder();
+            this.flat.add(F);
         }
     }
     public int get_Man_Ground( )
     {
         int kol = 0;
-        for(int i = 0;i< flat.length;i++){
-            kol += flat[i].getN_human();
+        Iterator<Flat> it = flat.iterator();
+        while (it.hasNext()){
+           kol += it.next().getN_human();
         }
         return kol;
     }
 
     public double Ground_area(){ // возвращает площадь этажа
-        int sq = 0;
-        for(int i = 0;i< flat.length;i++){
-            sq += flat[i].get_sqrt();
+        double kol = 0;
+        Iterator<Flat> it = flat.iterator();
+        while (it.hasNext()){
+            kol += it.next().get_sqrt();
         }
-        return sq;
+        return kol;
     }
     public double flat_area(int i){ // возвращает площадь квартиры по её номеру на этаже
-        int k = i % ((flat.length));
-        return flat[k].get_sqrt();
+        int k = i % (N_flats);
+        Iterator<Flat> it = flat.iterator();
+        int iter = 0;
+        while(iter != k) {
+            it.next();
+            iter++;
+        }
+        return it.next().get_sqrt();
     }
     public int get_Man_Flat(int i)
     {
-        i = i % (flat.length);
-        return flat[i].getN_human();
+        int k = i % (N_flats);
+        Iterator<Flat> it = flat.iterator();
+        int iter = 0;
+        while(iter != k) {
+            it.next();
+            iter++;
+        }
+        return it.next().getN_human();
     }
     public void NUM(int k)
     {
-        this.flat[1].NUM(k);
+        this.flat.iterator().next().NUM(0);
     } //для зануление сатической переменной в flat
     public int flat_on_ground()
     {
-        return flat.length;
+        return N_flats;
     }
 }
