@@ -1,4 +1,7 @@
+package Entities;
+
 import java.io.*;
+import java.util.Collections;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -27,8 +30,8 @@ public class AccountingSystem {
         return houses.contains(new House(number));
     }
 
-    public House[] getHouses() {
-        return houses.toArray(House[]::new);
+    public SortedSet<House> getHouses() {
+        return Collections.unmodifiableSortedSet(houses);
     }
 
     public int getNumberOfHouses() {
@@ -36,7 +39,7 @@ public class AccountingSystem {
     }
 
     public int getNumberOfApartments() {
-        return houses.stream().mapToInt(e -> e.getApartments().length).sum();
+        return houses.parallelStream().mapToInt(e -> e.getApartments().size()).sum();
     }
 
     public void save(String path) throws IOException {

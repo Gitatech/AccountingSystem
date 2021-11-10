@@ -1,3 +1,5 @@
+package Entities;
+
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
@@ -21,22 +23,6 @@ public class Apartment implements Comparable<Apartment>, Serializable {
         this.numberOfRooms = numberOfRooms;
         this.residentsNumber = residentsNumber;
         this.square = square;
-    }
-
-    public static int compareByFloor(Apartment apartment1, Apartment apartment2) {
-        return Integer.compare(apartment1.floor, apartment2.floor);
-    }
-
-    public static int compareBySquare(Apartment apartment1, Apartment apartment2) {
-        return Float.compare(apartment1.square, apartment2.square);
-    }
-
-    public static int compareByResidentsNumber(Apartment apartment1, Apartment apartment2) {
-        return Integer.compare(apartment1.residentsNumber, apartment2.residentsNumber);
-    }
-
-    public static int compareByNumberOfRooms(Apartment apartment1, Apartment apartment2) {
-        return Integer.compare(apartment1.getNumberOfRooms(), apartment2.getNumberOfRooms());
     }
 
     public int getFloor() {

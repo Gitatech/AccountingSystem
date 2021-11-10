@@ -1,7 +1,12 @@
+import Entities.AccountingSystem;
+import Entities.Apartment;
+import Entities.House;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ASTesting {
+import java.util.Set;
+
+public class AccountingSystemTest {
 
     @Test
     public void addHouse() {
@@ -10,8 +15,8 @@ public class ASTesting {
         accountingSystem.addHouse(new House(2));
         accountingSystem.addHouse(new House(4));
         accountingSystem.addHouse(new House(2));
-        House[] expected = {new House(1), new House(2), new House(4)};
-        Assert.assertArrayEquals(expected, accountingSystem.getHouses());
+        Set<House> expected = Set.of(new House(1), new House(2), new House(4));
+        Assert.assertEquals(expected, accountingSystem.getHouses());
     }
 
     @Test
@@ -22,8 +27,8 @@ public class ASTesting {
         accountingSystem.addHouse(new House(4));
         accountingSystem.addHouse(new House(6));
         accountingSystem.removeHouse(new House(4));
-        House[] expected = {new House(1), new House(2), new House(6)};
-        Assert.assertArrayEquals(expected, accountingSystem.getHouses());
+        Set<House> expected = Set.of(new House(1), new House(2), new House(6));
+        Assert.assertEquals(expected, accountingSystem.getHouses());
     }
 
     @Test

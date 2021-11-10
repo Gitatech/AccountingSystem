@@ -1,11 +1,11 @@
+package Entities;
+
 import java.io.Serializable;
-import java.util.Objects;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class House implements Comparable<House>, Serializable {
 
-    private int number;
+    private final int number;
 
     private final SortedSet<Apartment> apartments;
 
@@ -32,8 +32,8 @@ public class House implements Comparable<House>, Serializable {
         return apartments.contains(new Apartment(number, 1, 1, 1, 1));
     }
 
-    public Apartment[] getApartments() {
-        return apartments.toArray(Apartment[]::new);
+    public SortedSet<Apartment> getApartments() {
+        return Collections.unmodifiableSortedSet(apartments);
     }
 
     public void removeApartment(Apartment apartment) {
@@ -43,40 +43,6 @@ public class House implements Comparable<House>, Serializable {
     public Apartment getApartmentByNumber(int number) {
         return apartments.parallelStream().filter(e -> e.getNumber() == number).findFirst().orElse(null);
     }
-
-    public int calculatePopulation() {
-        return apartments.stream().mapToInt(Apartment::getResidentsNumber).sum();
-    }
-
-    public int calculateNumberOfFloors() {
-        return apartments.isEmpty() ? 0 : apartments.last().getFloor();
-    }
-
-    public static int compareByApartmentsNumber(House house1, House house2) {
-        return Integer.compare(house1.getApartments().length, house2.getApartments().length);
-    }
-
-    public float calculateFullSquare() {
-        float square = 0.0f;
-        for (Apartment apartment : apartments) {
-            square += apartment.getSquare();
-        }
-        return square;
-    }
-
-
-    public static int compareByPopulation(House house1, House house2) {
-        return Integer.compare(house1.calculatePopulation(), house2.calculatePopulation());
-    }
-
-    public static int compareByFloors(House house1, House house2) {
-        return Integer.compare(house1.calculateNumberOfFloors(), house2.calculateNumberOfFloors());
-    }
-
-    public static int compareByFullSquare(House house1, House house2) {
-        return Float.compare(house1.calculateFullSquare(), house2.calculateFullSquare());
-    }
-
 
     @Override
     public String toString() {
