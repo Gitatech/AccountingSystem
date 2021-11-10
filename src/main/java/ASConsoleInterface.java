@@ -1,9 +1,11 @@
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Scanner;
 
 public class ASConsoleInterface {
@@ -259,6 +261,7 @@ public class ASConsoleInterface {
                 System.out.println(ColorScheme.ANSI_BLUE + "Доступные команды (дом)" + ColorScheme.ANSI_RESET);
                 System.out.println("""
                         add - добавить квартиру в дом
+                        generate - сгенерировать квартиры
                         remove - удалить дом
                         choose - выбрать квартиру в доме
                         show - показать все квартиры в доме
@@ -270,6 +273,7 @@ public class ASConsoleInterface {
                 System.out.println();
                 switch (command.toLowerCase()) {
                     case "add" -> goToAddApartmentCase(chosenHouse);
+                    case "generate" -> goToGenerateApartmentsCase(chosenHouse);
                     case "remove" -> {
                         goToRemoveHouseCase(chosenHouse);
                         continueHouseLoop = false;
@@ -281,6 +285,30 @@ public class ASConsoleInterface {
                     default -> System.out.println(ColorScheme.ANSI_RED + "Неизвестная команда\n" + ColorScheme.ANSI_RESET);
                 }
             }
+        }
+        System.out.println();
+    }
+
+    private void goToGenerateApartmentsCase(House house) {
+        System.out.println(ColorScheme.ANSI_CYAN + "_ГЕНЕРИРОВАНИЕ КВАРТИР В ДОМЕ " + house.getNumber() + "_");
+        System.out.print(ColorScheme.ANSI_YELLOW + "Введите кол-во квартир, которое вы хотите сгенерировать: " + ColorScheme.ANSI_RESET);
+        int numberOfApartments = in.nextInt();
+        if (numberOfApartments > 0) {
+            house.clear();
+            System.out.print(ColorScheme.ANSI_YELLOW + "Введите кол-во квартир на этаж: ");
+            int apartmentsInFloor = in.nextInt();
+            if (apartmentsInFloor > 0) {
+                Random r = new Random(System.currentTimeMillis());
+                for (int number = 1; number <= numberOfApartments; number++) {
+                    house.addApartment(new Apartment(number, number / apartmentsInFloor + 1, r.nextInt(5) + 1,
+                            r.nextInt(6), r.nextFloat() * 50 + 15));
+                }
+                System.out.println(ColorScheme.ANSI_GREEN + numberOfApartments + " квартир было добавлено в " + house + ColorScheme.ANSI_RESET);
+            } else {
+                System.out.println(ColorScheme.ANSI_RED + "Ошибка! Введено отрицательное либо нулевое число квартир на этаж!");
+            }
+        } else {
+            System.out.println(ColorScheme.ANSI_RED + "Ошибка! Введено отрицательное либо нулевое число квартир!");
         }
         System.out.println();
     }
@@ -299,7 +327,7 @@ public class ASConsoleInterface {
         int residents = in.nextInt();
         System.out.print(ColorScheme.ANSI_YELLOW + "Введите кол-во комнат: " + ColorScheme.ANSI_RESET);
         int rooms = in.nextInt();
-        System.out.print(ColorScheme.ANSI_YELLOW + "Введите площадь квартиры: " + ColorScheme.ANSI_RESET);
+        System.out.print(ColorScheme.ANSI_YELLOW + "Введите площадь квартиры (м^2): " + ColorScheme.ANSI_RESET);
         float square = in.nextFloat();
         try {
             Apartment apartment = new Apartment(number, floor, rooms, residents, square);
@@ -328,7 +356,7 @@ public class ASConsoleInterface {
         System.out.println(ColorScheme.ANSI_CYAN + "_ОБЩАЯ ИНФОРМАЦИЯ О ДОМЕ " + house.getNumber() + "_" + ColorScheme.ANSI_RESET);
         System.out.println("Этажность: " + house.calculateNumberOfFloors());
         System.out.println("Кол-во квартир: " + house.getApartments().length);
-        System.out.println("Общая площадь: " + house.calculateFullSquare());
+        System.out.printf(Locale.US, "Общая площадь: %.1f м^2\n", house.calculateFullSquare());
         System.out.println("Кол-во жильцов: " + house.calculatePopulation());
         System.out.println();
     }
@@ -382,7 +410,7 @@ public class ASConsoleInterface {
                         Этаж: %d
                         Номер квартиры: %d
                         Кол-во комнат: %d
-                        Площадь: %.1f
+                        Площадь: %.1f м^2
                         Кол-во жителей: %d
                                                 
                         """, house.getNumber(), apartment.getFloor(), apartment.getNumber(), apartment.getNumberOfRooms(),

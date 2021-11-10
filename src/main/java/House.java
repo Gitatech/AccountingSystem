@@ -15,6 +15,10 @@ public class House implements Comparable<House>, Serializable {
         apartments = new TreeSet<>();
     }
 
+    public void clear() {
+        apartments.clear();
+    }
+
     public void addApartment(Apartment apartment) {
         apartments.add(apartment);
     }
