@@ -165,8 +165,10 @@ public class ASConsoleInterface {
             House house2 = getHouseFromAS();
             char populationSign = getComparisonSign(house1, house2, House::compareByPopulation),
                     squareSign = getComparisonSign(house1, house2, House::compareByFullSquare),
-                    floorSign = getComparisonSign(house1, house2, House::compareByFloors);
+                    floorSign = getComparisonSign(house1, house2, House::compareByFloors),
+                    apartmentsSign = getComparisonSign(house1, house2, House::compareByApartmentsNumber);
             System.out.printf(Locale.US, """
+                            %-20s %-7d %1s %5d
                             %-20s %-7d %1s %5d
                             %-20s %-7d %1s %5d
                             %-20s %-7d %1s %5d
@@ -175,6 +177,7 @@ public class ASConsoleInterface {
                             """,
                     "Номер дома", house1.getNumber(), ' ', house2.getNumber(),
                     "Этажность", house1.calculateNumberOfFloors(), floorSign, house2.calculateNumberOfFloors(),
+                    "Кол-во квартир", house1.getApartments().length, apartmentsSign, house2.getApartments().length,
                     "Кол-во жителей", house1.calculatePopulation(), populationSign, house2.calculatePopulation(),
                     "Площадь", house1.calculateFullSquare(), squareSign, house2.calculateFullSquare());
         } else {

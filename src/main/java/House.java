@@ -52,6 +52,10 @@ public class House implements Comparable<House>, Serializable {
         return apartments.isEmpty() ? 0 : apartments.last().getFloor();
     }
 
+    public static int compareByApartmentsNumber(House house1, House house2) {
+        return Integer.compare(house1.getApartments().length, house2.getApartments().length);
+    }
+
     public float calculateFullSquare() {
         float square = 0.0f;
         for (Apartment apartment : apartments) {
