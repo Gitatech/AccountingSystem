@@ -1,6 +1,6 @@
-package Services;
+package services;
 
-import Entities.Apartment;
+import entities.Apartment;
 
 public class ApartmentService {
     public static int compareByFloor(Apartment apartment1, Apartment apartment2) {

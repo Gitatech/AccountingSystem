@@ -1,4 +1,4 @@
-package UserInterfaces.ConsoleInterface;
+package UserInterfaces.consoleInterface;
 
 public enum Colors {
     ANSI_RESET("\u001B[0m"),

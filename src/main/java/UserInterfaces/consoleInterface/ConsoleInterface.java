@@ -1,28 +1,33 @@
-package UserInterfaces.ConsoleInterface;
+package UserInterfaces.consoleInterface;
 
-import Entities.AccountingSystem;
-import Entities.Apartment;
-import Entities.House;
-import Services.ApartmentService;
-import Services.HouseService;
+import entities.AccountingSystem;
+import entities.Apartment;
+import entities.House;
+import services.ApartmentService;
+import services.ComparatorService;
+import services.HouseService;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Comparator;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Scanner;
 
 public class ConsoleInterface {
-
-    private AccountingSystem accountingSystem;
     private final Scanner in;
+    private AccountingSystem accountingSystem;
 
     public ConsoleInterface(AccountingSystem accountingSystem) {
         this.accountingSystem = accountingSystem;
         in = new Scanner(System.in);
         in.useLocale(Locale.US);
+    }
+
+    public static void main(String[] args) {
+        ConsoleInterface ui = new ConsoleInterface(new AccountingSystem());
+        ui.launch();
     }
 
     public AccountingSystem getAccountingSystem() {
@@ -31,11 +36,6 @@ public class ConsoleInterface {
 
     public void setAccountingSystem(AccountingSystem accountingSystem) {
         this.accountingSystem = accountingSystem;
-    }
-
-    public static void main(String[] args) {
-        ConsoleInterface ui = new ConsoleInterface(new AccountingSystem());
-        ui.launch();
     }
 
     public void launch() {
@@ -97,10 +97,15 @@ public class ConsoleInterface {
             Apartment apartment1 = getApartmentFromAS();
             System.out.println(Colors.ANSI_BLUE + "_ПОИСК ВТОРОЙ КВАРТИРЫ_" + Colors.ANSI_RESET);
             Apartment apartment2 = getApartmentFromAS();
-            char floorSign = getComparisonSign(apartment1, apartment2, ApartmentService::compareByFloor),
-                    squareSign = getComparisonSign(apartment1, apartment2, ApartmentService::compareBySquare),
-                    residentsSign = getComparisonSign(apartment1, apartment2, ApartmentService::compareByResidentsNumber),
-                    roomsSign = getComparisonSign(apartment1, apartment2, ApartmentService::compareByNumberOfRooms);
+
+            char floorSign = ComparatorService.getComparisonSign(apartment1, apartment2,
+                    ApartmentService::compareByFloor);
+            char squareSign = ComparatorService.getComparisonSign(apartment1, apartment2,
+                    ApartmentService::compareBySquare);
+            char residentsSign = ComparatorService.getComparisonSign(apartment1, apartment2,
+                    ApartmentService::compareByResidentsNumber);
+            char roomsSign = ComparatorService.getComparisonSign(apartment1, apartment2,
+                    ApartmentService::compareByNumberOfRooms);
             System.out.printf(Locale.US, """
                             %-20s %-7d %1s %7d
                             %-20s %-7d %1s %7d
@@ -119,36 +124,30 @@ public class ConsoleInterface {
         }
     }
 
-    private <T> char getComparisonSign(T a, T b, Comparator<T> comparator) {
-        return switch (comparator.compare(a, b)) {
-            case 1 -> '>';
-            case 0 -> '=';
-            case -1 -> '<';
-            default -> throw new IllegalStateException("Unexpected value: " + comparator.compare(a, b));
-        };
-    }
+
 
     private Apartment getApartmentFromAS() {
         goToShowHousesCase();
         House house = null;
         boolean continueHouseChoosing = true;
-        int number;
         while (continueHouseChoosing) {
             System.out.print(Colors.ANSI_YELLOW + "Введите номер дома, где находится квартира: " + Colors.ANSI_RESET);
-            number = in.nextInt();
+            int number = in.nextInt();
             while ((house = accountingSystem.getHouseByNumber(number)) == null) {
                 System.out.println(Colors.ANSI_RED + "Нет дома с таким номером" + Colors.ANSI_RESET);
-                System.out.print(Colors.ANSI_YELLOW + "Введите номер дома, где находится квартира: " + Colors.ANSI_RESET);
+                System.out.print(Colors.ANSI_YELLOW + "Введите номер дома, где находится квартира: "
+                        + Colors.ANSI_RESET);
                 number = in.nextInt();
             }
             if (house.getApartments().size() == 0) {
-                System.out.println(Colors.ANSI_RED + "В доме " + house.getNumber() + " нет квартир" + Colors.ANSI_RESET);
+                System.out.println(Colors.ANSI_RED + "В доме " + house.getNumber() + " нет квартир"
+                        + Colors.ANSI_RESET);
             } else continueHouseChoosing = false;
         }
 
         goToShowApartmentsCase(house);
         System.out.print(Colors.ANSI_YELLOW + "Введите номер квартиры: " + Colors.ANSI_RESET);
-        number = in.nextInt();
+        int number = in.nextInt();
         Apartment apartment;
         while ((apartment = house.getApartmentByNumber(number)) == null) {
             System.out.println(Colors.ANSI_RED + "Нет квартиры с таким номером" + Colors.ANSI_RESET);
@@ -178,10 +177,14 @@ public class ConsoleInterface {
             House house1 = getHouseFromAS();
             System.out.println(Colors.ANSI_BLUE + "_ПОИСК ВТОРОГО ДОМА_" + Colors.ANSI_RESET);
             House house2 = getHouseFromAS();
-            char populationSign = getComparisonSign(house1, house2, HouseService::compareByPopulation),
-                    squareSign = getComparisonSign(house1, house2, HouseService::compareByFullSquare),
-                    floorSign = getComparisonSign(house1, house2, HouseService::compareByFloors),
-                    apartmentsSign = getComparisonSign(house1, house2, HouseService::compareByApartmentsNumber);
+            char populationSign = ComparatorService.getComparisonSign(house1, house2,
+                    HouseService::compareByPopulation);
+            char squareSign = ComparatorService.getComparisonSign(house1, house2,
+                    HouseService::compareByFullSquare);
+            char floorSign = ComparatorService.getComparisonSign(house1, house2,
+                    HouseService::compareByFloors);
+            char apartmentsSign = ComparatorService.getComparisonSign(house1, house2,
+                    HouseService::compareByApartmentsNumber);
             System.out.printf(Locale.US, """
                             %-20s %-7d %1s %5d
                             %-20s %-7d %1s %5d
@@ -191,10 +194,13 @@ public class ConsoleInterface {
                                                 
                             """,
                     "Номер дома", house1.getNumber(), ' ', house2.getNumber(),
-                    "Этажность", HouseService.calculateNumberOfFloors(house1), floorSign, HouseService.calculateNumberOfFloors(house2),
+                    "Этажность", HouseService.calculateNumberOfFloors(house1), floorSign,
+                    HouseService.calculateNumberOfFloors(house2),
                     "Кол-во квартир", house1.getApartments().size(), apartmentsSign, house2.getApartments().size(),
-                    "Кол-во жителей", HouseService.calculatePopulation(house1), populationSign, HouseService.calculatePopulation(house2),
-                    "Площадь", HouseService.calculateFullSquare(house1), squareSign, HouseService.calculateFullSquare(house2));
+                    "Кол-во жителей", HouseService.calculatePopulation(house1), populationSign,
+                    HouseService.calculatePopulation(house2),
+                    "Площадь", HouseService.calculateFullSquare(house1), squareSign,
+                    HouseService.calculateFullSquare(house2));
         } else {
             System.out.println(Colors.ANSI_RED + "В системе нет домов" + Colors.ANSI_RESET);
         }
@@ -239,7 +245,8 @@ public class ConsoleInterface {
         Path path = Paths.get(in.next());
         try {
             accountingSystem.load(path.toString());
-            System.out.println(Colors.ANSI_GREEN + "Система была загружена из файла " + path.getFileName() + Colors.ANSI_RESET);
+            System.out.println(Colors.ANSI_GREEN + "Система была загружена из файла " + path.getFileName()
+                    + Colors.ANSI_RESET);
         } catch (FileNotFoundException e) {
             System.out.println(Colors.ANSI_RED + "Файл не найден" + Colors.ANSI_RESET);
         } catch (ClassNotFoundException e) {
@@ -256,7 +263,8 @@ public class ConsoleInterface {
         Path path = Paths.get(in.next());
         try {
             accountingSystem.save(path.toString());
-            System.out.println(Colors.ANSI_GREEN + "Система была сохранена в файл " + path.getFileName() + Colors.ANSI_RESET);
+            System.out.println(Colors.ANSI_GREEN + "Система была сохранена в файл " + path.getFileName()
+                    + Colors.ANSI_RESET);
         } catch (IOException e) {
             System.out.println(Colors.ANSI_RED + "Ошибка потока ввода/вывода" + Colors.ANSI_RESET);
         }
@@ -308,11 +316,12 @@ public class ConsoleInterface {
 
     private void goToGenerateApartmentsCase(House house) {
         System.out.println(Colors.ANSI_CYAN + "_ГЕНЕРИРОВАНИЕ КВАРТИР В ДОМЕ " + house.getNumber() + "_");
-        System.out.print(Colors.ANSI_YELLOW + "Введите кол-во квартир, которое вы хотите сгенерировать: " + Colors.ANSI_RESET);
+        System.out.print(Colors.ANSI_YELLOW + "Введите кол-во квартир, которое вы хотите сгенерировать: "
+                + Colors.ANSI_RESET);
         int numberOfApartments = in.nextInt();
         if (numberOfApartments > 0) {
             house.clear();
-            System.out.print(Colors.ANSI_YELLOW + "Введите кол-во квартир на этаж: ");
+            System.out.print(Colors.ANSI_YELLOW + "Введите кол-во квартир на этаж: " + Colors.ANSI_RESET);
             int apartmentsInFloor = in.nextInt();
             if (apartmentsInFloor > 0) {
                 Random r = new Random(System.currentTimeMillis());
@@ -324,10 +333,12 @@ public class ConsoleInterface {
                 System.out.println(Colors.ANSI_GREEN + "" + numberOfApartments + " квартир было добавлено в " + house
                         + Colors.ANSI_RESET);
             } else {
-                System.out.println(Colors.ANSI_RED + "Ошибка! Введено отрицательное либо нулевое число квартир на этаж!");
+                System.out.println(Colors.ANSI_RED + "Ошибка! Введено отрицательное либо нулевое число квартир на этаж!"
+                        + Colors.ANSI_RESET);
             }
         } else {
-            System.out.println(Colors.ANSI_RED + "Ошибка! Введено отрицательное либо нулевое число квартир!");
+            System.out.println(Colors.ANSI_RED + "Ошибка! Введено отрицательное либо нулевое число квартир!"
+                    + Colors.ANSI_RESET);
         }
         System.out.println();
     }
@@ -351,7 +362,8 @@ public class ConsoleInterface {
         try {
             Apartment apartment = new Apartment(number, floor, rooms, residents, square);
             house.addApartment(apartment);
-            System.out.println(Colors.ANSI_GREEN + "Квартира была добавлена в дом " + house.getNumber() + Colors.ANSI_RESET);
+            System.out.println(Colors.ANSI_GREEN + "Квартира была добавлена в дом " + house.getNumber()
+                    + Colors.ANSI_RESET);
         } catch (IllegalArgumentException e) {
             System.out.println(Colors.ANSI_RED + "Ошибка! " + e.getMessage() + Colors.ANSI_RESET);
         }
@@ -424,7 +436,8 @@ public class ConsoleInterface {
     }
 
     private void goToShowApartmentInfoCase(House house, Apartment apartment) {
-        System.out.println(Colors.ANSI_CYAN + "_ОБЩАЯ ИНФОРМАЦИЯ О КВАРТИРЕ " + apartment.getNumber() + "_" + Colors.ANSI_RESET);
+        System.out.println(Colors.ANSI_CYAN + "_ОБЩАЯ ИНФОРМАЦИЯ О КВАРТИРЕ " + apartment.getNumber() + "_"
+                + Colors.ANSI_RESET);
         System.out.printf(Locale.US, """
                         Номер дома: %d
                         Этаж: %d
@@ -433,7 +446,8 @@ public class ConsoleInterface {
                         Площадь: %.1f м^2
                         Кол-во жителей: %d
                                                 
-                        """, house.getNumber(), apartment.getFloor(), apartment.getNumber(), apartment.getNumberOfRooms(),
+                        """,
+                house.getNumber(), apartment.getFloor(), apartment.getNumber(), apartment.getNumberOfRooms(),
                 apartment.getSquare(), apartment.getResidentsNumber());
     }
 
@@ -465,19 +479,22 @@ public class ConsoleInterface {
                         System.out.print(Colors.ANSI_YELLOW + "Введите новое кол-во комнат: " + Colors.ANSI_RESET);
                         int rooms = in.nextInt();
                         apartment.setNumberOfRooms(rooms);
-                        System.out.println(Colors.ANSI_GREEN + "Кол-во комнат квартиры было изменено" + Colors.ANSI_RESET);
+                        System.out.println(Colors.ANSI_GREEN + "Кол-во комнат квартиры было изменено"
+                                + Colors.ANSI_RESET);
                     }
                     case "square" -> {
                         System.out.print(Colors.ANSI_YELLOW + "Введите новое значение площади: " + Colors.ANSI_RESET);
                         float square = in.nextFloat();
                         apartment.setSquare(square);
-                        System.out.println(Colors.ANSI_GREEN + "Значение площади квартиры был изменено" + Colors.ANSI_RESET);
+                        System.out.println(Colors.ANSI_GREEN + "Значение площади квартиры был изменено"
+                                + Colors.ANSI_RESET);
                     }
                     case "residents" -> {
                         System.out.print(Colors.ANSI_YELLOW + "Введите новое кол-во жителей: " + Colors.ANSI_RESET);
                         int residents = in.nextInt();
                         apartment.setResidentsNumber(residents);
-                        System.out.println(Colors.ANSI_GREEN + "Кол-во жителей квартиры было изменено" + Colors.ANSI_RESET);
+                        System.out.println(Colors.ANSI_GREEN + "Кол-во жителей квартиры было изменено"
+                                + Colors.ANSI_RESET);
                     }
                     case "." -> continueLoop = false;
                     default -> System.out.println(Colors.ANSI_RED + "Неизвестный параметр" + Colors.ANSI_RESET);

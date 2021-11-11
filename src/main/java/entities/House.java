@@ -1,12 +1,10 @@
-package Entities;
+package entities;
 
 import java.io.Serializable;
 import java.util.*;
 
 public class House implements Comparable<House>, Serializable {
-
     private final int number;
-
     private final SortedSet<Apartment> apartments;
 
     public House(int number) {

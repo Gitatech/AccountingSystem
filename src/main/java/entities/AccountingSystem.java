@@ -1,4 +1,4 @@
-package Entities;
+package entities;
 
 import java.io.*;
 import java.util.Collections;
@@ -7,7 +7,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class AccountingSystem {
-
     private SortedSet<House> houses;
 
     public AccountingSystem() {

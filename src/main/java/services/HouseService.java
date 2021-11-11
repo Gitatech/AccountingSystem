@@ -1,11 +1,9 @@
-package Services;
+package services;
 
-import Entities.Apartment;
-import Entities.House;
+import entities.Apartment;
+import entities.House;
 
 public class HouseService {
-
-
     public static int compareByPopulation(House house1, House house2) {
         return Integer.compare(calculatePopulation(house1), calculatePopulation(house2));
     }
@@ -19,7 +17,7 @@ public class HouseService {
     }
 
     public static int calculatePopulation(House house) {
-        return house.getApartments().stream().mapToInt(Apartment::getResidentsNumber).sum();
+        return house.getApartments().parallelStream().mapToInt(Apartment::getResidentsNumber).sum();
     }
 
     public static int calculateNumberOfFloors(House house) {

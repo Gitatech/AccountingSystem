@@ -1,11 +1,10 @@
-package Entities;
+package entities;
 
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
 
 public class Apartment implements Comparable<Apartment>, Serializable {
-
     private final int number;
     private int floor;
     private float square;
@@ -18,6 +17,7 @@ public class Apartment implements Comparable<Apartment>, Serializable {
         if (numberOfRooms < 1) throw new IllegalArgumentException("Кол-во комнат должно быть больше 0");
         if (residentsNumber < 0) throw new IllegalArgumentException("Кол-во жителей не может быть отрицательным");
         if (square < 0.0f) throw new IllegalArgumentException("Площадь не может быть меньше нуля");
+
         this.number = number;
         this.floor = floor;
         this.numberOfRooms = numberOfRooms;
@@ -80,7 +80,8 @@ public class Apartment implements Comparable<Apartment>, Serializable {
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "Этаж: %d, номер: %d, кол-во комнат: %d, кол-во жителей: %d, площадь: %.1f м^2",
+        return String.format(Locale.US,
+                "Этаж: %d, номер: %d, кол-во комнат: %d, кол-во жителей: %d, площадь: %.1f м^2",
                 floor, number, numberOfRooms, residentsNumber, square);
     }
 

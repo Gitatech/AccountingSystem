@@ -1,6 +1,6 @@
-import Entities.AccountingSystem;
-import Entities.Apartment;
-import Entities.House;
+import entities.AccountingSystem;
+import entities.Apartment;
+import entities.House;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -59,9 +59,9 @@ public class AccountingSystemTest {
         House house1 = new House(1);
         House house2 = new House(3);
         House house3 = new House(7);
-        house1.addApartment(new Apartment(1, 1, 1, 1 ,1f));
-        house1.addApartment(new Apartment(2, 1, 1, 1 ,1f));
-        house1.addApartment(new Apartment(3, 1, 1, 1 ,1f));
+        house1.addApartment(new Apartment(1, 1, 1, 1, 1f));
+        house1.addApartment(new Apartment(2, 1, 1, 1, 1f));
+        house1.addApartment(new Apartment(3, 1, 1, 1, 1f));
         house2.addApartment(new Apartment(1, 1, 1, 1, 1f));
         accountingSystem.addHouse(house1);
         accountingSystem.addHouse(house2);
