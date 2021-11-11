@@ -1,5 +1,7 @@
-package UserInterfaces.consoleInterface;
+package userInterfaces.consoleUI;
 
+import builders.apartmentBuilder.SimpleApartmentBuilder;
+import builders.apartmentBuilder.Director;
 import entities.AccountingSystem;
 import entities.Apartment;
 import entities.House;
@@ -12,21 +14,20 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
-import java.util.Random;
 import java.util.Scanner;
 
-public class ConsoleInterface {
+public class ConsoleUI {
     private final Scanner in;
     private AccountingSystem accountingSystem;
 
-    public ConsoleInterface(AccountingSystem accountingSystem) {
+    public ConsoleUI(AccountingSystem accountingSystem) {
         this.accountingSystem = accountingSystem;
         in = new Scanner(System.in);
         in.useLocale(Locale.US);
     }
 
     public static void main(String[] args) {
-        ConsoleInterface ui = new ConsoleInterface(new AccountingSystem());
+        ConsoleUI ui = new ConsoleUI(new AccountingSystem());
         ui.launch();
     }
 
@@ -103,7 +104,7 @@ public class ConsoleInterface {
             char squareSign = ComparatorService.getComparisonSign(apartment1, apartment2,
                     ApartmentService::compareBySquare);
             char residentsSign = ComparatorService.getComparisonSign(apartment1, apartment2,
-                    ApartmentService::compareByResidentsNumber);
+                    ApartmentService::compareByResidents);
             char roomsSign = ComparatorService.getComparisonSign(apartment1, apartment2,
                     ApartmentService::compareByNumberOfRooms);
             System.out.printf(Locale.US, """
@@ -116,15 +117,13 @@ public class ConsoleInterface {
                             """,
                     "Номер квартиры", apartment1.getNumber(), ' ', apartment2.getNumber(),
                     "Этаж", apartment1.getFloor(), floorSign, apartment2.getFloor(),
-                    "Кол-во комнат", apartment1.getNumberOfRooms(), roomsSign, apartment2.getNumberOfRooms(),
+                    "Кол-во комнат", apartment1.getRoomsNumber(), roomsSign, apartment2.getRoomsNumber(),
                     "Площадь", apartment1.getSquare(), squareSign, apartment2.getSquare(),
                     "Кол-во жителей", apartment1.getResidentsNumber(), residentsSign, apartment2.getResidentsNumber());
         } else {
             System.out.println(Colors.ANSI_RED + "В системе нет квартир" + Colors.ANSI_RESET);
         }
     }
-
-
 
     private Apartment getApartmentFromAS() {
         goToShowHousesCase();
@@ -324,11 +323,11 @@ public class ConsoleInterface {
             System.out.print(Colors.ANSI_YELLOW + "Введите кол-во квартир на этаж: " + Colors.ANSI_RESET);
             int apartmentsInFloor = in.nextInt();
             if (apartmentsInFloor > 0) {
-                Random r = new Random(System.currentTimeMillis());
+                SimpleApartmentBuilder builder = new SimpleApartmentBuilder();
                 for (int number = 1; number <= numberOfApartments; number++) {
-                    house.addApartment(new Apartment(number, number / apartmentsInFloor + 1,
-                            r.nextInt(5) + 1, r.nextInt(6),
-                            (r.nextInt(500) + 250) / 10.0f));
+                    int floor = number / apartmentsInFloor + 1;
+                    Director.generateApartmentWithNumberAndFloor(builder, number, floor);
+                    house.addApartment(builder.getResult());
                 }
                 System.out.println(Colors.ANSI_GREEN + "" + numberOfApartments + " квартир было добавлено в " + house
                         + Colors.ANSI_RESET);
@@ -447,7 +446,7 @@ public class ConsoleInterface {
                         Кол-во жителей: %d
                                                 
                         """,
-                house.getNumber(), apartment.getFloor(), apartment.getNumber(), apartment.getNumberOfRooms(),
+                house.getNumber(), apartment.getFloor(), apartment.getNumber(), apartment.getRoomsNumber(),
                 apartment.getSquare(), apartment.getResidentsNumber());
     }
 
@@ -478,7 +477,7 @@ public class ConsoleInterface {
                     case "rooms" -> {
                         System.out.print(Colors.ANSI_YELLOW + "Введите новое кол-во комнат: " + Colors.ANSI_RESET);
                         int rooms = in.nextInt();
-                        apartment.setNumberOfRooms(rooms);
+                        apartment.setRoomsNumber(rooms);
                         System.out.println(Colors.ANSI_GREEN + "Кол-во комнат квартиры было изменено"
                                 + Colors.ANSI_RESET);
                     }

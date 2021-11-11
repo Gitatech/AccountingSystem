@@ -12,7 +12,6 @@ public class AccountingSystem {
     public AccountingSystem() {
         this.houses = new TreeSet<>();
     }
-
     public House getHouseByNumber(int houseNumber) {
         return houses.parallelStream().filter(e -> e.getNumber() == houseNumber).findFirst().orElse(null);
     }
@@ -26,7 +25,7 @@ public class AccountingSystem {
     }
 
     public boolean containsHouse(int number) {
-        return houses.contains(new House(number));
+        return houses.parallelStream().anyMatch(e -> e.getNumber() == number);
     }
 
     public SortedSet<House> getHouses() {
@@ -51,7 +50,6 @@ public class AccountingSystem {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(path))) {
             houses = new TreeSet<>(Set.of((House[]) in.readObject()));
         }
-
     }
 
 }

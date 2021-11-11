@@ -7,7 +7,7 @@ public class House implements Comparable<House>, Serializable {
     private final int number;
     private final SortedSet<Apartment> apartments;
 
-    public House(int number) {
+    public House(int number) throws IllegalArgumentException {
         if (number < 0) throw new IllegalArgumentException("Номер дома не может быть отрицательным");
         this.number = number;
         apartments = new TreeSet<>();
@@ -26,8 +26,7 @@ public class House implements Comparable<House>, Serializable {
     }
 
     public boolean containsApartment(int number) {
-        if (number < 1) return false;
-        return apartments.contains(new Apartment(number, 1, 1, 1, 1));
+        return apartments.parallelStream().anyMatch(e -> e.getNumber() == number);
     }
 
     public SortedSet<Apartment> getApartments() {

@@ -11,11 +11,11 @@ public class ApartmentService {
         return Float.compare(apartment1.getSquare(), apartment2.getSquare());
     }
 
-    public static int compareByResidentsNumber(Apartment apartment1, Apartment apartment2) {
+    public static int compareByResidents(Apartment apartment1, Apartment apartment2) {
         return Integer.compare(apartment1.getResidentsNumber(), apartment2.getResidentsNumber());
     }
 
     public static int compareByNumberOfRooms(Apartment apartment1, Apartment apartment2) {
-        return Integer.compare(apartment1.getNumberOfRooms(), apartment2.getNumberOfRooms());
+        return Integer.compare(apartment1.getRoomsNumber(), apartment2.getRoomsNumber());
     }
 }

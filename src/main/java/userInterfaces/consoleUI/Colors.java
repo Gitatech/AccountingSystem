@@ -1,4 +1,4 @@
-package UserInterfaces.consoleInterface;
+package userInterfaces.consoleUI;
 
 public enum Colors {
     ANSI_RESET("\u001B[0m"),

@@ -16,14 +16,6 @@ public class HouseService {
         return Float.compare(calculateFullSquare(house1), calculateFullSquare(house2));
     }
 
-    public static int calculatePopulation(House house) {
-        return house.getApartments().parallelStream().mapToInt(Apartment::getResidentsNumber).sum();
-    }
-
-    public static int calculateNumberOfFloors(House house) {
-        return house.getApartments().isEmpty() ? 0 : house.getApartments().last().getFloor();
-    }
-
     public static int compareByApartmentsNumber(House house1, House house2) {
         return Integer.compare(house1.getApartments().size(), house2.getApartments().size());
     }
@@ -34,5 +26,13 @@ public class HouseService {
             square += apartment.getSquare();
         }
         return square;
+    }
+
+    public static int calculatePopulation(House house) {
+        return house.getApartments().parallelStream().mapToInt(Apartment::getResidentsNumber).sum();
+    }
+
+    public static int calculateNumberOfFloors(House house) {
+        return house.getApartments().isEmpty() ? 0 : house.getApartments().last().getFloor();
     }
 }

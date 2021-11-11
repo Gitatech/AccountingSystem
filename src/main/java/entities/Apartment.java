@@ -9,18 +9,19 @@ public class Apartment implements Comparable<Apartment>, Serializable {
     private int floor;
     private float square;
     private int residentsNumber;
-    private int numberOfRooms;
+    private int roomsNumber;
 
-    public Apartment(int number, int floor, int numberOfRooms, int residentsNumber, float square) throws IllegalArgumentException {
+    public Apartment(int number, int floor, int roomsNumber, int residentsNumber, float square)
+            throws IllegalArgumentException {
         if (number < 1) throw new IllegalArgumentException("Номер квартиры должен быть больше 0");
         if (floor < 1) throw new IllegalArgumentException("Номер этажа квартиры должен быть больше 0");
-        if (numberOfRooms < 1) throw new IllegalArgumentException("Кол-во комнат должно быть больше 0");
+        if (roomsNumber < 1) throw new IllegalArgumentException("Кол-во комнат должно быть больше 0");
         if (residentsNumber < 0) throw new IllegalArgumentException("Кол-во жителей не может быть отрицательным");
         if (square < 0.0f) throw new IllegalArgumentException("Площадь не может быть меньше нуля");
 
         this.number = number;
         this.floor = floor;
-        this.numberOfRooms = numberOfRooms;
+        this.roomsNumber = roomsNumber;
         this.residentsNumber = residentsNumber;
         this.square = square;
     }
@@ -47,18 +48,18 @@ public class Apartment implements Comparable<Apartment>, Serializable {
         return residentsNumber;
     }
 
-    public void setResidentsNumber(int residentsNumber) {
-        if (residentsNumber < 0) throw new IllegalArgumentException("Кол-во жителей не может быть отрицательным");
-        this.residentsNumber = residentsNumber;
+    public void setResidentsNumber(int residents) {
+        if (residents < 0) throw new IllegalArgumentException("Кол-во жителей не может быть отрицательным");
+        this.residentsNumber = residents;
     }
 
-    public int getNumberOfRooms() {
-        return numberOfRooms;
+    public int getRoomsNumber() {
+        return roomsNumber;
     }
 
-    public void setNumberOfRooms(int numberOfRooms) {
-        if (numberOfRooms < 1) throw new IllegalArgumentException("Кол-во комнат должно быть больше 0");
-        this.numberOfRooms = numberOfRooms;
+    public void setRoomsNumber(int roomsNumber) {
+        if (roomsNumber < 1) throw new IllegalArgumentException("Кол-во комнат должно быть больше 0");
+        this.roomsNumber = roomsNumber;
     }
 
     public int getNumber() {
@@ -75,14 +76,14 @@ public class Apartment implements Comparable<Apartment>, Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, floor, square, residentsNumber, numberOfRooms);
+        return Objects.hash(number, floor, square, residentsNumber, roomsNumber);
     }
 
     @Override
     public String toString() {
         return String.format(Locale.US,
                 "Этаж: %d, номер: %d, кол-во комнат: %d, кол-во жителей: %d, площадь: %.1f м^2",
-                floor, number, numberOfRooms, residentsNumber, square);
+                floor, number, roomsNumber, residentsNumber, square);
     }
 
     @Override
