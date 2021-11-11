@@ -26,11 +26,6 @@ public class ConsoleUI {
         in.useLocale(Locale.US);
     }
 
-    public static void main(String[] args) {
-        ConsoleUI inf = new ConsoleUI(new AccountingSystem());
-        inf.launch();
-    }
-
     public AccountingSystem getAccountingSystem() {
         return accountingSystem;
     }
