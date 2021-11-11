@@ -27,8 +27,8 @@ public class ConsoleUI {
     }
 
     public static void main(String[] args) {
-        ConsoleUI ui = new ConsoleUI(new AccountingSystem());
-        ui.launch();
+        ConsoleUI inf = new ConsoleUI(new AccountingSystem());
+        inf.launch();
     }
 
     public AccountingSystem getAccountingSystem() {
@@ -42,7 +42,7 @@ public class ConsoleUI {
     public void launch() {
         boolean inProcess = true;
         while (inProcess) {
-            System.out.println(Colors.ANSI_BLUE + "Доступные команды (система учёта)" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.BLUE + "Доступные команды (система учёта)" + ANSIColors.RESET);
             System.out.println("""
                     add - добавить дом в систему
                     choose - выбрать дом
@@ -53,7 +53,7 @@ public class ConsoleUI {
                     save - сохранить систему в файл
                     exit - выход
                     """);
-            System.out.print(Colors.ANSI_YELLOW + "Введите команду: " + Colors.ANSI_RESET);
+            System.out.print(ANSIColors.YELLOW + "Введите команду: " + ANSIColors.RESET);
             String command = in.next();
             System.out.println();
 
@@ -66,7 +66,7 @@ public class ConsoleUI {
                 case "load" -> goToLoadAccountingSystemCase();
                 case "save" -> goToSaveAccountingSystemCase();
                 case "exit" -> inProcess = false;
-                default -> System.out.println(Colors.ANSI_RED + "Неизвестная команда\n" + Colors.ANSI_RESET);
+                default -> System.out.println(ANSIColors.RED + "Неизвестная команда\n" + ANSIColors.RESET);
             }
         }
     }
@@ -74,29 +74,29 @@ public class ConsoleUI {
     private void goToAccountingSystemCompareCase() {
         boolean continueLoop = true;
         while (continueLoop) {
-            System.out.println(Colors.ANSI_BLUE + "Доступные сущности для сравнения" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.BLUE + "Доступные сущности для сравнения" + ANSIColors.RESET);
             System.out.println("""
                     house - сравнить дома
                     apartment - сравнить квартиры
                     . - назад
                     """);
-            System.out.print(Colors.ANSI_YELLOW + "Введите сущность: ");
+            System.out.print(ANSIColors.YELLOW + "Введите сущность: ");
             String entity = in.next();
             switch (entity) {
                 case "apartment" -> goToApartmentCompareCase();
                 case "house" -> goToHouseCompareCase();
                 case "." -> continueLoop = false;
-                default -> System.out.println(Colors.ANSI_RED + "Неизвестная сущность" + Colors.ANSI_RESET);
+                default -> System.out.println(ANSIColors.RED + "Неизвестная сущность" + ANSIColors.RESET);
             }
         }
     }
 
     private void goToApartmentCompareCase() {
         if (accountingSystem.getNumberOfApartments() > 0) {
-            System.out.println(Colors.ANSI_CYAN + "_СРАВНЕНИЕ КВАРТИР ПО ПАРАМЕТРАМ_" + Colors.ANSI_RESET);
-            System.out.println(Colors.ANSI_BLUE + "_ПОИСК ПЕРВОЙ КВАРТИРЫ" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.CYAN + "_СРАВНЕНИЕ КВАРТИР ПО ПАРАМЕТРАМ_" + ANSIColors.RESET);
+            System.out.println(ANSIColors.BLUE + "_ПОИСК ПЕРВОЙ КВАРТИРЫ" + ANSIColors.RESET);
             Apartment apartment1 = getApartmentFromAccountignSystem();
-            System.out.println(Colors.ANSI_BLUE + "_ПОИСК ВТОРОЙ КВАРТИРЫ_" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.BLUE + "_ПОИСК ВТОРОЙ КВАРТИРЫ_" + ANSIColors.RESET);
             Apartment apartment2 = getApartmentFromAccountignSystem();
 
             char floorSign = ComparatorService.getComparisonSign(apartment1, apartment2,
@@ -121,7 +121,7 @@ public class ConsoleUI {
                     "Площадь", apartment1.getSquare(), squareSign, apartment2.getSquare(),
                     "Кол-во жителей", apartment1.getResidentsNumber(), residentsSign, apartment2.getResidentsNumber());
         } else {
-            System.out.println(Colors.ANSI_RED + "В системе нет квартир" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "В системе нет квартир" + ANSIColors.RESET);
         }
     }
 
@@ -130,39 +130,39 @@ public class ConsoleUI {
         House house = null;
         boolean continueHouseChoosing = true;
         while (continueHouseChoosing) {
-            System.out.print(Colors.ANSI_YELLOW + "Введите номер дома, где находится квартира: " + Colors.ANSI_RESET);
+            System.out.print(ANSIColors.YELLOW + "Введите номер дома, где находится квартира: " + ANSIColors.RESET);
             int number = in.nextInt();
             while ((house = accountingSystem.getHouseByNumber(number)) == null) {
-                System.out.println(Colors.ANSI_RED + "Нет дома с таким номером" + Colors.ANSI_RESET);
-                System.out.print(Colors.ANSI_YELLOW + "Введите номер дома, где находится квартира: "
-                        + Colors.ANSI_RESET);
+                System.out.println(ANSIColors.RED + "Нет дома с таким номером" + ANSIColors.RESET);
+                System.out.print(ANSIColors.YELLOW + "Введите номер дома, где находится квартира: "
+                        + ANSIColors.RESET);
                 number = in.nextInt();
             }
             if (house.getApartments().size() == 0) {
-                System.out.println(Colors.ANSI_RED + "В доме " + house.getNumber() + " нет квартир"
-                        + Colors.ANSI_RESET);
+                System.out.println(ANSIColors.RED + "В доме " + house.getNumber() + " нет квартир"
+                        + ANSIColors.RESET);
             } else continueHouseChoosing = false;
         }
 
         goToShowApartmentsCase(house);
-        System.out.print(Colors.ANSI_YELLOW + "Введите номер квартиры: " + Colors.ANSI_RESET);
+        System.out.print(ANSIColors.YELLOW + "Введите номер квартиры: " + ANSIColors.RESET);
         int number = in.nextInt();
         Apartment apartment;
         while ((apartment = house.getApartmentByNumber(number)) == null) {
-            System.out.println(Colors.ANSI_RED + "Нет квартиры с таким номером" + Colors.ANSI_RESET);
-            System.out.print(Colors.ANSI_YELLOW + "Введите номер квартиры: " + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "Нет квартиры с таким номером" + ANSIColors.RESET);
+            System.out.print(ANSIColors.YELLOW + "Введите номер квартиры: " + ANSIColors.RESET);
             number = in.nextInt();
         }
         return apartment;
     }
 
     private House getHouseFromAccountingSystem() {
-        System.out.println(Colors.ANSI_YELLOW + "Введите номер дома: " + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.YELLOW + "Введите номер дома: " + ANSIColors.RESET);
         int number = in.nextInt();
         House house;
         while ((house = accountingSystem.getHouseByNumber(number)) == null) {
-            System.out.println(Colors.ANSI_RED + "Нет дома с таким номером" + Colors.ANSI_RESET);
-            System.out.println(Colors.ANSI_YELLOW + "Введите номер дома: " + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "Нет дома с таким номером" + ANSIColors.RESET);
+            System.out.println(ANSIColors.YELLOW + "Введите номер дома: " + ANSIColors.RESET);
             number = in.nextInt();
         }
         return house;
@@ -170,11 +170,11 @@ public class ConsoleUI {
 
     private void goToHouseCompareCase() {
         if (accountingSystem.getNumberOfHouses() > 0) {
-            System.out.println(Colors.ANSI_CYAN + "_СРАВНЕНИЕ ДОМОВ ПО ПАРАМЕТРАМ_" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.CYAN + "_СРАВНЕНИЕ ДОМОВ ПО ПАРАМЕТРАМ_" + ANSIColors.RESET);
             goToShowHousesCase();
-            System.out.println(Colors.ANSI_BLUE + "_ПОИСК ПЕРВОГО ДОМА_" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.BLUE + "_ПОИСК ПЕРВОГО ДОМА_" + ANSIColors.RESET);
             House house1 = getHouseFromAccountingSystem();
-            System.out.println(Colors.ANSI_BLUE + "_ПОИСК ВТОРОГО ДОМА_" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.BLUE + "_ПОИСК ВТОРОГО ДОМА_" + ANSIColors.RESET);
             House house2 = getHouseFromAccountingSystem();
             char populationSign = ComparatorService.getComparisonSign(house1, house2,
                     HouseService::compareByPopulation);
@@ -201,22 +201,22 @@ public class ConsoleUI {
                     "Площадь", HouseService.calculateFullSquare(house1), squareSign,
                     HouseService.calculateFullSquare(house2));
         } else {
-            System.out.println(Colors.ANSI_RED + "В системе нет домов" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "В системе нет домов" + ANSIColors.RESET);
         }
     }
 
     private void goToAddHouseCase() {
-        System.out.println(Colors.ANSI_CYAN + "_ДОБАВЛЕНИЕ ДОМА В СИСТЕМУ_" + Colors.ANSI_RESET);
-        System.out.print(Colors.ANSI_YELLOW + "Введите номер дома, который вы хотите добавить: " + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.CYAN + "_ДОБАВЛЕНИЕ ДОМА В СИСТЕМУ_" + ANSIColors.RESET);
+        System.out.print(ANSIColors.YELLOW + "Введите номер дома, который вы хотите добавить: " + ANSIColors.RESET);
         int number = in.nextInt();
         if (accountingSystem.containsHouse(number)) {
-            System.out.println(Colors.ANSI_RED + "Дом с таким номером уже есть в системе" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "Дом с таким номером уже есть в системе" + ANSIColors.RESET);
         } else {
             try {
                 accountingSystem.addHouse(new House(number));
-                System.out.println(Colors.ANSI_GREEN + "Дом " + number + " был добавлен в систему" + Colors.ANSI_RESET);
+                System.out.println(ANSIColors.GREEN + "Дом " + number + " был добавлен в систему" + ANSIColors.RESET);
             } catch (IllegalArgumentException e) {
-                System.out.println(Colors.ANSI_RED + e.getMessage());
+                System.out.println(ANSIColors.RED + e.getMessage());
             }
 
         }
@@ -224,7 +224,7 @@ public class ConsoleUI {
     }
 
     private void goToShowHousesCase() {
-        System.out.println(Colors.ANSI_CYAN + "Дома: " + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.CYAN + "Дома: " + ANSIColors.RESET);
         for (var house : accountingSystem.getHouses()) {
             System.out.println(house);
         }
@@ -232,57 +232,57 @@ public class ConsoleUI {
     }
 
     private void goToShowAccountignSystemInfoCase() {
-        System.out.println(Colors.ANSI_CYAN + "_ОБЩАЯ ИНФОРМАЦИЯ О СИСТЕМЕ_" + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.CYAN + "_ОБЩАЯ ИНФОРМАЦИЯ О СИСТЕМЕ_" + ANSIColors.RESET);
         System.out.println("Кол-во домов: " + accountingSystem.getNumberOfHouses());
         System.out.println("Кол-во квартир: " + accountingSystem.getNumberOfApartments());
         System.out.println();
     }
 
     private void goToLoadAccountingSystemCase() {
-        System.out.println(Colors.ANSI_CYAN + "_ЗАГРУЗКА СИСТЕМЫ УЧЁТА ИЗ ФАЙЛА_" + Colors.ANSI_RESET);
-        System.out.print(Colors.ANSI_YELLOW + "Введите путь к файлу: " + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.CYAN + "_ЗАГРУЗКА СИСТЕМЫ УЧЁТА ИЗ ФАЙЛА_" + ANSIColors.RESET);
+        System.out.print(ANSIColors.YELLOW + "Введите путь к файлу: " + ANSIColors.RESET);
         Path path = Paths.get(in.next());
         try {
             accountingSystem.load(path.toString());
-            System.out.println(Colors.ANSI_GREEN + "Система была загружена из файла " + path.getFileName()
-                    + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.GREEN + "Система была загружена из файла " + path.getFileName()
+                    + ANSIColors.RESET);
         } catch (FileNotFoundException e) {
-            System.out.println(Colors.ANSI_RED + "Файл не найден" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "Файл не найден" + ANSIColors.RESET);
         } catch (ClassNotFoundException e) {
-            System.out.println(Colors.ANSI_RED + "Не удалось прочитать файл" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "Не удалось прочитать файл" + ANSIColors.RESET);
         } catch (IOException e) {
-            System.out.println(Colors.ANSI_RED + "Ошибка потока ввода/вывода" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "Ошибка потока ввода/вывода" + ANSIColors.RESET);
         }
         System.out.println();
     }
 
     private void goToSaveAccountingSystemCase() {
-        System.out.println(Colors.ANSI_CYAN + "_СОХРАНЕНИЕ СИСТЕМЫ УЧЁТА В ФАЙЛ_" + Colors.ANSI_RESET);
-        System.out.print(Colors.ANSI_YELLOW + "Введите путь к файлу: " + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.CYAN + "_СОХРАНЕНИЕ СИСТЕМЫ УЧЁТА В ФАЙЛ_" + ANSIColors.RESET);
+        System.out.print(ANSIColors.YELLOW + "Введите путь к файлу: " + ANSIColors.RESET);
         Path path = Paths.get(in.next());
         try {
             accountingSystem.save(path.toString());
-            System.out.println(Colors.ANSI_GREEN + "Система была сохранена в файл " + path.getFileName()
-                    + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.GREEN + "Система была сохранена в файл " + path.getFileName()
+                    + ANSIColors.RESET);
         } catch (IOException e) {
-            System.out.println(Colors.ANSI_RED + "Ошибка потока ввода/вывода" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "Ошибка потока ввода/вывода" + ANSIColors.RESET);
         }
         System.out.println();
     }
 
     private void goToChooseHouseCase() {
-        System.out.println(Colors.ANSI_CYAN + "_ВЫБОР ДОМА В СИСТЕМЕ_" + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.CYAN + "_ВЫБОР ДОМА В СИСТЕМЕ_" + ANSIColors.RESET);
         goToShowHousesCase();
-        System.out.print(Colors.ANSI_YELLOW + "Введите номер дома: " + Colors.ANSI_RESET);
+        System.out.print(ANSIColors.YELLOW + "Введите номер дома: " + ANSIColors.RESET);
         int number = in.nextInt();
         System.out.println();
         House chosenHouse = accountingSystem.getHouseByNumber(number);
         if (chosenHouse == null) {
-            System.out.println(Colors.ANSI_RED + "Дома " + number + " нет в системе" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "Дома " + number + " нет в системе" + ANSIColors.RESET);
         } else {
             boolean continueHouseLoop = true;
             while (continueHouseLoop) {
-                System.out.println(Colors.ANSI_BLUE + "Доступные команды (дом)" + Colors.ANSI_RESET);
+                System.out.println(ANSIColors.BLUE + "Доступные команды (дом)" + ANSIColors.RESET);
                 System.out.println("""
                         add - добавить квартиру в дом
                         generate - сгенерировать квартиры
@@ -292,7 +292,7 @@ public class ConsoleUI {
                         info - вывести общую информацию о доме
                         . - назад
                         """);
-                System.out.print(Colors.ANSI_YELLOW + "Введите команду: " + Colors.ANSI_RESET);
+                System.out.print(ANSIColors.YELLOW + "Введите команду: " + ANSIColors.RESET);
                 String command = in.next();
                 System.out.println();
                 switch (command.toLowerCase()) {
@@ -306,7 +306,7 @@ public class ConsoleUI {
                     case "show" -> goToShowApartmentsCase(chosenHouse);
                     case "info" -> goToShowHouseInfoCase(chosenHouse);
                     case "." -> continueHouseLoop = false;
-                    default -> System.out.println(Colors.ANSI_RED + "Неизвестная команда\n" + Colors.ANSI_RESET);
+                    default -> System.out.println(ANSIColors.RED + "Неизвестная команда\n" + ANSIColors.RESET);
                 }
             }
         }
@@ -314,13 +314,13 @@ public class ConsoleUI {
     }
 
     private void goToGenerateApartmentsCase(House house) {
-        System.out.println(Colors.ANSI_CYAN + "_ГЕНЕРИРОВАНИЕ КВАРТИР В ДОМЕ " + house.getNumber() + "_");
-        System.out.print(Colors.ANSI_YELLOW + "Введите кол-во квартир, которое вы хотите сгенерировать: "
-                + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.CYAN + "_ГЕНЕРИРОВАНИЕ КВАРТИР В ДОМЕ " + house.getNumber() + "_");
+        System.out.print(ANSIColors.YELLOW + "Введите кол-во квартир, которое вы хотите сгенерировать: "
+                + ANSIColors.RESET);
         int numberOfApartments = in.nextInt();
         if (numberOfApartments > 0) {
             house.clear();
-            System.out.print(Colors.ANSI_YELLOW + "Введите кол-во квартир на этаж: " + Colors.ANSI_RESET);
+            System.out.print(ANSIColors.YELLOW + "Введите кол-во квартир на этаж: " + ANSIColors.RESET);
             int apartmentsInFloor = in.nextInt();
             if (apartmentsInFloor > 0) {
                 ApartmentBuilder builder = new ApartmentBuilder();
@@ -329,53 +329,53 @@ public class ConsoleUI {
                     Director.generateApartmentWithNumberAndFloor(builder, number, floor);
                     house.addApartment(builder.getResult());
                 }
-                System.out.println(Colors.ANSI_GREEN + "" + numberOfApartments + " квартир было добавлено в " + house
-                        + Colors.ANSI_RESET);
+                System.out.println(ANSIColors.GREEN.code + numberOfApartments + " квартир было добавлено в " + house
+                        + ANSIColors.RESET);
             } else {
-                System.out.println(Colors.ANSI_RED + "Ошибка! Введено отрицательное либо нулевое число квартир на этаж!"
-                        + Colors.ANSI_RESET);
+                System.out.println(ANSIColors.RED + "Ошибка! Введено отрицательное либо нулевое число квартир на этаж!"
+                        + ANSIColors.RESET);
             }
         } else {
-            System.out.println(Colors.ANSI_RED + "Ошибка! Введено отрицательное либо нулевое число квартир!"
-                    + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "Ошибка! Введено отрицательное либо нулевое число квартир!"
+                    + ANSIColors.RESET);
         }
         System.out.println();
     }
 
     private void goToAddApartmentCase(House house) {
-        System.out.println(Colors.ANSI_CYAN + "_ДОБАВЛЕНИЕ КВАРТИРЫ В ДОМ " + house.getNumber() + Colors.ANSI_RESET);
-        System.out.print(Colors.ANSI_YELLOW + "Введите номер квартиры: " + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.CYAN + "_ДОБАВЛЕНИЕ КВАРТИРЫ В ДОМ " + house.getNumber() + ANSIColors.RESET);
+        System.out.print(ANSIColors.YELLOW + "Введите номер квартиры: " + ANSIColors.RESET);
         int number = in.nextInt();
         if (house.containsApartment(number)) {
-            System.out.println(Colors.ANSI_RED + "Квартира с таким номером уже есть в доме" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "Квартира с таким номером уже есть в доме" + ANSIColors.RESET);
             return;
         }
-        System.out.print(Colors.ANSI_YELLOW + "Введите этаж: " + Colors.ANSI_RESET);
+        System.out.print(ANSIColors.YELLOW + "Введите этаж: " + ANSIColors.RESET);
         int floor = in.nextInt();
-        System.out.print(Colors.ANSI_YELLOW + "Введите кол-во жителей: " + Colors.ANSI_RESET);
+        System.out.print(ANSIColors.YELLOW + "Введите кол-во жителей: " + ANSIColors.RESET);
         int residents = in.nextInt();
-        System.out.print(Colors.ANSI_YELLOW + "Введите кол-во комнат: " + Colors.ANSI_RESET);
+        System.out.print(ANSIColors.YELLOW + "Введите кол-во комнат: " + ANSIColors.RESET);
         int rooms = in.nextInt();
-        System.out.print(Colors.ANSI_YELLOW + "Введите площадь квартиры (м^2): " + Colors.ANSI_RESET);
+        System.out.print(ANSIColors.YELLOW + "Введите площадь квартиры (м^2): " + ANSIColors.RESET);
         float square = in.nextFloat();
         try {
             Apartment apartment = new Apartment(number, floor, rooms, residents, square);
             house.addApartment(apartment);
-            System.out.println(Colors.ANSI_GREEN + "Квартира была добавлена в дом " + house.getNumber()
-                    + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.GREEN + "Квартира была добавлена в дом " + house.getNumber()
+                    + ANSIColors.RESET);
         } catch (IllegalArgumentException e) {
-            System.out.println(Colors.ANSI_RED + "Ошибка! " + e.getMessage() + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.RED + "Ошибка! " + e.getMessage() + ANSIColors.RESET);
         }
         System.out.println();
     }
 
     private void goToRemoveHouseCase(House house) {
         accountingSystem.removeHouse(house);
-        System.out.println(Colors.ANSI_RED + "" + house + " был удалён\n" + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.RED.code + house + " был удалён\n" + ANSIColors.RESET);
     }
 
     private void goToShowApartmentsCase(House house) {
-        System.out.println(Colors.ANSI_CYAN + "Квартиры дома " + house.getNumber() + ":" + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.CYAN + "Квартиры дома " + house.getNumber() + ":" + ANSIColors.RESET);
         for (var apartment : house.getApartments()) {
             System.out.println(apartment);
         }
@@ -383,7 +383,7 @@ public class ConsoleUI {
     }
 
     private void goToShowHouseInfoCase(House house) {
-        System.out.println(Colors.ANSI_CYAN + "_ОБЩАЯ ИНФОРМАЦИЯ О ДОМЕ " + house.getNumber() + "_" + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.CYAN + "_ОБЩАЯ ИНФОРМАЦИЯ О ДОМЕ " + house.getNumber() + "_" + ANSIColors.RESET);
         System.out.println("Этажность: " + HouseService.calculateNumberOfFloors(house));
         System.out.println("Кол-во квартир: " + house.getApartments().size());
         System.out.printf(Locale.US, "Общая площадь: %.1f м^2\n", HouseService.calculateFullSquare(house));
@@ -392,25 +392,25 @@ public class ConsoleUI {
     }
 
     private void goToChooseApartmentCase(House house) {
-        System.out.println(Colors.ANSI_CYAN + "_ВЫБОР КВАРТИРЫ ДОМА " + house.getNumber() + "_" + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.CYAN + "_ВЫБОР КВАРТИРЫ ДОМА " + house.getNumber() + "_" + ANSIColors.RESET);
         goToShowApartmentsCase(house);
-        System.out.print(Colors.ANSI_YELLOW + "Введите номер квартиры: " + Colors.ANSI_RESET);
+        System.out.print(ANSIColors.YELLOW + "Введите номер квартиры: " + ANSIColors.RESET);
         int number = in.nextInt();
         System.out.println();
         Apartment apartment = house.getApartmentByNumber(number);
         if (apartment == null) {
-            System.out.println(Colors.ANSI_RED + "В доме " + house.getNumber() + " нет квартиры с таким номером");
+            System.out.println(ANSIColors.RED + "В доме " + house.getNumber() + " нет квартиры с таким номером");
         } else {
             boolean continueApartmentLoop = true;
             while (continueApartmentLoop) {
-                System.out.println(Colors.ANSI_BLUE + "Доступные команды (квартира)" + Colors.ANSI_RESET);
+                System.out.println(ANSIColors.BLUE + "Доступные команды (квартира)" + ANSIColors.RESET);
                 System.out.println("""
                         remove - удалить квартиру
                         info - вывести общую информацию о квартире
                         change - изменить параметр квартиры
                         . - назад
                         """);
-                System.out.print(Colors.ANSI_YELLOW + "Введите команду: " + Colors.ANSI_RESET);
+                System.out.print(ANSIColors.YELLOW + "Введите команду: " + ANSIColors.RESET);
                 String command = in.next();
                 System.out.println();
                 switch (command.toLowerCase()) {
@@ -421,7 +421,7 @@ public class ConsoleUI {
                     case "info" -> goToShowApartmentInfoCase(house, apartment);
                     case "change" -> goToChangeApartmentParameterCase(apartment);
                     case "." -> continueApartmentLoop = false;
-                    default -> System.out.println(Colors.ANSI_RED + "Неизвестная команда\n" + Colors.ANSI_RESET);
+                    default -> System.out.println(ANSIColors.RED + "Неизвестная команда\n" + ANSIColors.RESET);
                 }
             }
         }
@@ -430,13 +430,13 @@ public class ConsoleUI {
 
     private void goToRemoveApartmentCase(House house, Apartment apartment) {
         house.removeApartment(apartment);
-        System.out.println(Colors.ANSI_GREEN + "Квартира " + apartment.getNumber() + " была удалена из дома "
-                + house.getNumber() + "\n" + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.GREEN + "Квартира " + apartment.getNumber() + " была удалена из дома "
+                + house.getNumber() + "\n" + ANSIColors.RESET);
     }
 
     private void goToShowApartmentInfoCase(House house, Apartment apartment) {
-        System.out.println(Colors.ANSI_CYAN + "_ОБЩАЯ ИНФОРМАЦИЯ О КВАРТИРЕ " + apartment.getNumber() + "_"
-                + Colors.ANSI_RESET);
+        System.out.println(ANSIColors.CYAN + "_ОБЩАЯ ИНФОРМАЦИЯ О КВАРТИРЕ " + apartment.getNumber() + "_"
+                + ANSIColors.RESET);
         System.out.printf(Locale.US, """
                         Номер дома: %d
                         Этаж: %d
@@ -453,7 +453,7 @@ public class ConsoleUI {
     private void goToChangeApartmentParameterCase(Apartment apartment) {
         boolean continueLoop = true;
         while (continueLoop) {
-            System.out.println(Colors.ANSI_CYAN + "_ИЗМЕНЕНИЕ ПАРАМЕТРОВ КВАРТИРЫ_" + Colors.ANSI_RESET);
+            System.out.println(ANSIColors.CYAN + "_ИЗМЕНЕНИЕ ПАРАМЕТРОВ КВАРТИРЫ_" + ANSIColors.RESET);
             System.out.println(apartment);
             System.out.println("""
                     floor - изменить этаж
@@ -463,43 +463,43 @@ public class ConsoleUI {
                     . - назад
                     """);
 
-            System.out.print(Colors.ANSI_YELLOW + "Введите параметр: " + Colors.ANSI_RESET);
+            System.out.print(ANSIColors.YELLOW + "Введите параметр: " + ANSIColors.RESET);
             String parameter = in.next();
             System.out.println();
             try {
                 switch (parameter.toLowerCase()) {
                     case "floor" -> {
-                        System.out.print(Colors.ANSI_YELLOW + "Введите новый этаж: " + Colors.ANSI_RESET);
+                        System.out.print(ANSIColors.YELLOW + "Введите новый этаж: " + ANSIColors.RESET);
                         int floor = in.nextInt();
                         apartment.setFloor(floor);
-                        System.out.println(Colors.ANSI_GREEN + "Номер этажа квартиры был изменён" + Colors.ANSI_RESET);
+                        System.out.println(ANSIColors.GREEN + "Номер этажа квартиры был изменён" + ANSIColors.RESET);
                     }
                     case "rooms" -> {
-                        System.out.print(Colors.ANSI_YELLOW + "Введите новое кол-во комнат: " + Colors.ANSI_RESET);
+                        System.out.print(ANSIColors.YELLOW + "Введите новое кол-во комнат: " + ANSIColors.RESET);
                         int rooms = in.nextInt();
                         apartment.setRoomsNumber(rooms);
-                        System.out.println(Colors.ANSI_GREEN + "Кол-во комнат квартиры было изменено"
-                                + Colors.ANSI_RESET);
+                        System.out.println(ANSIColors.GREEN + "Кол-во комнат квартиры было изменено"
+                                + ANSIColors.RESET);
                     }
                     case "square" -> {
-                        System.out.print(Colors.ANSI_YELLOW + "Введите новое значение площади: " + Colors.ANSI_RESET);
+                        System.out.print(ANSIColors.YELLOW + "Введите новое значение площади: " + ANSIColors.RESET);
                         float square = in.nextFloat();
                         apartment.setSquare(square);
-                        System.out.println(Colors.ANSI_GREEN + "Значение площади квартиры был изменено"
-                                + Colors.ANSI_RESET);
+                        System.out.println(ANSIColors.GREEN + "Значение площади квартиры был изменено"
+                                + ANSIColors.RESET);
                     }
                     case "residents" -> {
-                        System.out.print(Colors.ANSI_YELLOW + "Введите новое кол-во жителей: " + Colors.ANSI_RESET);
+                        System.out.print(ANSIColors.YELLOW + "Введите новое кол-во жителей: " + ANSIColors.RESET);
                         int residents = in.nextInt();
                         apartment.setResidentsNumber(residents);
-                        System.out.println(Colors.ANSI_GREEN + "Кол-во жителей квартиры было изменено"
-                                + Colors.ANSI_RESET);
+                        System.out.println(ANSIColors.GREEN + "Кол-во жителей квартиры было изменено"
+                                + ANSIColors.RESET);
                     }
                     case "." -> continueLoop = false;
-                    default -> System.out.println(Colors.ANSI_RED + "Неизвестный параметр" + Colors.ANSI_RESET);
+                    default -> System.out.println(ANSIColors.RED + "Неизвестный параметр" + ANSIColors.RESET);
                 }
             } catch (IllegalArgumentException e) {
-                System.out.println(Colors.ANSI_RED + "Ошибка! " + e.getMessage() + Colors.ANSI_RESET);
+                System.out.println(ANSIColors.RED + "Ошибка! " + e.getMessage() + ANSIColors.RESET);
             }
             System.out.println();
         }

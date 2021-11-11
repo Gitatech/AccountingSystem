@@ -3,7 +3,10 @@ package entities;
 import validators.houseValidator.HouseValidator;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class House implements Comparable<House>, Serializable {
     private final int number;

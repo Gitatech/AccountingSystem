@@ -9,6 +9,7 @@ public class HouseValidator {
     }
 
     public static void validate(House house) {
-        if (!isNumberValid(house.getNumber())) throw new IllegalArgumentException(ValidationFail.ILLEGAL_NUMBER.message);
+        if (!isNumberValid(house.getNumber()))
+            throw new IllegalArgumentException(ValidationFail.ILLEGAL_NUMBER.message);
     }
 }

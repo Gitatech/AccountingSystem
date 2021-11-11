@@ -25,10 +25,15 @@ public class ApartmentValidator {
     }
 
     public static void validate(Apartment apartment) throws IllegalArgumentException {
-        if (!isNumberValid(apartment.getNumber())) throw new IllegalArgumentException(ValidationFail.ILLEGAL_NUMBER.message);
-        if (!isFloorValid(apartment.getFloor())) throw new IllegalArgumentException(ValidationFail.ILLEGAL_FLOOR.message);
-        if (!isRoomsValid(apartment.getRoomsNumber())) throw new IllegalArgumentException(ValidationFail.ILLEGAL_ROOMS.message);
-        if (!isResidentsValid(apartment.getResidentsNumber())) throw new IllegalArgumentException(ValidationFail.ILLEGAL_RESIDENTS.message);
-        if (!isSquareValid(apartment.getSquare())) throw new IllegalArgumentException(ValidationFail.ILLEGAL_SQUARE.message);
+        if (!isNumberValid(apartment.getNumber()))
+            throw new IllegalArgumentException(ValidationFail.ILLEGAL_NUMBER.message);
+        if (!isFloorValid(apartment.getFloor()))
+            throw new IllegalArgumentException(ValidationFail.ILLEGAL_FLOOR.message);
+        if (!isRoomsValid(apartment.getRoomsNumber()))
+            throw new IllegalArgumentException(ValidationFail.ILLEGAL_ROOMS.message);
+        if (!isResidentsValid(apartment.getResidentsNumber()))
+            throw new IllegalArgumentException(ValidationFail.ILLEGAL_RESIDENTS.message);
+        if (!isSquareValid(apartment.getSquare()))
+            throw new IllegalArgumentException(ValidationFail.ILLEGAL_SQUARE.message);
     }
 }

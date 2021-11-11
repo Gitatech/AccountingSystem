@@ -12,6 +12,7 @@ public class AccountingSystem {
     public AccountingSystem() {
         this.houses = new TreeSet<>();
     }
+
     public House getHouseByNumber(int houseNumber) {
         return houses.parallelStream().filter(e -> e.getNumber() == houseNumber).findFirst().orElse(null);
     }
