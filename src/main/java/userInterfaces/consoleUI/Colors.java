@@ -1,6 +1,6 @@
 package userInterfaces.consoleUI;
 
-public enum Colors {
+enum Colors {
     ANSI_RESET("\u001B[0m"),
     ANSI_BLACK("\u001B[30m"),
     ANSI_RED("\u001B[31m"),

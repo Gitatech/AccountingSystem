@@ -1,6 +1,6 @@
 package userInterfaces.consoleUI;
 
-import builders.apartmentBuilder.SimpleApartmentBuilder;
+import builders.apartmentBuilder.ApartmentBuilder;
 import builders.apartmentBuilder.Director;
 import entities.AccountingSystem;
 import entities.Apartment;
@@ -60,18 +60,18 @@ public class ConsoleUI {
             switch (command.toLowerCase()) {
                 case "add" -> goToAddHouseCase();
                 case "choose" -> goToChooseHouseCase();
-                case "compare" -> goToASCompareCase();
+                case "compare" -> goToAccountingSystemCompareCase();
                 case "show" -> goToShowHousesCase();
-                case "info" -> goToShowASInfoCase();
-                case "load" -> goToLoadASCase();
-                case "save" -> goToSaveASCase();
+                case "info" -> goToShowAccountignSystemInfoCase();
+                case "load" -> goToLoadAccountingSystemCase();
+                case "save" -> goToSaveAccountingSystemCase();
                 case "exit" -> inProcess = false;
                 default -> System.out.println(Colors.ANSI_RED + "Неизвестная команда\n" + Colors.ANSI_RESET);
             }
         }
     }
 
-    private void goToASCompareCase() {
+    private void goToAccountingSystemCompareCase() {
         boolean continueLoop = true;
         while (continueLoop) {
             System.out.println(Colors.ANSI_BLUE + "Доступные сущности для сравнения" + Colors.ANSI_RESET);
@@ -95,9 +95,9 @@ public class ConsoleUI {
         if (accountingSystem.getNumberOfApartments() > 0) {
             System.out.println(Colors.ANSI_CYAN + "_СРАВНЕНИЕ КВАРТИР ПО ПАРАМЕТРАМ_" + Colors.ANSI_RESET);
             System.out.println(Colors.ANSI_BLUE + "_ПОИСК ПЕРВОЙ КВАРТИРЫ" + Colors.ANSI_RESET);
-            Apartment apartment1 = getApartmentFromAS();
+            Apartment apartment1 = getApartmentFromAccountignSystem();
             System.out.println(Colors.ANSI_BLUE + "_ПОИСК ВТОРОЙ КВАРТИРЫ_" + Colors.ANSI_RESET);
-            Apartment apartment2 = getApartmentFromAS();
+            Apartment apartment2 = getApartmentFromAccountignSystem();
 
             char floorSign = ComparatorService.getComparisonSign(apartment1, apartment2,
                     ApartmentService::compareByFloor);
@@ -125,7 +125,7 @@ public class ConsoleUI {
         }
     }
 
-    private Apartment getApartmentFromAS() {
+    private Apartment getApartmentFromAccountignSystem() {
         goToShowHousesCase();
         House house = null;
         boolean continueHouseChoosing = true;
@@ -156,7 +156,7 @@ public class ConsoleUI {
         return apartment;
     }
 
-    private House getHouseFromAS() {
+    private House getHouseFromAccountingSystem() {
         System.out.println(Colors.ANSI_YELLOW + "Введите номер дома: " + Colors.ANSI_RESET);
         int number = in.nextInt();
         House house;
@@ -173,9 +173,9 @@ public class ConsoleUI {
             System.out.println(Colors.ANSI_CYAN + "_СРАВНЕНИЕ ДОМОВ ПО ПАРАМЕТРАМ_" + Colors.ANSI_RESET);
             goToShowHousesCase();
             System.out.println(Colors.ANSI_BLUE + "_ПОИСК ПЕРВОГО ДОМА_" + Colors.ANSI_RESET);
-            House house1 = getHouseFromAS();
+            House house1 = getHouseFromAccountingSystem();
             System.out.println(Colors.ANSI_BLUE + "_ПОИСК ВТОРОГО ДОМА_" + Colors.ANSI_RESET);
-            House house2 = getHouseFromAS();
+            House house2 = getHouseFromAccountingSystem();
             char populationSign = ComparatorService.getComparisonSign(house1, house2,
                     HouseService::compareByPopulation);
             char squareSign = ComparatorService.getComparisonSign(house1, house2,
@@ -231,14 +231,14 @@ public class ConsoleUI {
         System.out.println();
     }
 
-    private void goToShowASInfoCase() {
+    private void goToShowAccountignSystemInfoCase() {
         System.out.println(Colors.ANSI_CYAN + "_ОБЩАЯ ИНФОРМАЦИЯ О СИСТЕМЕ_" + Colors.ANSI_RESET);
         System.out.println("Кол-во домов: " + accountingSystem.getNumberOfHouses());
         System.out.println("Кол-во квартир: " + accountingSystem.getNumberOfApartments());
         System.out.println();
     }
 
-    private void goToLoadASCase() {
+    private void goToLoadAccountingSystemCase() {
         System.out.println(Colors.ANSI_CYAN + "_ЗАГРУЗКА СИСТЕМЫ УЧЁТА ИЗ ФАЙЛА_" + Colors.ANSI_RESET);
         System.out.print(Colors.ANSI_YELLOW + "Введите путь к файлу: " + Colors.ANSI_RESET);
         Path path = Paths.get(in.next());
@@ -256,7 +256,7 @@ public class ConsoleUI {
         System.out.println();
     }
 
-    private void goToSaveASCase() {
+    private void goToSaveAccountingSystemCase() {
         System.out.println(Colors.ANSI_CYAN + "_СОХРАНЕНИЕ СИСТЕМЫ УЧЁТА В ФАЙЛ_" + Colors.ANSI_RESET);
         System.out.print(Colors.ANSI_YELLOW + "Введите путь к файлу: " + Colors.ANSI_RESET);
         Path path = Paths.get(in.next());
@@ -323,7 +323,7 @@ public class ConsoleUI {
             System.out.print(Colors.ANSI_YELLOW + "Введите кол-во квартир на этаж: " + Colors.ANSI_RESET);
             int apartmentsInFloor = in.nextInt();
             if (apartmentsInFloor > 0) {
-                SimpleApartmentBuilder builder = new SimpleApartmentBuilder();
+                ApartmentBuilder builder = new ApartmentBuilder();
                 for (int number = 1; number <= numberOfApartments; number++) {
                     int floor = number / apartmentsInFloor + 1;
                     Director.generateApartmentWithNumberAndFloor(builder, number, floor);

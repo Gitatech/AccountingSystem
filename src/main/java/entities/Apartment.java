@@ -1,5 +1,7 @@
 package entities;
 
+import validators.apartmentValidator.ApartmentValidator;
+
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
@@ -11,19 +13,13 @@ public class Apartment implements Comparable<Apartment>, Serializable {
     private int residentsNumber;
     private int roomsNumber;
 
-    public Apartment(int number, int floor, int roomsNumber, int residentsNumber, float square)
-            throws IllegalArgumentException {
-        if (number < 1) throw new IllegalArgumentException("Номер квартиры должен быть больше 0");
-        if (floor < 1) throw new IllegalArgumentException("Номер этажа квартиры должен быть больше 0");
-        if (roomsNumber < 1) throw new IllegalArgumentException("Кол-во комнат должно быть больше 0");
-        if (residentsNumber < 0) throw new IllegalArgumentException("Кол-во жителей не может быть отрицательным");
-        if (square < 0.0f) throw new IllegalArgumentException("Площадь не может быть меньше нуля");
-
+    public Apartment(int number, int floor, int roomsNumber, int residentsNumber, float square) {
         this.number = number;
         this.floor = floor;
         this.roomsNumber = roomsNumber;
         this.residentsNumber = residentsNumber;
         this.square = square;
+        ApartmentValidator.validate(this);
     }
 
     public int getFloor() {

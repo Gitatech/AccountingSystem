@@ -1,5 +1,7 @@
 package entities;
 
+import validators.houseValidator.HouseValidator;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -8,8 +10,8 @@ public class House implements Comparable<House>, Serializable {
     private final SortedSet<Apartment> apartments;
 
     public House(int number) throws IllegalArgumentException {
-        if (number < 0) throw new IllegalArgumentException("Номер дома не может быть отрицательным");
         this.number = number;
+        HouseValidator.validate(this);
         apartments = new TreeSet<>();
     }
 
