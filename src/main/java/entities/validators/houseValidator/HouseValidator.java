@@ -1,4 +1,4 @@
-package validators.houseValidator;
+package entities.validators.houseValidator;
 
 import entities.House;
 

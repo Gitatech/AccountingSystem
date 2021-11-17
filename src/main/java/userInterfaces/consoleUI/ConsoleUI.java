@@ -1,7 +1,7 @@
 package userInterfaces.consoleUI;
 
-import builders.apartmentBuilder.ApartmentBuilder;
-import builders.apartmentBuilder.Director;
+import entities.apartmentBuilder.ApartmentBuilder;
+import entities.apartmentBuilder.Director;
 import entities.AccountingSystem;
 import entities.Apartment;
 import entities.House;
@@ -57,7 +57,7 @@ public class ConsoleUI {
                 case "choose" -> goToChooseHouseCase();
                 case "compare" -> goToAccountingSystemCompareCase();
                 case "show" -> goToShowHousesCase();
-                case "info" -> goToShowAccountignSystemInfoCase();
+                case "info" -> goToShowAccountingSystemInfoCase();
                 case "load" -> goToLoadAccountingSystemCase();
                 case "save" -> goToSaveAccountingSystemCase();
                 case "exit" -> inProcess = false;
@@ -90,9 +90,9 @@ public class ConsoleUI {
         if (accountingSystem.getNumberOfApartments() > 0) {
             System.out.println(ANSIColors.CYAN + "_СРАВНЕНИЕ КВАРТИР ПО ПАРАМЕТРАМ_" + ANSIColors.RESET);
             System.out.println(ANSIColors.BLUE + "_ПОИСК ПЕРВОЙ КВАРТИРЫ" + ANSIColors.RESET);
-            Apartment apartment1 = getApartmentFromAccountignSystem();
+            Apartment apartment1 = getApartmentFromAccountingSystem();
             System.out.println(ANSIColors.BLUE + "_ПОИСК ВТОРОЙ КВАРТИРЫ_" + ANSIColors.RESET);
-            Apartment apartment2 = getApartmentFromAccountignSystem();
+            Apartment apartment2 = getApartmentFromAccountingSystem();
 
             char floorSign = ComparatorService.getComparisonSign(apartment1, apartment2,
                     ApartmentService::compareByFloor);
@@ -120,7 +120,7 @@ public class ConsoleUI {
         }
     }
 
-    private Apartment getApartmentFromAccountignSystem() {
+    private Apartment getApartmentFromAccountingSystem() {
         goToShowHousesCase();
         House house = null;
         boolean continueHouseChoosing = true;
@@ -226,7 +226,7 @@ public class ConsoleUI {
         System.out.println();
     }
 
-    private void goToShowAccountignSystemInfoCase() {
+    private void goToShowAccountingSystemInfoCase() {
         System.out.println(ANSIColors.CYAN + "_ОБЩАЯ ИНФОРМАЦИЯ О СИСТЕМЕ_" + ANSIColors.RESET);
         System.out.println("Кол-во домов: " + accountingSystem.getNumberOfHouses());
         System.out.println("Кол-во квартир: " + accountingSystem.getNumberOfApartments());

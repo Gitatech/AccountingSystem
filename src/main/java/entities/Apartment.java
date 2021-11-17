@@ -1,6 +1,6 @@
 package entities;
 
-import validators.apartmentValidator.ApartmentValidator;
+import entities.validators.apartmentValidator.ApartmentValidator;
 
 import java.io.Serializable;
 import java.util.Locale;

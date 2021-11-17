@@ -1,4 +1,4 @@
-package validators.houseValidator;
+package entities.validators.houseValidator;
 
 enum ValidationFail {
     ILLEGAL_NUMBER("Номер дома должен быть больше 0");

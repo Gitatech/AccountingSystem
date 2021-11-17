@@ -1,4 +1,4 @@
-package validators.apartmentValidator;
+package entities.validators.apartmentValidator;
 
 import entities.Apartment;
 

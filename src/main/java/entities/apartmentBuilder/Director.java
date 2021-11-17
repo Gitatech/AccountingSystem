@@ -1,4 +1,4 @@
-package builders.apartmentBuilder;
+package entities.apartmentBuilder;
 
 import java.util.Random;
 

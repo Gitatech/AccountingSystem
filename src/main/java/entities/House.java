@@ -1,6 +1,6 @@
 package entities;
 
-import validators.houseValidator.HouseValidator;
+import entities.validators.houseValidator.HouseValidator;
 
 import java.io.Serializable;
 import java.util.Collections;

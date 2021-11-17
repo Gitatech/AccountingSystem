@@ -1,4 +1,4 @@
-package validators.apartmentValidator;
+package entities.validators.apartmentValidator;
 
 enum ValidationFail {
     ILLEGAL_NUMBER("Номер квартиры должен быть больше 0"),
