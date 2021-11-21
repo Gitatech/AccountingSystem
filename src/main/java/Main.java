@@ -1,8 +1,10 @@
-import Interface.*;
+import userInterface.*;
+
+import java.io.FileNotFoundException;
 
 public class Main {
-    public static void main(String[] args){
-        Interface start = new Interface();
+    public static void main(String[] args) throws FileNotFoundException {
+        UserInterface start = new UserInterface();
         start.begin();
     }
 }
