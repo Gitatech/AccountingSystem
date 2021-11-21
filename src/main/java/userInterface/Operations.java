@@ -23,10 +23,10 @@ public interface Operations {
                         "\n2.Console");
                 int p = in.nextInt();
                 if(p == 1){
-                    house.InitPersonsRandom();
+                    house.initPersonsRandom();
                 }
                 else if(p == 2) {
-                    house.InitPersons();
+                    house.initPersons();
                 }
                 else{
                     System.out.println("Incorrect value.Residents not listed");
@@ -56,7 +56,7 @@ public interface Operations {
             System.out.println("Too mach:");
             return;
         }
-        houses.get(--m).compare_houses(houses.get(--f));
+        houses.get(--m).compareHouses(houses.get(--f));
     }
 
     static void Compare_flats(@NotNull List<House> houses){
@@ -68,15 +68,15 @@ public interface Operations {
         System.out.println("Enter number of House");
         int HOUSE = in.nextInt();
         HOUSE--;
-        System.out.println("Enter Number of the first flat " + "(" + (houses.get(HOUSE).N_flats_in_house()-1) + " flats in this house)");
+        System.out.println("Enter Number of the first flat " + "(" + (houses.get(HOUSE).getNumberOfFlatsInHouse()-1) + " flats in this house)");
         int NUMBER1 = in.nextInt();
-        System.out.println("Enter Number of the second flat " + "(" + (houses.get(HOUSE).N_flats_in_house()-1) + " flats in this house)");
+        System.out.println("Enter Number of the second flat " + "(" + (houses.get(HOUSE).getNumberOfFlatsInHouse()-1) + " flats in this house)");
         int NUMBER2 = in.nextInt();
-        if (NUMBER1 >= houses.get(HOUSE).N_flats_in_house() || NUMBER2 >= houses.get(HOUSE).N_flats_in_house()) {
+        if (NUMBER1 >= houses.get(HOUSE).getNumberOfFlatsInHouse() || NUMBER2 >= houses.get(HOUSE).getNumberOfFlatsInHouse()) {
             System.out.println("Can't compare");
             return;
         }
-        houses.get(HOUSE).Compare_flats(NUMBER1, NUMBER2);
+        houses.get(HOUSE).compareFlats(NUMBER1, NUMBER2);
     }
 
     static void Info_house(@NotNull List<House> houses){
@@ -92,10 +92,10 @@ public interface Operations {
             return;
         }
         l--;
-        System.out.println("House #" + ++l + " has " + houses.get(--l).N_house_grounds() + " floors");
-        System.out.println("House #" + ++l + " has " + houses.get(--l).N_flats_in_house() + " flats");
-        System.out.println("Number of residents in the " + ++l + " house: " + houses.get(--l).get_N_man());
-        System.out.println("Area of the " + ++l + " House: " + houses.get(--l).House_area());
+        System.out.println("House #" + ++l + " has " + houses.get(--l).getNumberOfGroundsInHouse() + " floors");
+        System.out.println("House #" + ++l + " has " + houses.get(--l).getNumberOfFlatsInHouse() + " flats");
+        System.out.println("Number of residents in the " + ++l + " house: " + houses.get(--l).getNumberOfMan());
+        System.out.println("Area of the " + ++l + " House: " + houses.get(--l).getHouseArea());
     }
 
     static void Delete_house(@NotNull List<House> houses){
@@ -108,8 +108,8 @@ public interface Operations {
         for(int i =0;i<houses.size();i++)
         {
             System.out.println("HOUSE #" + ++i);
-            System.out.println("Number of residents: " +houses.get(--i).get_N_man());
-            System.out.println("Area: " + houses.get(i).House_area());
+            System.out.println("Number of residents: " +houses.get(--i).getNumberOfMan());
+            System.out.println("Area: " + houses.get(i).getHouseArea());
             System.out.println("-----------------------------------------------------------------------------");
         }
         System.out.println("House number you want to delete(Press 0 to exit):");
