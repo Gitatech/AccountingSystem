@@ -117,7 +117,7 @@ public class House implements Externalizable {
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeObject(houseName);
-        out.writeInt(numberOfGrounds);
+        out.writeObject(numberOfGrounds);
         out.writeObject(grounds);
     }
 

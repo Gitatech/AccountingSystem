@@ -34,9 +34,9 @@ public class Flat implements Externalizable{
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeInt(numOfFlat);
-        out.writeInt(numberHuman);
-        out.writeDouble(sqrt);
+        out.writeObject(numOfFlat);
+        out.writeObject(numberHuman);
+        out.writeObject(sqrt);
     }
 
     @Override

@@ -16,7 +16,7 @@ public class HouseListService {
                 houses.add(house);
             }
         } catch (Exception e) {
-            System.out.println( e.getMessage());
+            System.out.println( "Error"+ e.getMessage());
         }
     }
 

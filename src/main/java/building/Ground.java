@@ -82,7 +82,7 @@ public class Ground  implements Externalizable {
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeInt(NumberOfFlatsInGround);
+        out.writeObject(NumberOfFlatsInGround);
         out.writeObject(flat);
     }
 
