@@ -1,38 +1,51 @@
-package Interface;
+package userInterface;
 
+import java.io.FileNotFoundException;
+import java.io.File;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
-import Bilding.*;
+import building.*;
+import service.HouseListService;
 
-public class Interface implements Operations {
-    public void begin() {
+public class UserInterface implements Operations {
+    public static final String MENU = """
+            Input value 1 to 6
+            1.Create new house 
+            2.Compare houses
+            3.Compare flats
+            4.Al information about house
+            5.Remove house
+            6.Exit
+            """;
+    public void begin() throws FileNotFoundException {
         Scanner in = new Scanner(System.in);
+        HouseListService houseList = new HouseListService();
         List<House> houses = new ArrayList<House>();
-        System.out.println("What do you want to do:" +
-                 "\n1.Create new house" +
-                 "\n2.Compare" +
-                 "\n3.Compare flats" +
-                 "\n4.Al information about house" +
-                 "\n5.Delete house" +
-                 "\n6.Exit");
+        String listOfHouses = "src\\main\\java\\houseList.txt";
+        System.out.println(MENU);
+        if (houses.isEmpty() && new File(listOfHouses).length() != 0) {
+            houseList.readHouseList(houses, listOfHouses);
+        }
         int k = in.nextInt();
         while (k != 6) {
             switch (k) {
                 case (1):
-                    Operations.Create_new_house(houses);
+                    Operations.сreateNewHouse(houses);
+                    houseList.writeHouseList(houses,listOfHouses);
                     break;
                 case (2):
-                    Operations.Compare_houses(houses);
+                    Operations.compareHouses(houses);
                     break;
                 case (3):
-                    Operations.Compare_flats(houses);
+                    Operations.compareFlats(houses);
                     break;
                 case (4):
-                    Operations.Info_house(houses);
+                    Operations.getHouseInfo(houses);
                     break;
                 case (5):
-                    Operations.Delete_house(houses);
+                    Operations.removeHouse(houses);
+                    houseList.writeHouseList(houses, listOfHouses);
                     break;
                 case (6):
                     break;
@@ -40,13 +53,7 @@ public class Interface implements Operations {
                     System.out.println("Try again");
                     break;
             }
-            System.out.println("What you want to do:" +
-                    "\n1.Create new house" +
-                    "\n2.Compare" +
-                    "\n3.Compare flats" +
-                    "\n4.Al information about house" +
-                    "\n5.Delete house" +
-                    "\n6.Exit");
+            System.out.println(MENU);
             k = in.nextInt();
 
         }

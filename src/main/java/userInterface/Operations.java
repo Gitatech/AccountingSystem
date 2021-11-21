@@ -1,21 +1,35 @@
-package Interface;
+package userInterface;
 
+import builder.HouseBuilder;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.Scanner;
-import Bilding.*;
+import building.*;
+
+import javax.imageio.IIOException;
+
 public interface Operations {
-    static void Create_new_house(@NotNull List<House> houses)
-    {
+    static void сreateNewHouse(@NotNull List<House> houses) throws FileNotFoundException {
         Scanner in = new Scanner(System.in);
-        House house = new House();
+        System.out.print("Enter height of house:");
+        int height = in.nextInt();
+        System.out.print("Enter house name");
+        String name = in.next();
+        House house = new HouseBuilder()
+                .setHouseName(name)
+                .setNumOfGrounds(height)
+                .FillingHouse()
+                .builder();
         System.out.println("Move in the house?" +
                 "\n1.Yes" +
                 "\n2.No");
-        int k = in.nextInt();
-        switch (k)
+        int option = in.nextInt();
+        switch (option)
         {
             case 1:
                 System.out.println("Random or from the console?" +
@@ -42,7 +56,7 @@ public interface Operations {
         houses.add(house);
     }
 
-    static void Compare_houses(@NotNull List<House> houses){
+    static void compareHouses(@NotNull List<House> houses){
         Scanner in = new Scanner(System.in);
         if (houses.size() < 2) {
             System.out.println("Not enough houses to compare");
@@ -59,7 +73,7 @@ public interface Operations {
         houses.get(--m).compareHouses(houses.get(--f));
     }
 
-    static void Compare_flats(@NotNull List<House> houses){
+    static void compareFlats(@NotNull List<House> houses){
         Scanner in = new Scanner(System.in);
         if (houses.isEmpty()) {
             System.out.println("There is no one house");
@@ -79,26 +93,30 @@ public interface Operations {
         houses.get(HOUSE).compareFlats(NUMBER1, NUMBER2);
     }
 
-    static void Info_house(@NotNull List<House> houses){
+    static void getHouseInfo(@NotNull List<House> houses){
         Scanner in = new Scanner(System.in);
         if (houses.isEmpty()) {
             System.out.println("There is no one house");
             return;
         }
+        for(int i =0;i<houses.size();i++)
+        {
+            System.out.println("HOUSE #" + ++i + ": " + houses.get(--i).getHouseName());
+        }
         System.out.println("What number of house:");
         int l = in.nextInt();
-        if (l > houses.size()) {
-            System.out.println("Too much:");
+        if (l > houses.size()||l < 1) {
+            System.out.println("Incorrect value :");
             return;
         }
         l--;
         System.out.println("House #" + ++l + " has " + houses.get(--l).getNumberOfGroundsInHouse() + " floors");
         System.out.println("House #" + ++l + " has " + houses.get(--l).getNumberOfFlatsInHouse() + " flats");
-        System.out.println("Number of residents in the " + ++l + " house: " + houses.get(--l).getNumberOfMan());
+        System.out.println("Number of residents in the " + ++l + " house: " + houses.get(--l).getNumberOfHuman());
         System.out.println("Area of the " + ++l + " House: " + houses.get(--l).getHouseArea());
     }
 
-    static void Delete_house(@NotNull List<House> houses){
+    static void removeHouse(@NotNull List<House> houses){
         Scanner in = new Scanner(System.in);
         if (houses.isEmpty()) {
             System.out.println("There is no one house");
@@ -107,10 +125,7 @@ public interface Operations {
         System.out.println("-----------------------------------------------------------------------------");
         for(int i =0;i<houses.size();i++)
         {
-            System.out.println("HOUSE #" + ++i);
-            System.out.println("Number of residents: " +houses.get(--i).getNumberOfMan());
-            System.out.println("Area: " + houses.get(i).getHouseArea());
-            System.out.println("-----------------------------------------------------------------------------");
+            System.out.println("HOUSE #" + ++i + ": " + houses.get(--i).getHouseName());
         }
         System.out.println("House number you want to delete(Press 0 to exit):");
         int del = in.nextInt();
@@ -125,5 +140,6 @@ public interface Operations {
             return;
         }
         houses.remove(del);
+
     }
 }
