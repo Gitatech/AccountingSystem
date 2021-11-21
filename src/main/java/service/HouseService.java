@@ -1,10 +1,13 @@
 package service;
 
 import building.House;
+import org.jetbrains.annotations.NotNull;
 
-public class HouseService {
+import java.util.Comparator;
 
-    public static double getHouseArea(House house){
+public class HouseService  {
+
+    public static double getHouseArea(House house) {
         int sqrt = 0;
         for(int i = 0; i< house.getNumberOfGroundsInHouse(); i++)
         {
@@ -21,4 +24,5 @@ public class HouseService {
         }
         return kol;
     }
+
 }

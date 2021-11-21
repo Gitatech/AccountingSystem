@@ -1,11 +1,12 @@
 package building;
 
+import houseComparator.*;
+import flatComparator.*;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 import java.util.List;
-import builder.GroundBuilder;
 import service.HouseService;
 import java.io.Externalizable;
 import java.io.IOException;
@@ -30,6 +31,9 @@ public class House implements Externalizable {
 
     public Ground getGround(int i){
         return grounds.get(i);
+    }
+    public Ground getGroundByFlatNumber(int number){
+        return grounds.get(number/grounds.size());
     }
 
 
@@ -59,50 +63,20 @@ public class House implements Externalizable {
         grounds.add(newGround);
     }
 
-    public void compareFlats(int Number1,int Number2) {
-        if(this.getFlatArea(Number1) > this.getFlatArea(Number2)){
-            System.out.println("The area on the first flat is larger: "+ this.getFlatArea(Number1));
-        }
-        else if(this.getFlatArea(Number1) < this.getFlatArea(Number2)){
-            System.out.println("The area on the second flat is larger: "+ this.getFlatArea(Number2));
-        }
-        else{
-            System.out.println("Areas are equal: " + this.getFlatArea(Number1));
-        }
-        if(this.getManInFlat(Number1) > this.getManInFlat(Number2)){
-            System.out.println("There are more people on the first flat: "+ this.getManInFlat(Number1));
-        }
-        else if(this.getManInFlat(Number1) < this.getManInFlat(Number2)){
-            System.out.println("There are more people on the second flat: "+ this.getManInFlat(Number2));
-        }
-        else{
-            System.out.println("Residents equally: " + this.getManInFlat(Number1));
-        }
+    public List<Integer> compareFlats(int Number1,int Number2) {
+        List<Integer> answer = new ArrayList<Integer>();
+        answer.add(new FlatAreaCompare().compare(this.getGroundByFlatNumber(Number1).getFlatByNumber(Number1)
+                ,this.getGroundByFlatNumber(Number2).getFlatByNumber(Number2)));
+        answer.add(new FlatPersonsCompare().compare(this.getGroundByFlatNumber(Number1).getFlatByNumber(Number1)
+                ,this.getGroundByFlatNumber(Number2).getFlatByNumber(Number2)));
+        return answer;
     }
 
-    public  String compareHouses(@NotNull House house2)
+    public  List<Integer> compareHouses(@NotNull House house2)
     {
-        String answer = new String();
-        if(this.getHouseArea() > house2.getHouseArea()){
-            System.out.println("House 1 bigger with area "+ this.getHouseArea());
-        }
-        else  if(this.getHouseArea() < house2.getHouseArea()){
-            System.out.println("House 2 bigger with area "+ house2.getHouseArea());
-        }
-        else{
-            System.out.println("Areas are the same: " +house2.getHouseArea());
-        }
-
-
-        if(this.getNumberOfHuman() > house2.getNumberOfHuman()){
-            System.out.println("There are more people in the first house: "+ this.getNumberOfHuman() +" vs "+house2.getNumberOfHuman());
-        }
-        else  if(this.getNumberOfHuman() < house2.getNumberOfHuman()){
-            System.out.println("There are more people in the first house: "+ house2.getNumberOfHuman() +" vs "+this.getNumberOfHuman());
-        }
-        else{
-            System.out.println("Equal number of residents: " +house2.getNumberOfHuman());
-        }
+        List<Integer> answer = new ArrayList<Integer>();
+        answer.add(new AreaCompare().compare(this,house2));
+        answer.add(new PersonsCompare().compare(this,house2));
         return answer;
     }
     public int getNumberOfGroundsInHouse(){

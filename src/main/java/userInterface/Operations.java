@@ -90,7 +90,7 @@ public interface Operations {
             System.out.println("Can't compare");
             return;
         }
-        houses.get(HOUSE).compareFlats(NUMBER1, NUMBER2);
+        System.out.println (houses.get(HOUSE).compareFlats(NUMBER1, NUMBER2));
     }
 
     static void getHouseInfo(@NotNull List<House> houses){

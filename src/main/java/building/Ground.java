@@ -44,6 +44,8 @@ public class Ground  implements Externalizable {
         }
     }
 
+    public Flat getFlatByNumber(int number){return flat.get(number % flat.size());}
+
     public int getManInGround() {
         int kol = 0;
         for (int i = 0; i < NumberOfFlatsInGround; i++) {
