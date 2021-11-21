@@ -1,4 +1,4 @@
-package building.flatBilder;
+package builder;
 
 import building.Flat;
 
