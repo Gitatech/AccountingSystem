@@ -1,10 +1,15 @@
-package Bilding;
+package building;
 
-public class Flat {
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+public class Flat implements Externalizable{
     private int numberHuman = 0 ;
     private double sqrt = 0;
-    private static int checker = 0;
-    private int num = 0;
+    private static int flatNumberChecker = 0;
+    private int numOfFlat = 0;
 
     public void setNHuman(int NHuman) {
         this.numberHuman = NHuman;
@@ -12,19 +17,34 @@ public class Flat {
 
     public void setSqrt(double sqrt) {this.sqrt = sqrt;}
 
-    public void setNum(){
-        this.num = num;
-        checker++;
+    public void setNumOfFlat(){
+        this.numOfFlat = flatNumberChecker;
+        flatNumberChecker++;
     }
     public int getNumberOfHuman() {return numberHuman;}
     public double getSqrt() {
         return sqrt;
     }
     public void setChecker(int k){
-        checker = k;
+        flatNumberChecker = k;
     }
     public int getNumber() {
-        return num;
+        return numOfFlat;
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeInt(numOfFlat);
+        out.writeInt(numberHuman);
+        out.writeDouble(sqrt);
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        numOfFlat = (int) in.readObject();
+        numberHuman = (int) in.readObject();
+        sqrt = (double) in.readObject();
+
     }
 }
 

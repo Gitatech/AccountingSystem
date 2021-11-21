@@ -1,70 +1,62 @@
-package Bilding;
+package building;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
+import builder.GroundBuilder;
+import service.HouseService;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
-public class House {
+public class House implements Externalizable {
     private List<Ground> grounds;
     private final int height = 3;
-    private int numberOfGrounds;
+    private int numberOfGrounds = 0;
+    private int houseNumber = 0;
+    private String houseName;
 
     public House() {
-        System.out.print("Enter height of house:");
-        Scanner in = new Scanner(System.in);  //высчитывается кол. этажей
-        numberOfGrounds = (in.nextInt())/height;
-        while (numberOfGrounds <= 0) {
-            System.out.println("Height too low.");
-            System.out.print("Enter height of house again:");
-            numberOfGrounds = (in.nextInt())/height;
-        }
-        System.out.println("It turned out "+ numberOfGrounds +" floors");
-        grounds = new ArrayList<Ground>();
-        System.out.print("Enter number of flats in ground:");
-        int k = in.nextInt();
-        while(k<1){
-            System.out.print("Incorrect value.");
-            System.out.print("Enter number of flats in ground:");
-            k = in.nextInt();
-        }
-        Ground F = new Ground(k);
-        grounds.add(F);
-        for(int i = 1; i< numberOfGrounds; i++) {
-            Ground P = new Ground(grounds.get(0));
-            grounds.add(P);
-        }
-
-        this.grounds.get(0).NUM(0);
+       grounds = new ArrayList<Ground>(0);
+       houseNumber = 0;
+       numberOfGrounds = 0;
+    }
+    public void setNumberOfGrounds(int numberOfGrounds) {
+        this.numberOfGrounds = numberOfGrounds;
     }
 
-    public int getNumberOfMan(){  // возвращает общее число жильцов
-        int KOL = 0;
-        for(int i = 0; i< numberOfGrounds; i++)
-        {
-            KOL += grounds.get(i).get_Man_Ground();
-        }
-        return KOL;
+    public Ground getGround(int i){
+        return grounds.get(i);
+    }
+
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getNumberOfHuman(){  // возвращает общее число жильцов
+        return HouseService.getNumberOfHuman(this);
     }
 
     public double getHouseArea(){
-        int SQ = 0;
-        for(int i = 0; i< numberOfGrounds; i++)
-        {
-            SQ += grounds.get(i).Ground_area();
-        }
-        return SQ;
+        return HouseService.getHouseArea(this);
     }
 
     public double getFlatArea(int i) { // возвращает площадь квартиры по её номеру
         int gr = i / (grounds.get(0).getFlatsOnGround());
-        return grounds.get(gr).flat_area(i);
+        return grounds.get(gr).getFlatArea(i);
     }
 
     public int getManInFlat(int i){ //возвращает кол. жильцов в квартире через номер квартиры
         int gr = i / (grounds.get(0).getFlatsOnGround());
-        return grounds.get(gr).get_Man_Flat(i);
+        return grounds.get(gr).getManInFlat(i);
+    }
+
+    public void addGround(Ground newGround){
+        grounds.add(newGround);
     }
 
     public void compareFlats(int Number1,int Number2) {
@@ -88,28 +80,30 @@ public class House {
         }
     }
 
-    public  void compareHouses(@NotNull House house2)
+    public  String compareHouses(@NotNull House house2)
     {
+        String answer = new String();
         if(this.getHouseArea() > house2.getHouseArea()){
-            System.out.println("House 1 bigger with the area " + this.getHouseArea() + ". Area of the 2 house: " + house2.getHouseArea());
+            System.out.println("House 1 bigger with area "+ this.getHouseArea());
         }
         else  if(this.getHouseArea() < house2.getHouseArea()){
-            System.out.println("House 2 bigger with the area " + house2.getHouseArea() + ". Area of the 1 house: " + this.getHouseArea());
+            System.out.println("House 2 bigger with area "+ house2.getHouseArea());
         }
         else{
-            System.out.println("Areas are the same: " + house2.getHouseArea());
+            System.out.println("Areas are the same: " +house2.getHouseArea());
         }
 
 
-        if(this.getNumberOfMan() > house2.getNumberOfMan()){
-            System.out.println("There are more people in the first house: "+ this.getNumberOfMan() +" vs "+house2.getNumberOfMan());
+        if(this.getNumberOfHuman() > house2.getNumberOfHuman()){
+            System.out.println("There are more people in the first house: "+ this.getNumberOfHuman() +" vs "+house2.getNumberOfHuman());
         }
-        else  if(this.getNumberOfMan() < house2.getNumberOfMan()){
-            System.out.println("There are more people in the first house: "+ house2.getNumberOfMan() +" vs "+this.getNumberOfMan());
+        else  if(this.getNumberOfHuman() < house2.getNumberOfHuman()){
+            System.out.println("There are more people in the first house: "+ house2.getNumberOfHuman() +" vs "+this.getNumberOfHuman());
         }
         else{
-            System.out.println("Equal number of residents: " +house2.getNumberOfMan());
+            System.out.println("Equal number of residents: " +house2.getNumberOfHuman());
         }
+        return answer;
     }
     public int getNumberOfGroundsInHouse(){
         return this.numberOfGrounds;
@@ -129,5 +123,35 @@ public class House {
         for(int i = 0; i< numberOfGrounds; i++){
             grounds.get(i).initPersonsRandom();
         }
+    }
+
+    public String getHouseName() {
+        return houseName;
+    }
+
+
+    //class CompareArea implements Comparator<House>{
+      //  public int compare(@NotNull House house1, House house2)
+       // {
+        //    return house1.getHouseArea()- house1.getHouseArea();
+       // }
+   // }
+    public void setHouseName(String name) {
+        houseName = name;
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(houseName);
+        out.writeInt(numberOfGrounds);
+        out.writeObject(grounds);
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        houseName = (String)in.readObject();
+        numberOfGrounds = (int) in.readObject();
+        grounds =(List<Ground>) in.readObject();
+
     }
 }
