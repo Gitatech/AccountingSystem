@@ -9,10 +9,6 @@ import services.ApartmentService;
 import services.ComparatorService;
 import services.HouseService;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -44,8 +40,6 @@ public class ConsoleUI {
                     compare - сравнить дома/квартиры в системе
                     show - показать дома, находящиеся в системе
                     info - общая информация о системе
-                    load - загрузить систему из файла
-                    save - сохранить систему в файл
                     exit - выход
                     """);
             System.out.print(ANSIColors.YELLOW + "Введите команду: " + ANSIColors.RESET);
@@ -58,8 +52,6 @@ public class ConsoleUI {
                 case "compare" -> goToAccountingSystemCompareCase();
                 case "show" -> goToShowHousesCase();
                 case "info" -> goToShowAccountingSystemInfoCase();
-                case "load" -> goToLoadAccountingSystemCase();
-                case "save" -> goToSaveAccountingSystemCase();
                 case "exit" -> inProcess = false;
                 default -> System.out.println(ANSIColors.RED + "Неизвестная команда\n" + ANSIColors.RESET);
             }
@@ -233,38 +225,6 @@ public class ConsoleUI {
         System.out.println();
     }
 
-    private void goToLoadAccountingSystemCase() {
-        System.out.println(ANSIColors.CYAN + "_ЗАГРУЗКА СИСТЕМЫ УЧЁТА ИЗ ФАЙЛА_" + ANSIColors.RESET);
-        System.out.print(ANSIColors.YELLOW + "Введите путь к файлу: " + ANSIColors.RESET);
-        Path path = Paths.get(in.next());
-        try {
-            accountingSystem.load(path.toString());
-            System.out.println(ANSIColors.GREEN + "Система была загружена из файла " + path.getFileName()
-                    + ANSIColors.RESET);
-        } catch (FileNotFoundException e) {
-            System.out.println(ANSIColors.RED + "Файл не найден" + ANSIColors.RESET);
-        } catch (ClassNotFoundException e) {
-            System.out.println(ANSIColors.RED + "Не удалось прочитать файл" + ANSIColors.RESET);
-        } catch (IOException e) {
-            System.out.println(ANSIColors.RED + "Ошибка потока ввода/вывода" + ANSIColors.RESET);
-        }
-        System.out.println();
-    }
-
-    private void goToSaveAccountingSystemCase() {
-        System.out.println(ANSIColors.CYAN + "_СОХРАНЕНИЕ СИСТЕМЫ УЧЁТА В ФАЙЛ_" + ANSIColors.RESET);
-        System.out.print(ANSIColors.YELLOW + "Введите путь к файлу: " + ANSIColors.RESET);
-        Path path = Paths.get(in.next());
-        try {
-            accountingSystem.save(path.toString());
-            System.out.println(ANSIColors.GREEN + "Система была сохранена в файл " + path.getFileName()
-                    + ANSIColors.RESET);
-        } catch (IOException e) {
-            System.out.println(ANSIColors.RED + "Ошибка потока ввода/вывода" + ANSIColors.RESET);
-        }
-        System.out.println();
-    }
-
     private void goToChooseHouseCase() {
         System.out.println(ANSIColors.CYAN + "_ВЫБОР ДОМА В СИСТЕМЕ_" + ANSIColors.RESET);
         goToShowHousesCase();
@@ -320,8 +280,7 @@ public class ConsoleUI {
             if (apartmentsInFloor > 0) {
                 ApartmentBuilder builder = new ApartmentBuilder();
                 for (int number = 1; number <= numberOfApartments; number++) {
-                    int floor = number / apartmentsInFloor + 1;
-                    Director.generateApartmentWithNumberAndFloor(builder, number, floor);
+                    Director.generateApartmentWithNumberAndApartmentsInFloor(builder, number, apartmentsInFloor);
                     house.addApartment(builder.getResult());
                 }
                 System.out.println(ANSIColors.GREEN.code + numberOfApartments + " квартир было добавлено в " + house

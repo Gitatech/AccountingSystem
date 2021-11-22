@@ -1,13 +1,11 @@
 package entities;
 
-import java.io.*;
 import java.util.Collections;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class AccountingSystem {
-    private SortedSet<House> houses;
+    private final SortedSet<House> houses;
 
     public AccountingSystem() {
         this.houses = new TreeSet<>();
@@ -39,18 +37,6 @@ public class AccountingSystem {
 
     public int getNumberOfApartments() {
         return houses.parallelStream().mapToInt(e -> e.getApartments().size()).sum();
-    }
-
-    public void save(String path) throws IOException {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path))) {
-            out.writeObject(houses.toArray(House[]::new));
-        }
-    }
-
-    public void load(String path) throws IOException, ClassNotFoundException {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(path))) {
-            houses = new TreeSet<>(Set.of((House[]) in.readObject()));
-        }
     }
 
 }
