@@ -28,13 +28,10 @@ public class House implements Externalizable {
     public void setNumberOfGrounds(int numberOfGrounds) {
         this.numberOfGrounds = numberOfGrounds;
     }
-
     public Ground getGround(int i){
         return grounds.get(i);
     }
-    public Ground getGroundByFlatNumber(int number){
-        return grounds.get(number/grounds.size());
-    }
+    public Ground getGroundByFlatNumber(int number){return grounds.get(number/grounds.size());}
 
 
     public int getHeight() {
@@ -103,13 +100,6 @@ public class House implements Externalizable {
         return houseName;
     }
 
-
-    //class CompareArea implements Comparator<House>{
-      //  public int compare(@NotNull House house1, House house2)
-       // {
-        //    return house1.getHouseArea()- house1.getHouseArea();
-       // }
-   // }
     public void setHouseName(String name) {
         houseName = name;
     }
