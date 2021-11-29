@@ -1,8 +1,9 @@
 package builder;
 
-import building.Flat;
-import building.Ground;
+import com.prokopchyk.building.Flat;
+import com.prokopchyk.building.Ground;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class GroundBuilder {
@@ -34,6 +35,11 @@ public class GroundBuilder {
             Flat newFlat = new FlatBilder().setSqrt(flatArea).setNumOfFlat().bilder();
             newGround.addFlat(newFlat);
         }
+        return this;
+    }
+
+    public GroundBuilder setGround(List<Flat> flats){
+        newGround.setFlat(flats);
         return this;
     }
     public Ground Builder(){

@@ -1,6 +1,6 @@
 package service;
 
-import building.House;
+import com.prokopchyk.building.House;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;

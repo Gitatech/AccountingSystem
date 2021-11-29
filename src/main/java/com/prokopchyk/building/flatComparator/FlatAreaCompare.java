@@ -1,6 +1,6 @@
 package flatComparator;
 
-import building.Flat;
+import com.prokopchyk.building.Flat;
 
 import java.util.Comparator;
 

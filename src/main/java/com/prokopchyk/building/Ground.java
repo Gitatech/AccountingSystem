@@ -19,6 +19,10 @@ public class Ground  implements Externalizable {
         setNumberOfFlatsInGround(0);
     }
 
+    public void setFlat(List<Flat>flat){
+        this.flat = new ArrayList<Flat>(flat);
+    }
+
     public void addFlat(Flat flat){
         this.flat.add(flat);
     }
@@ -37,7 +41,6 @@ public class Ground  implements Externalizable {
     }
 
     public void initPersonsRandom() {
-        Scanner in = new Scanner(System.in);
         for (int i = 0; i < NumberOfFlatsInGround; i++) {
             int k = (int) (Math.random() * 5);
             flat.get(i).setNHuman(k);

@@ -1,6 +1,6 @@
 package builder;
 
-import building.Flat;
+import com.prokopchyk.building.Flat;
 
 public class FlatBilder {
     private Flat flat;
@@ -10,8 +10,8 @@ public class FlatBilder {
         flat = new Flat();
      }
 
-    public FlatBilder setNumberOfHuman(int N_human) {
-        this.flat.setNHuman(N_human);
+    public FlatBilder setNumberOfHuman(int nHuman) {
+        this.flat.setNHuman(nHuman);
         return this;
     }
 

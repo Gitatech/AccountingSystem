@@ -25,6 +25,9 @@ public class House implements Externalizable {
        houseNumber = 0;
        numberOfGrounds = 0;
     }
+    public void setGrounds(List<Ground> grounds){
+        this.grounds = new ArrayList<Ground>(grounds);
+    }
     public void setNumberOfGrounds(int numberOfGrounds) {
         this.numberOfGrounds = numberOfGrounds;
     }
@@ -32,7 +35,6 @@ public class House implements Externalizable {
         return grounds.get(i);
     }
     public Ground getGroundByFlatNumber(int number){return grounds.get(number/grounds.size());}
-
 
     public int getHeight() {
         return height;
@@ -60,21 +62,13 @@ public class House implements Externalizable {
         grounds.add(newGround);
     }
 
-    public List<Integer> compareFlats(int Number1,int Number2) {
-        List<Integer> answer = new ArrayList<Integer>();
-        answer.add(new FlatAreaCompare().compare(this.getGroundByFlatNumber(Number1).getFlatByNumber(Number1)
-                ,this.getGroundByFlatNumber(Number2).getFlatByNumber(Number2)));
-        answer.add(new FlatPersonsCompare().compare(this.getGroundByFlatNumber(Number1).getFlatByNumber(Number1)
-                ,this.getGroundByFlatNumber(Number2).getFlatByNumber(Number2)));
-        return answer;
+    public List<Integer> compareFlats(int number1,int number2) {
+        return HouseService.compareFlats(this,number1,number2);
     }
 
     public  List<Integer> compareHouses(@NotNull House house2)
     {
-        List<Integer> answer = new ArrayList<Integer>();
-        answer.add(new AreaCompare().compare(this,house2));
-        answer.add(new PersonsCompare().compare(this,house2));
-        return answer;
+        return HouseService.compareHouses(this,house2);
     }
     public int getNumberOfGroundsInHouse(){
         return this.numberOfGrounds;
@@ -84,13 +78,11 @@ public class House implements Externalizable {
         return (this.numberOfGrounds * grounds.get(0).getFlatsOnGround());
     }
     public void initPersons(){
-        Scanner in = new Scanner(System.in);
         for(int i = 0; i< numberOfGrounds; i++){
             grounds.get(i).initPersons();
         }
     }
     public void initPersonsRandom(){
-        Scanner in = new Scanner(System.in);
         for(int i = 0; i< numberOfGrounds; i++){
             grounds.get(i).initPersonsRandom();
         }

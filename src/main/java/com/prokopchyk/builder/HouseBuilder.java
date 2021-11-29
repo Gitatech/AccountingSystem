@@ -1,8 +1,9 @@
 package builder;
 
-import building.Ground;
-import building.House;
+import com.prokopchyk.building.Ground;
+import com.prokopchyk.building.House;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class HouseBuilder {
@@ -45,6 +46,11 @@ public class HouseBuilder {
             newHouse.addGround(other);
         }
         first.setFlatChecker(0);
+        return this;
+    }
+
+    public HouseBuilder setGrounds(List<Ground> grounds){
+        newHouse.setGrounds(grounds);
         return this;
     }
 

@@ -1,4 +1,4 @@
-import userInterface.*;
+import com.prokopchyk.userInterface.*;
 
 import java.io.FileNotFoundException;
 

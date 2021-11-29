@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 import building.*;
+import com.prokopchyk.building.House;
 import service.HouseListService;
 
 public class UserInterface implements Operations {
@@ -22,7 +23,7 @@ public class UserInterface implements Operations {
         Scanner in = new Scanner(System.in);
         HouseListService houseList = new HouseListService();
         List<House> houses = new ArrayList<House>();
-        String listOfHouses = "src\\main\\java\\houseList.txt";
+        String listOfHouses = "src\\main\\resources\\houseList.txt";
         System.out.println(MENU);
         if (houses.isEmpty() && new File(listOfHouses).length() != 0) {
             houseList.readHouseList(houses, listOfHouses);

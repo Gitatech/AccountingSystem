@@ -1,5 +1,5 @@
 package houseComparator;
-import building.House;
+import com.prokopchyk.building.House;
 
 import java.util.Comparator;
 
