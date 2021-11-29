@@ -1,14 +1,10 @@
-package building;
-
-import org.jetbrains.annotations.NotNull;
+package com.prokopchyk.building;
 
 import java.io.Externalizable;
 import java.util.*;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-
-import builder.FlatBilder;
 
 public class Ground  implements Externalizable {
     private List<Flat> flat;

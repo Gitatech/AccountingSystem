@@ -1,4 +1,4 @@
-package houseComparator;
+package com.prokopchyk.building.houseComparator;
 
 import com.prokopchyk.building.House;
 

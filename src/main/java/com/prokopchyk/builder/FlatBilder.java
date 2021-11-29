@@ -1,4 +1,4 @@
-package builder;
+package com.prokopchyk.builder;
 
 import com.prokopchyk.building.Flat;
 

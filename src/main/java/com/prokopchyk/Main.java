@@ -1,3 +1,5 @@
+package com.prokopchyk;
+
 import com.prokopchyk.userInterface.*;
 
 import java.io.FileNotFoundException;

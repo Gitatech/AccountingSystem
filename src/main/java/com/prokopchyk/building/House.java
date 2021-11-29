@@ -1,13 +1,9 @@
-package building;
+package com.prokopchyk.building;
 
-import houseComparator.*;
-import flatComparator.*;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Scanner;
 import java.util.List;
-import service.HouseService;
+import com.prokopchyk.service.HouseService;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;

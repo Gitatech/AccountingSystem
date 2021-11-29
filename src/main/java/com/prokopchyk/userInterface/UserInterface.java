@@ -1,13 +1,13 @@
-package userInterface;
+package com.prokopchyk.userInterface;
 
-import java.io.FileNotFoundException;
-import java.io.File;
-import java.util.Scanner;
-import java.util.List;
-import java.util.ArrayList;
-import building.*;
 import com.prokopchyk.building.House;
-import service.HouseListService;
+import com.prokopchyk.service.HouseListService;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class UserInterface implements Operations {
     public static final String MENU = """

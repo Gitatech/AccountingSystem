@@ -1,4 +1,4 @@
-package service;
+package com.prokopchyk.service;
 
 import com.prokopchyk.building.House;
 import java.io.FileInputStream;

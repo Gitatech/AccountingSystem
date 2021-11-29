@@ -1,10 +1,10 @@
-package service;
+package com.prokopchyk.service;
 
 import com.prokopchyk.building.House;
-import flatComparator.FlatAreaCompare;
-import flatComparator.FlatPersonsCompare;
-import houseComparator.AreaCompare;
-import houseComparator.PersonsCompare;
+import com.prokopchyk.building.flatComparator.FlatAreaCompare;
+import com.prokopchyk.building.flatComparator.FlatPersonsCompare;
+import com.prokopchyk.building.houseComparator.AreaCompare;
+import com.prokopchyk.building.houseComparator.PersonsCompare;
 
 import java.util.ArrayList;
 import java.util.List;

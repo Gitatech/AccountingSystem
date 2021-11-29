@@ -1,13 +1,12 @@
-package userInterface;
+package com.prokopchyk.userInterface;
 
-import builder.HouseBuilder;
+import com.prokopchyk.builder.HouseBuilder;
 import com.prokopchyk.building.House;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
-import building.*;
 
 public interface Operations {
     static void сreateNewHouse(@NotNull List<House> houses) throws FileNotFoundException {

@@ -1,4 +1,4 @@
-package flatComparator;
+package com.prokopchyk.building.flatComparator;
 
 import com.prokopchyk.building.Flat;
 
