@@ -1,4 +1,4 @@
-package com.university.lab.model;
+package com.bsu.accounting.system.model;
 
 import java.util.Objects;
 
@@ -16,14 +16,7 @@ public class Apartment {
     private double totalApartmentLength;
     private double totalApartmentWidth;
 
-//    public static int apartmentNumber = 1;
-//
-//    public Apartment(int numberOfResidents, double floorLength, double floorWidth) {
-//        numberOfResidentsValueCheck(numberOfResidents);
-//        lengthValueCheck(floorLength);
-//        widthValueCheck(floorWidth);
-//        this.id = apartmentNumber++;
-//    }
+    public ApartmentType type;
 
     public Apartment(int id, int numberOfResidents, double totalApartmentLength, double totalApartmentWidth) {
         numberOfResidentsValueCheck(numberOfResidents);
@@ -36,6 +29,17 @@ public class Apartment {
         this.numberOfResidents = numberOfResidents;
         this.totalApartmentLength = totalApartmentLength;
         this.totalApartmentWidth = totalApartmentWidth;
+    }
+
+    public Apartment(int id, int numberOfResidents, double totalApartmentLength, double totalApartmentWidth, ApartmentType type) {
+        if (id <= 0) {
+            throw new IllegalArgumentException(ILLEGAL_ID);
+        }
+        this.id = id;
+        this.numberOfResidents = numberOfResidents;
+        this.totalApartmentLength = totalApartmentLength;
+        this.totalApartmentWidth = totalApartmentWidth;
+        this.type = type;
     }
 
     public int getNumberOfResidents() {
@@ -52,6 +56,10 @@ public class Apartment {
 
     public int getId() {
         return id;
+    }
+
+    public ApartmentType getType() {
+        return type;
     }
 
     private void numberOfResidentsValueCheck(int numberOfResidents) {

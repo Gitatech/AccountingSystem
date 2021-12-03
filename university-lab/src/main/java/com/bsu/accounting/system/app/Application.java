@@ -1,10 +1,14 @@
-package com.university.lab.app;
+package com.bsu.accounting.system.app;
 
-import com.university.lab.model.*;
-import com.university.lab.service.Director;
-import com.university.lab.service.FloorService;
-import com.university.lab.service.HouseBuilder;
-import com.university.lab.service.HouseService;
+import com.bsu.accounting.system.builder.Director;
+import com.bsu.accounting.system.builder.HouseBuilderImpl;
+import com.bsu.accounting.system.factory.ApartmentFactory;
+import com.bsu.accounting.system.model.Apartment;
+import com.bsu.accounting.system.model.ApartmentType;
+import com.bsu.accounting.system.model.Floor;
+import com.bsu.accounting.system.model.House;
+import com.bsu.accounting.system.service.FloorService;
+import com.bsu.accounting.system.service.HouseService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +32,7 @@ public class Application {
         Scanner scanner = new Scanner(System.in);
 
         Director director = new Director();
-        HouseBuilder builder = new HouseBuilder();
+        HouseBuilderImpl builder = new HouseBuilderImpl();
         HouseService houseService = new HouseService();
         FloorService floorService = new FloorService();
         ApartmentFactory apartmentFactory = new ApartmentFactory();

@@ -1,6 +1,6 @@
-package com.university.lab.service;
+package com.bsu.accounting.system.service;
 
-import com.university.lab.model.Floor;
+import com.bsu.accounting.system.model.Floor;
 
 import java.util.Scanner;
 

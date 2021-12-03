@@ -1,6 +1,6 @@
-package com.university.lab.service;
+package com.bsu.accounting.system.builder;
 
-public interface ABuilder {
+public interface ApartmentBuilder {
 
     void setApartmentId(int id);
 

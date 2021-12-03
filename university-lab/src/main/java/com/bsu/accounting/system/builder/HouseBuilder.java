@@ -1,6 +1,6 @@
-package com.university.lab.service;
+package com.bsu.accounting.system.builder;
 
-public interface HBuilder {
+public interface HouseBuilder {
 
     void setHouseName(String name);
 

@@ -1,8 +1,8 @@
-package com.university.lab.service;
+package com.bsu.accounting.system.builder;
 
-import com.university.lab.model.House;
+import com.bsu.accounting.system.model.House;
 
-public class HouseBuilder implements HBuilder {
+public class HouseBuilderImpl implements HouseBuilder {
 
     private String name;
     private double length;

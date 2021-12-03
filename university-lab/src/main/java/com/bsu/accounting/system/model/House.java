@@ -1,4 +1,4 @@
-package com.university.lab.model;
+package com.bsu.accounting.system.model;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -9,7 +9,7 @@ public class House {
     private final double length;
     private final double width;
     private final double height;
-    public ArrayList<Apartment> apartments = new ArrayList<>();
+    public ArrayList<Apartment> apartments = new ArrayList<>(); //todo : private
 
     public House(String name, double length, double width, double height) {
         this.name = name;

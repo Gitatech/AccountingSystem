@@ -1,8 +1,8 @@
-package com.university.lab.service;
+package com.bsu.accounting.system.service;
 
-import com.university.lab.model.Apartment;
-import com.university.lab.model.Floor;
-import com.university.lab.model.House;
+import com.bsu.accounting.system.model.Apartment;
+import com.bsu.accounting.system.model.Floor;
+import com.bsu.accounting.system.model.House;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

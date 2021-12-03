@@ -1,4 +1,4 @@
-package com.university.lab.model;
+package com.bsu.accounting.system.model;
 
 import java.util.Objects;
 

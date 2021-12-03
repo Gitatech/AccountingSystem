@@ -1,4 +1,4 @@
-package com.university.lab.model;
+package com.bsu.accounting.system.model;
 
 public enum ApartmentType {
 
@@ -11,5 +11,12 @@ public enum ApartmentType {
 
     ApartmentType(int amountOfRooms) {
         this.amountOfRooms = amountOfRooms;
+    }
+
+    @Override
+    public String toString() {
+        return "ApartmentType{" +
+                "amountOfRooms=" + amountOfRooms +
+                '}';
     }
 }

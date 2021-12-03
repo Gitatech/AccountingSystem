@@ -1,8 +1,8 @@
-package com.university.lab.service;
+package com.bsu.accounting.system.builder;
 
-import com.university.lab.model.Apartment;
+import com.bsu.accounting.system.model.Apartment;
 
-public class ApartmentBuilder implements ABuilder {
+public class ApartmentBuilderImpl implements ApartmentBuilder {
 
     private int id;
     private int residents;
