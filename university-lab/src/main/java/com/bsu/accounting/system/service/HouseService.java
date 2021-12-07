@@ -1,7 +1,5 @@
 package com.bsu.accounting.system.service;
 
-import com.bsu.accounting.system.model.Apartment;
-import com.bsu.accounting.system.model.Floor;
 import com.bsu.accounting.system.model.House;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,57 +15,45 @@ public class HouseService {
     private static final String NUMBER_OF_FLOORS_IN_THE_HOUSE = "Number of residential floors in the house: %s";
     private static final String HOUSE_AREA = "Total living house area: %.2f";
 
-    public int numberOfFloors(House house, Floor floor) {
+
+    public int numberOfFloors(House house, double floorHeight) {
         int amount;
-        amount = (int) (house.getHeight() / floor.getFloorHeight());
+        amount = (int) (house.getHeight() / floorHeight);
         if (amount == 0) {
-            throw new ArithmeticException(String.format(THE_PROBLEM_IN_CREATING_A_HOME, floor.getFloorHeight()));
+            throw new ArithmeticException(String.format(THE_PROBLEM_IN_CREATING_A_HOME, house.getOneFloor().getFloorHeight()));
         }
-//        if (house.getHeight() % floor.getFloorHeight() != 0) {
-//            amount++;
-//        }
         return amount;
     }
 
     public int numberOfResidents(House house) {
         int residents = 0;
-        for (int i = 0; i < house.apartments.size(); i++) {
-            residents += house.apartments.get(i).getNumberOfResidents();
+        for (int i = 0; i < house.getOneFloor().apartments.size(); i++) {
+            residents += house.getOneFloor().apartments.get(i).getNumberOfResidents();
         }
-        return residents;
-    }
-
-    public void addApartment(House house, Apartment apartment) {
-        final boolean comparison = house.getLength() > apartment.getTotalApartmentLength()
-                && house.getWidth() > apartment.getTotalApartmentWidth();
-        if (comparison) {
-            house.apartments.add(apartment);
-        } else {
-            LOGGER.error(apartment);
-        }
+        return residents * numberOfFloors(house, house.getOneFloor().getFloorHeight());
     }
 
     public double totalHouseArea(House house) {
         double area = 0;
         ApartmentService apartmentService = new ApartmentService();
-        for (int i = 0; i < house.apartments.size(); i++) {
-            area += apartmentService.getTotalApartmentArea(house.apartments.get(i));
+        for (int i = 0; i < house.getOneFloor().apartments.size(); i++) {
+            area += apartmentService.getTotalApartmentArea(house.getOneFloor().apartments.get(i));
         }
         return area;
     }
 
     public void viewAllApartments(House house) {
         System.out.printf(APARTMENTS, house.getName());
-        for (int i = 0; i < house.apartments.size(); i++) {
-            LOGGER.info(house.apartments.get(i));
+        for (int i = 0; i < numberOfFloors(house, house.getOneFloor().getFloorHeight()); i++) {
+            LOGGER.info(i + 1 + " " + house.getOneFloor() + ": " + house.getOneFloor().getApartments());
         }
     }
 
-    public void viewHouse(House house, Floor floor) {
+    public void viewHouse(House house) {
         System.out.println(house);
         viewAllApartments(house);
         System.out.printf(NUMBER_OF_RESIDENTS_IN_THE_HOUSE + "%n", numberOfResidents(house));
-        System.out.printf(NUMBER_OF_FLOORS_IN_THE_HOUSE + "%n", numberOfFloors(house, floor));
+        System.out.printf(NUMBER_OF_FLOORS_IN_THE_HOUSE + "%n", numberOfFloors(house, house.getOneFloor().getFloorHeight()));
         System.out.printf(HOUSE_AREA + "%n", totalHouseArea(house));
     }
 

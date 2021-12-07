@@ -12,11 +12,4 @@ public enum ApartmentType {
     ApartmentType(int amountOfRooms) {
         this.amountOfRooms = amountOfRooms;
     }
-
-    @Override
-    public String toString() {
-        return "ApartmentType{" +
-                "amountOfRooms=" + amountOfRooms +
-                '}';
-    }
 }

@@ -1,6 +1,7 @@
 package com.bsu.accounting.system.model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class House {
@@ -9,7 +10,7 @@ public class House {
     private final double length;
     private final double width;
     private final double height;
-    public ArrayList<Apartment> apartments = new ArrayList<>(); //todo : private
+    public final List<Floor> floors = new ArrayList<>();
 
     public House(String name, double length, double width, double height) {
         this.name = name;
@@ -30,12 +31,16 @@ public class House {
         return height;
     }
 
-    public ArrayList<Apartment> getApartments() {
-        return apartments;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public List<Floor> getFloors() {
+        return floors;
+    }
+
+    public Floor getOneFloor() {
+        return floors.get(0);
     }
 
     @Override
@@ -47,12 +52,12 @@ public class House {
                 && Double.compare(house.width, width) == 0
                 && Double.compare(house.height, height) == 0
                 && Objects.equals(name, house.name)
-                && Objects.equals(apartments, house.apartments);
+                && Objects.equals(floors, house.floors);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, length, width, height, apartments);
+        return Objects.hash(name, length, width, height, floors);
     }
 
     @Override

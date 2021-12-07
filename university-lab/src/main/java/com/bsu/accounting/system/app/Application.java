@@ -46,44 +46,46 @@ public class Application {
                 director.constructArbitraryHouse(builder);
                 House arbitraryHouse = builder.getResult();
 
-                Floor floor = floorService.createFloor();
-                int amountOfFloors = houseService.numberOfFloors(arbitraryHouse, floor);
+                Floor floor = floorService.createFloor(arbitraryHouse);
+                int amountOfFloors = houseService.numberOfFloors(arbitraryHouse, floor.getFloorHeight());
 
-                for (int i = 1; i < amountOfFloors + 1; i++) {
+                double tempLength = 0.0;
+                double tempWidth = 0.0;
 
-                    double tempLength = 0.0;
-                    double tempWidth = 0.0;
+                while (tempWidth <= arbitraryHouse.getWidth() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA
+                        && tempLength < arbitraryHouse.getLength() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA) {
 
-                    while (tempWidth < arbitraryHouse.getWidth() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA
-                            && tempLength < arbitraryHouse.getLength() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA) {
+                    availableArea(arbitraryHouse, tempLength, "Available area: %.2f length(m) and %s width(m)\n\n");
 
-                        availableArea(arbitraryHouse, tempLength, "Available area: %.2f length(m) and %s width(m)\n\n");
+                    ApartmentType type = getApartmentType(scanner);
+                    Apartment apartment = apartmentFactory.createApartment(type);
 
-                        ApartmentType type = getApartmentType(scanner);
-                        Apartment apartment = apartmentFactory.createApartment(type);
-
-                        if (checkApartmentWidthValue(arbitraryHouse, apartment)){
-                            LOGGER.error("The length of the apartment exceeds the available length of the house");
-                            break;
-                        }
-                        if (checkApartmentLengthValue(arbitraryHouse, tempLength, apartment)) {
-                            LOGGER.error("The width of the apartment exceeds the available length of the house");
-                            break;
-                        }
-
-                        tempLength += apartment.getTotalApartmentLength();
-                        tempWidth = apartment.getTotalApartmentWidth();
-
-                        if (tempLength > arbitraryHouse.getLength() || tempWidth > arbitraryHouse.getWidth()) break;
-
-                        houseService.addApartment(arbitraryHouse, apartment);
-                        System.out.println();
+                    if (checkApartmentWidthValue(arbitraryHouse, apartment)) {
+                        LOGGER.error("The length of the apartment exceeds the available length of the house");
+                        break;
+                    }
+                    if (checkApartmentLengthValue(arbitraryHouse, tempLength, apartment)) {
+                        LOGGER.error("The width of the apartment exceeds the available length of the house");
+                        break;
                     }
 
-                    System.out.println("The " + i + " floor has been created\n");
+                    tempLength += apartment.getTotalApartmentLength();
+                    tempWidth = apartment.getTotalApartmentWidth();
+
+                    if (tempLength > arbitraryHouse.getLength() || tempWidth > arbitraryHouse.getWidth()) break;
+
+                    floorService.addApartment(floor, apartment);
+                    System.out.println();
                 }
 
-                houseService.viewHouse(arbitraryHouse, floor);
+                for (int i = 1; i <= amountOfFloors; i++) {
+                    arbitraryHouse.floors.add(floor);
+                }
+
+                System.out.println("The floors has been created\n");
+
+
+                houseService.viewHouse(arbitraryHouse);
 
                 break;
             case 2:
