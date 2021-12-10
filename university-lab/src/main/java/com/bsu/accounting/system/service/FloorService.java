@@ -28,7 +28,7 @@ public class FloorService {
         final boolean comparison = floor.getFloorLength() > apartment.getTotalApartmentLength()
                 && floor.getFloorWidth() > apartment.getTotalApartmentWidth();
         if (comparison) {
-            floor.apartments.add(apartment);
+            floor.setApartments(apartment);
         } else {
             LOGGER.error(apartment);
         }

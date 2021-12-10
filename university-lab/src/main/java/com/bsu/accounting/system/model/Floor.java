@@ -9,7 +9,7 @@ public class Floor {
     private final double floorHeight;
     private final double floorLength;
     private final double floorWidth;
-    public List<Apartment> apartments = new ArrayList<>();
+    private final List<Apartment> apartments = new ArrayList<>();
 
     public Floor(double floorHeight, double floorLength, double floorWidth) {
         this.floorHeight = floorHeight;
@@ -31,6 +31,10 @@ public class Floor {
 
     public List<Apartment> getApartments() {
         return apartments;
+    }
+
+    public void setApartments(Apartment apartment) {
+        this.apartments.add(apartment);
     }
 
     @Override

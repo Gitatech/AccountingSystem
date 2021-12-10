@@ -10,7 +10,7 @@ public class House {
     private final double length;
     private final double width;
     private final double height;
-    public final List<Floor> floors = new ArrayList<>();
+    private final List<Floor> floors = new ArrayList<>();
 
     public House(String name, double length, double width, double height) {
         this.name = name;
@@ -41,6 +41,10 @@ public class House {
 
     public Floor getOneFloor() {
         return floors.get(0);
+    }
+
+    public void setFloors(Floor floors) {
+        this.floors.add(floors);
     }
 
     @Override

@@ -19,13 +19,12 @@ public class Application {
     private static final Logger LOGGER = LogManager.getLogger(Application.class);
 
     private static final String WRONG_MSG = "Something wrong...Try again";
-    private static final String MENU = "1 - CREATE your own HOUSE\n" +
-            "2 - GENERATE a random HOUSE(it's not working yet)";
     private static final String APARTMENT_TYPE_MENU = "1 - create a %s\n" +
             "2 - create a %s\n" +
             "3 - create a %s\n" +
             "4 - create a %s\n%n";
     private static final double PERCENTAGE_OF_NON_RESIDENTIAL_AREA = 0.9;
+    private static final String AVAILABLE_HOUSE_AREA = "Available area: %.2f length(m) and %s width(m)\n\n";
 
     public static void main(String[] args) {
 
@@ -37,61 +36,53 @@ public class Application {
         FloorService floorService = new FloorService();
         ApartmentFactory apartmentFactory = new ApartmentFactory();
 
-        int method = getMethod(scanner);
+        LOGGER.info("Enter the parameters of the house:");
 
-        switch (method) {
-            case 1:
-                System.out.println("\nEnter the parameters of the house:");
+        director.constructArbitraryHouse(builder);
+        House arbitraryHouse = builder.getResult();
 
-                director.constructArbitraryHouse(builder);
-                House arbitraryHouse = builder.getResult();
+        Floor floor = floorService.createFloor(arbitraryHouse);
+        int amountOfFloors = houseService.numberOfFloors(arbitraryHouse, floor.getFloorHeight());
 
-                Floor floor = floorService.createFloor(arbitraryHouse);
-                int amountOfFloors = houseService.numberOfFloors(arbitraryHouse, floor.getFloorHeight());
+        double tempLength = 0.0;
+        double tempWidth = 0.0;
 
-                double tempLength = 0.0;
-                double tempWidth = 0.0;
+        while (tempWidth <= arbitraryHouse.getWidth() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA
+                && tempLength < arbitraryHouse.getLength() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA) {
 
-                while (tempWidth <= arbitraryHouse.getWidth() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA
-                        && tempLength < arbitraryHouse.getLength() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA) {
+            availableArea(arbitraryHouse, tempLength);
 
-                    availableArea(arbitraryHouse, tempLength, "Available area: %.2f length(m) and %s width(m)\n\n");
+            ApartmentType type = getApartmentType(scanner);
+            Apartment apartment = apartmentFactory.createApartment(type);
 
-                    ApartmentType type = getApartmentType(scanner);
-                    Apartment apartment = apartmentFactory.createApartment(type);
-
-                    if (checkApartmentWidthValue(arbitraryHouse, apartment)) {
-                        LOGGER.error("The length of the apartment exceeds the available length of the house");
-                        break;
-                    }
-                    if (checkApartmentLengthValue(arbitraryHouse, tempLength, apartment)) {
-                        LOGGER.error("The width of the apartment exceeds the available length of the house");
-                        break;
-                    }
-
-                    tempLength += apartment.getTotalApartmentLength();
-                    tempWidth = apartment.getTotalApartmentWidth();
-
-                    if (tempLength > arbitraryHouse.getLength() || tempWidth > arbitraryHouse.getWidth()) break;
-
-                    floorService.addApartment(floor, apartment);
-                    System.out.println();
-                }
-
-                for (int i = 1; i <= amountOfFloors; i++) {
-                    arbitraryHouse.floors.add(floor);
-                }
-
-                System.out.println("The floors has been created\n");
-
-
-                houseService.viewHouse(arbitraryHouse);
-
+            if (checkApartmentWidthValue(arbitraryHouse, apartment)) {
+                LOGGER.error("The length of the apartment exceeds the available length of the house");
                 break;
-            case 2:
-
+            }
+            if (checkApartmentLengthValue(arbitraryHouse, tempLength, apartment)) {
+                LOGGER.error("The width of the apartment exceeds the available length of the house");
                 break;
+            }
+
+            tempLength += apartment.getTotalApartmentLength();
+            tempWidth = apartment.getTotalApartmentWidth();
+
+            if (tempLength > arbitraryHouse.getLength() || tempWidth > arbitraryHouse.getWidth()) break;
+
+            floorService.addApartment(floor, apartment);
+            System.out.println();
         }
+
+        for (int i = 1; i <= amountOfFloors; i++) {
+            arbitraryHouse.setFloors(floor);
+        }
+
+        System.out.println("The floors has been created\n");
+
+
+        houseService.viewHouse(arbitraryHouse);
+
+
     }
 
     private static boolean checkApartmentWidthValue(House arbitraryHouse, Apartment apartment) {
@@ -102,8 +93,8 @@ public class Application {
         return apartment.getTotalApartmentLength() > arbitraryHouse.getLength() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA - tempLength;
     }
 
-    private static void availableArea(House arbitraryHouse, double tempLength, String s) {
-        System.out.printf(s,
+    private static void availableArea(House arbitraryHouse, double tempLength) {
+        System.out.printf(AVAILABLE_HOUSE_AREA,
                 (arbitraryHouse.getLength() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA - tempLength),
                 arbitraryHouse.getWidth() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA);
     }
@@ -136,11 +127,4 @@ public class Application {
         }
         return number;
     }
-
-    private static int getMethod(Scanner scanner) {
-        System.out.println("Choose a method:");
-        System.out.println(MENU);
-        return menuSelection(scanner);
-    }
-
 }
