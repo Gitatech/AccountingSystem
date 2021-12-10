@@ -14,7 +14,7 @@ public class HouseBuilder {
     }
 
     public HouseBuilder setNumOfGrounds(int height) {
-        int numberOfGround = height / newHouse.getHeight();
+        int numberOfGround = height / newHouse.getHeightOfGround();
         newHouse.setNumberOfGrounds(numberOfGround);
         return this;
     }
@@ -38,7 +38,7 @@ public class HouseBuilder {
                 .fillingGround()
                 .Builder();
         newHouse.addGround(first);
-        for (int i = 1; i < newHouse.getNumberOfGroundsInHouse(); i++) {
+        for (int i = 1; i < newHouse.getNumberOfGrounds(); i++) {
             Ground other = new GroundBuilder()
                     .setNumOfFlats(k)
                     .fillingGround(first)

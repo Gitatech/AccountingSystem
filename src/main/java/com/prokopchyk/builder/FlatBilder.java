@@ -11,7 +11,7 @@ public class FlatBilder {
      }
 
     public FlatBilder setNumberOfHuman(int nHuman) {
-        this.flat.setNHuman(nHuman);
+        this.flat.setNumberOfHuman(nHuman);
         return this;
     }
 

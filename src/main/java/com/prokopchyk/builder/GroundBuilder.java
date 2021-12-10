@@ -31,7 +31,7 @@ public class GroundBuilder {
     public GroundBuilder fillingGround(Ground ground){
         double flatArea = 0;
         for(int i = 0; i < newGround.getFlatsOnGround();i++) {
-            flatArea = ground.getFlatArea(i);
+            flatArea = ground.getFlat(i).getSqrt();
             Flat newFlat = new FlatBilder().setSqrt(flatArea).setNumOfFlat().bilder();
             newGround.addFlat(newFlat);
         }
