@@ -11,7 +11,7 @@ public class Flat implements Externalizable{
     private static int flatNumberChecker = 0;
     private int numOfFlat = 0;
 
-    public void setNHuman(int NHuman) {
+    public void setNumberOfHuman(int NHuman) {
         this.numberHuman = NHuman;
     }
 

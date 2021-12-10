@@ -16,10 +16,12 @@ public class Ground  implements Externalizable {
     }
 
     public void setFlat(List<Flat>flat){
+
         this.flat = new ArrayList<Flat>(flat);
     }
 
     public void addFlat(Flat flat){
+
         this.flat.add(flat);
     }
 
@@ -27,53 +29,13 @@ public class Ground  implements Externalizable {
         NumberOfFlatsInGround = numberOfFlatsInGround;
     }
 
-    public void initPersons() {
-        Scanner in = new Scanner(System.in);
-        for (int i = 0; i < NumberOfFlatsInGround; i++) {
-            System.out.println("Enter number of Person in the " + flat.get(i).getNumber() + "flat");
-            int k = in.nextInt();
-            flat.get(i).setNHuman(k);
-        }
+    public Flat getFlat(int i){
+        return flat.get(i);
     }
 
-    public void initPersonsRandom() {
-        for (int i = 0; i < NumberOfFlatsInGround; i++) {
-            int k = (int) (Math.random() * 5);
-            flat.get(i).setNHuman(k);
-        }
-    }
-
-    public Flat getFlatByNumber(int number){return flat.get(number % flat.size());}
-
-    public int getManInGround() {
-        int kol = 0;
-        for (int i = 0; i < NumberOfFlatsInGround; i++) {
-            kol += flat.get(i).getNumberOfHuman();
-        }
-        return kol;
-    }
-
-    public double getGroundArea() { // возвращает площадь этажа
-        double kol = 0;
-        for (int i = 0; i < NumberOfFlatsInGround; i++) {
-            kol += flat.get(i).getSqrt();
-        }
-        return kol;
-    }
-
-    public double getFlatArea(int i) { // возвращает площадь квартиры по её номеру на этаже
-        int ground = i % (flat.size());
-        return flat.get(ground).getSqrt();
-    }
-
-    public int getManInFlat(int i) {
-        int gr = i % (flat.size());
-        return flat.get(gr).getNumberOfHuman();
-    }
-
-    public void setFlatChecker(int k) {
+    public void setFlatChecker(int k) {//для зануление сатической переменной в flat
         this.flat.iterator().next().setChecker(0);
-    } //для зануление сатической переменной в flat
+    }
 
     public int getFlatsOnGround() {
         return NumberOfFlatsInGround;
