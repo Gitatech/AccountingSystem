@@ -61,40 +61,43 @@ public class HouseService implements Comparator<House> {
 
     @Override
     public int compare(House firstHouse, House secondHouse) {
-        LOGGER.info("\nCompare the {}s(house) with {}s(house) in terms of parameters", firstHouse.getName(), secondHouse.getName());
+        if (firstHouse == null || secondHouse == null){
+            throw new NullPointerException("House must be a not null value");
+        }
+            LOGGER.info("\nCompare the {}(house) with {}(house) in terms of parameters", firstHouse.getName(), secondHouse.getName());
 
         if (firstHouse.getLength() > secondHouse.getLength()) {
-            LOGGER.info("{}s longer than {}s", firstHouse.getName(), secondHouse.getName());
+            LOGGER.info("{} longer than {}", firstHouse.getName(), secondHouse.getName());
         } else if (firstHouse.getLength() == secondHouse.getLength()) {
             LOGGER.info("The length of the houses are equal");
         } else {
-            LOGGER.info("{}s less in length than {}s", firstHouse.getName(), secondHouse.getName());
+            LOGGER.info("{} less in length than {}", firstHouse.getName(), secondHouse.getName());
         }
 
         if (firstHouse.getWidth() > secondHouse.getWidth()) {
-            LOGGER.info("{}s wider than {}s", firstHouse.getName(), secondHouse.getName());
+            LOGGER.info("{} wider than {}", firstHouse.getName(), secondHouse.getName());
         } else if (firstHouse.getWidth() == secondHouse.getWidth()) {
             LOGGER.info("The width of the houses are equal");
         } else {
-            LOGGER.info("{}s less in width than {}s", firstHouse.getName(), secondHouse.getName());
+            LOGGER.info("{} less in width than {}", firstHouse.getName(), secondHouse.getName());
         }
 
         if (firstHouse.getHeight() > secondHouse.getHeight()) {
-            LOGGER.info("{}s higher than {}s", firstHouse.getName(), secondHouse.getName());
+            LOGGER.info("{} higher than {}", firstHouse.getName(), secondHouse.getName());
         } else if (firstHouse.getHeight() == secondHouse.getHeight()) {
             LOGGER.info("The height of the houses are equal");
         } else {
-            LOGGER.info("{}s lower than {}s", firstHouse.getName(), secondHouse.getName());
+            LOGGER.info("{} lower than {}", firstHouse.getName(), secondHouse.getName());
         }
 
         if (this.numberOfFloors(firstHouse, firstHouse.getOneFloor().getFloorHeight())
                 > this.numberOfFloors(secondHouse, secondHouse.getOneFloor().getFloorHeight())) {
-            LOGGER.info("The number of floors of the {}s is more than that of the {}s", firstHouse.getName(), secondHouse.getName());
+            LOGGER.info("The number of floors of the {} is more than that of the {}", firstHouse.getName(), secondHouse.getName());
         } else if (this.numberOfFloors(firstHouse, firstHouse.getOneFloor().getFloorHeight())
                 == this.numberOfFloors(secondHouse, secondHouse.getOneFloor().getFloorHeight())) {
             LOGGER.info("The number of floors in the houses are equal");
         } else {
-            LOGGER.info("The number of floors of the {}s is less than that of the {}s", firstHouse.getName(), secondHouse.getName());
+            LOGGER.info("The number of floors of the {} is less than that of the {}", firstHouse.getName(), secondHouse.getName());
         }
 
         return Integer.parseInt(String.valueOf(true));
