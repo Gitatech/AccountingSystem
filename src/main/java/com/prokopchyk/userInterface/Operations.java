@@ -2,6 +2,8 @@ package com.prokopchyk.userInterface;
 
 import com.prokopchyk.builder.HouseBuilder;
 import com.prokopchyk.building.House;
+import com.prokopchyk.service.FlatService;
+import com.prokopchyk.service.HouseService;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
@@ -32,10 +34,10 @@ public interface Operations {
                         "\n2.Console");
                 int p = in.nextInt();
                 if(p == 1){
-                    house.initPersonsRandom();
+                    HouseService.getHouseService().initPersonsRandom(house);
                 }
                 else if(p == 2) {
-                    house.initPersons();
+                    HouseService.getHouseService().initPersons(house);
                 }
                 else{
                     System.out.println("Incorrect value.Residents not listed");
@@ -65,7 +67,7 @@ public interface Operations {
             System.out.println("Too mach:");
             return;
         }
-        houses.get(--m).compareHouses(houses.get(--f));
+        HouseService.getHouseService().compareHouses(houses.get(--m),houses.get(--f));
     }
 
     static void compareFlats(@NotNull List<House> houses){
@@ -75,17 +77,25 @@ public interface Operations {
             return;
         }
         System.out.println("Enter number of House");
-        int HOUSE = in.nextInt();
-        HOUSE--;
-        System.out.println("Enter Number of the first flat " + "(" + (houses.get(HOUSE).getNumberOfFlatsInHouse()-1) + " flats in this house)");
+        int houseNum = in.nextInt();
+        houseNum--;
+        System.out.println("Enter Number of the first flat "
+                + "(" + (HouseService.getHouseService().getNumberOfFlats(houses.get(houseNum)) - 1)
+                + " flats in this house)");
         int NUMBER1 = in.nextInt();
-        System.out.println("Enter Number of the second flat " + "(" + (houses.get(HOUSE).getNumberOfFlatsInHouse()-1) + " flats in this house)");
+        System.out.println("Enter Number of the second flat "
+                + "(" + (HouseService.getHouseService().getNumberOfFlats(houses.get(houseNum)) - 1)
+                + " flats in this house)");
         int NUMBER2 = in.nextInt();
-        if (NUMBER1 >= houses.get(HOUSE).getNumberOfFlatsInHouse() || NUMBER2 >= houses.get(HOUSE).getNumberOfFlatsInHouse()) {
+        if (NUMBER1 >= HouseService.getHouseService().getNumberOfFlats(houses.get(houseNum)) ||
+            NUMBER2 >= HouseService.getHouseService().getNumberOfFlats(houses.get(houseNum))) {
             System.out.println("Can't compare");
             return;
         }
-        System.out.println (houses.get(HOUSE).compareFlats(NUMBER1, NUMBER2));
+        System.out.println (FlatService.getFlatService().compareFlats
+                (HouseService.getHouseService().getFlatByNumber(houses.get(houseNum),NUMBER1),
+                 HouseService.getHouseService().getFlatByNumber(houses.get(houseNum),NUMBER2))
+        );
     }
 
     static void getHouseInfo(@NotNull List<House> houses){
@@ -105,10 +115,10 @@ public interface Operations {
             return;
         }
         l--;
-        System.out.println("House #" + ++l + " has " + houses.get(--l).getNumberOfGroundsInHouse() + " floors");
-        System.out.println("House #" + ++l + " has " + houses.get(--l).getNumberOfFlatsInHouse() + " flats");
-        System.out.println("Number of residents in the " + ++l + " house: " + houses.get(--l).getNumberOfHuman());
-        System.out.println("Area of the " + ++l + " House: " + houses.get(--l).getHouseArea());
+        System.out.println("House #" + ++l + " has " + houses.get(--l).getNumberOfGrounds() + " floors");
+        System.out.println("House #" + ++l + " has " + HouseService.getHouseService().getNumberOfFlats(houses.get(--l)) + " flats");
+        System.out.println("Number of residents in the " + ++l + " house: " + HouseService.getHouseService().getNumberOfHuman(houses.get(--l)));
+        System.out.println("Area of the " + ++l + " House: " + HouseService.getHouseService().getHouseArea(houses.get(--l)));
     }
 
     static void removeHouse(@NotNull List<House> houses){
