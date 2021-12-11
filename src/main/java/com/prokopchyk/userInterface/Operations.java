@@ -2,6 +2,7 @@ package com.prokopchyk.userInterface;
 
 import com.prokopchyk.builder.HouseBuilder;
 import com.prokopchyk.building.House;
+import com.prokopchyk.dao.HouseDao;
 import com.prokopchyk.service.FlatService;
 import com.prokopchyk.service.HouseService;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public interface Operations {
-    static void сreateNewHouse(@NotNull List<House> houses) throws FileNotFoundException {
+    static House сreateNewHouse() throws FileNotFoundException {
         Scanner in = new Scanner(System.in);
         System.out.print("Enter height of house:");
         int height = in.nextInt();
@@ -50,24 +51,25 @@ public interface Operations {
                 System.out.println("Incorrect value.Residents not listed");
                 break;
         }
-        houses.add(house);
+        return house;
     }
 
-    static void compareHouses(@NotNull List<House> houses){
+    static void compareHouses(HouseDao houseDao){
         Scanner in = new Scanner(System.in);
-        if (houses.size() < 2) {
+        if (houseDao.getAll().size() < 2) {
             System.out.println("Not enough houses to compare");
             return;
         }
+        houseDao.printAllNames();
         System.out.print("What numbers of house for compare\nFirst house:");
         int m = in.nextInt();
         System.out.print("Second house:");
         int f = in.nextInt();
-        if (m > houses.size() || f > houses.size()) {
+        if (m > houseDao.getAll().size() || f > houseDao.getAll().size()) {
             System.out.println("Too mach:");
             return;
         }
-        HouseService.getHouseService().compareHouses(houses.get(--m),houses.get(--f));
+        HouseService.getHouseService().compareHouses(houseDao.getByNumber(--m),houseDao.getByNumber(--f));
     }
 
     static void compareFlats(@NotNull List<House> houses){
@@ -82,19 +84,19 @@ public interface Operations {
         System.out.println("Enter Number of the first flat "
                 + "(" + (HouseService.getHouseService().getNumberOfFlats(houses.get(houseNum)) - 1)
                 + " flats in this house)");
-        int NUMBER1 = in.nextInt();
+        int number1 = in.nextInt();
         System.out.println("Enter Number of the second flat "
                 + "(" + (HouseService.getHouseService().getNumberOfFlats(houses.get(houseNum)) - 1)
                 + " flats in this house)");
-        int NUMBER2 = in.nextInt();
-        if (NUMBER1 >= HouseService.getHouseService().getNumberOfFlats(houses.get(houseNum)) ||
-            NUMBER2 >= HouseService.getHouseService().getNumberOfFlats(houses.get(houseNum))) {
+        int number2 = in.nextInt();
+        if (number1 >= HouseService.getHouseService().getNumberOfFlats(houses.get(houseNum)) ||
+            number2 >= HouseService.getHouseService().getNumberOfFlats(houses.get(houseNum))) {
             System.out.println("Can't compare");
             return;
         }
         System.out.println (FlatService.getFlatService().compareFlats
-                (HouseService.getHouseService().getFlatByNumber(houses.get(houseNum),NUMBER1),
-                 HouseService.getHouseService().getFlatByNumber(houses.get(houseNum),NUMBER2))
+                (HouseService.getHouseService().getFlatByNumber(houses.get(houseNum),number1),
+                 HouseService.getHouseService().getFlatByNumber(houses.get(houseNum),number2))
         );
     }
 
@@ -121,21 +123,18 @@ public interface Operations {
         System.out.println("Area of the " + ++l + " House: " + HouseService.getHouseService().getHouseArea(houses.get(--l)));
     }
 
-    static void removeHouse(@NotNull List<House> houses){
+    static void removeHouse(HouseDao houseDao){
         Scanner in = new Scanner(System.in);
-        if (houses.isEmpty()) {
+        if (houseDao.getAll().isEmpty()) {
             System.out.println("There is no one house");
             return;
         }
         System.out.println("-----------------------------------------------------------------------------");
-        for(int i =0;i<houses.size();i++)
-        {
-            System.out.println("HOUSE #" + ++i + ": " + houses.get(--i).getHouseName());
-        }
+        houseDao.printAllNames();
         System.out.println("House number you want to delete(Press 0 to exit):");
         int del = in.nextInt();
         del--;
-        while((del <-1) || (del >= houses.size())){
+        while((del <-1) || (del >= houseDao.getAll().size())){
             System.out.println("Incorrect value.Try again");
             System.out.println("House number you want to delete(Press 0 to exit):");
             del = in.nextInt();
@@ -144,7 +143,7 @@ public interface Operations {
         if(del == -1){
             return;
         }
-        houses.remove(del);
+        houseDao.delete(houseDao.getByNumber(del));
 
     }
 }

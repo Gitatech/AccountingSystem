@@ -1,6 +1,7 @@
 package com.prokopchyk.userInterface;
 
 import com.prokopchyk.building.House;
+import com.prokopchyk.dao.HouseDao;
 import com.prokopchyk.service.HouseListService;
 
 import java.io.File;
@@ -21,32 +22,31 @@ public class UserInterface implements Operations {
             """;
     public void begin() throws FileNotFoundException {
         Scanner in = new Scanner(System.in);
-        HouseListService houseList = new HouseListService();
-        List<House> houses = new ArrayList<House>();
+        HouseDao houseDao = new HouseDao();
         String listOfHouses = "src\\main\\resources\\houseList.txt";
         System.out.println(MENU);
-        if (houses.isEmpty() && new File(listOfHouses).length() != 0) {
-            houseList.readHouseList(houses, listOfHouses);
+        if (houseDao.getAll().isEmpty() && new File(listOfHouses).length() != 0) {
+            HouseListService.getHouseListService().readHouseList(houseDao.getAll(), listOfHouses);
         }
         int k = in.nextInt();
         while (k != 6) {
             switch (k) {
                 case (1):
-                    Operations.сreateNewHouse(houses);
-                    houseList.writeHouseList(houses,listOfHouses);
+                    houseDao.save(Operations.сreateNewHouse());
+                    HouseListService.getHouseListService().writeHouseList(houseDao.getAll(),listOfHouses);
                     break;
                 case (2):
-                    Operations.compareHouses(houses);
+                    Operations.compareHouses(houseDao);
                     break;
                 case (3):
-                    Operations.compareFlats(houses);
+                    Operations.compareFlats(houseDao.getAll());
                     break;
                 case (4):
-                    Operations.getHouseInfo(houses);
+                    Operations.getHouseInfo(houseDao.getAll());
                     break;
                 case (5):
-                    Operations.removeHouse(houses);
-                    houseList.writeHouseList(houses, listOfHouses);
+                    Operations.removeHouse(houseDao);
+                    HouseListService.getHouseListService().writeHouseList(houseDao.getAll(), listOfHouses);
                     break;
                 case (6):
                     break;
