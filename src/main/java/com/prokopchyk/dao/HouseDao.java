@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HouseDao implements Dao<House>{
-    private List<House> houses = new ArrayList<>();
+    private static List<House> houses = new ArrayList<>();
 
     @Override
     public List getAll() {
@@ -29,5 +29,14 @@ public class HouseDao implements Dao<House>{
     public void delete(House object) {
         houses.remove(object);
 
+    }
+    public void printAllNames(){
+        int i = 1;
+        for(House house:houses){
+            System.out.println(  i +": " + house.getHouseName());
+        }
+    }
+    public House getByNumber(int k){
+        return houses.get(k);
     }
 }
