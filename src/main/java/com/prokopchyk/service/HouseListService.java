@@ -9,6 +9,13 @@ import java.util.List;
 
 
 public class HouseListService {
+    private static HouseListService houseListService;
+    private HouseListService(){};
+    public static HouseListService getHouseListService(){
+        if(houseListService == null)
+            houseListService = new HouseListService();
+        return houseListService;
+    }
 
     public void readHouseList(List<House> houses, String fileName) {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName))) {
