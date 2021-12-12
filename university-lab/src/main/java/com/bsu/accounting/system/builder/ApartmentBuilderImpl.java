@@ -4,16 +4,9 @@ import com.bsu.accounting.system.model.Apartment;
 
 public class ApartmentBuilderImpl implements ApartmentBuilder {
 
-    private int id;
     private int residents;
     private double length;
     private double width;
-
-
-    @Override
-    public void setApartmentId(int id) {
-        this.id = id;
-    }
 
     @Override
     public void setNumberOfResidents(int residents) {
@@ -31,6 +24,6 @@ public class ApartmentBuilderImpl implements ApartmentBuilder {
     }
 
     public Apartment getResult() {
-        return new Apartment(id, residents, length, width);
+        return new Apartment(null, residents, length, width);
     }
 }

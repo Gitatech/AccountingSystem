@@ -2,6 +2,8 @@ package com.bsu.accounting.system.app;
 
 import com.bsu.accounting.system.builder.Director;
 import com.bsu.accounting.system.builder.HouseBuilderImpl;
+import com.bsu.accounting.system.dao.ApartmentDao;
+import com.bsu.accounting.system.dao.ApartmentDaoImpl;
 import com.bsu.accounting.system.factory.ApartmentFactory;
 import com.bsu.accounting.system.model.Apartment;
 import com.bsu.accounting.system.model.ApartmentType;
@@ -25,18 +27,22 @@ public class Application {
             "3 - create a %s\n" +
             "4 - create a %s\n%n";
     private static final double PERCENTAGE_OF_NON_RESIDENTIAL_AREA = 0.9;
-    private static final String AVAILABLE_HOUSE_AREA = "Available area: %.2f length(m) and %s width(m)\n\n";
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
         Director director = new Director();
+
         HouseBuilderImpl builder = new HouseBuilderImpl();
         HouseService houseService = new HouseService();
-        FloorService floorService = new FloorService();
-        ApartmentFactory apartmentFactory = new ApartmentFactory();
         HouseValidator houseValidator = new HouseValidator();
+
+        FloorService floorService = new FloorService();
+
+        ApartmentFactory apartmentFactory = new ApartmentFactory();
+
+        ApartmentDao apartmentDao = new ApartmentDaoImpl();
 
         LOGGER.info("Enter the parameters of the house:");
 
@@ -49,10 +55,9 @@ public class Application {
         double tempLength = 0.0;
         double tempWidth = 0.0;
 
-        while (tempWidth <= arbitraryHouse.getWidth() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA
-                && tempLength < arbitraryHouse.getLength() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA) {
+        while (inTheBoarder(arbitraryHouse, tempLength, tempWidth)) {
 
-           houseValidator.availableArea(arbitraryHouse, tempLength);
+            houseValidator.availableArea(arbitraryHouse, tempLength);
 
             ApartmentType type = getApartmentType(scanner);
             Apartment apartment = apartmentFactory.createApartment(type);
@@ -71,20 +76,24 @@ public class Application {
 
             if (tempLength > arbitraryHouse.getLength() || tempWidth > arbitraryHouse.getWidth()) break;
 
-            floorService.addApartment(floor, apartment);
+            floorService.addApartment(floor, apartmentDao.create(apartment));
             System.out.println();
         }
 
-        for (int i = 1; i <= amountOfFloors; i++) {
-            arbitraryHouse.setFloors(floor);
+        arbitraryHouse.setFloors(floor);
+
+        for (int i = 1; i < amountOfFloors; i++) {
+            houseService.fillTheRemainingFloors(arbitraryHouse);
         }
 
         System.out.println("The floors has been created\n");
 
-
         houseService.viewHouse(arbitraryHouse);
+    }
 
-
+    private static boolean inTheBoarder(House arbitraryHouse, double tempLength, double tempWidth) {
+        return tempWidth <= arbitraryHouse.getWidth() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA
+                && tempLength < arbitraryHouse.getLength() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA;
     }
 
     private static ApartmentType getApartmentType(Scanner scanner) {

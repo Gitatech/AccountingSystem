@@ -39,12 +39,12 @@ public class House {
         return floors;
     }
 
-    public Floor getOneFloor() {
+    public Floor getFirstFloor() {
         return floors.get(0);
     }
 
-    public void setFloors(Floor floors) {
-        this.floors.add(floors);
+    public void setFloors(Floor floor) {
+        this.floors.add(floor);
     }
 
     @Override

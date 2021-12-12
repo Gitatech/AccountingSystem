@@ -1,10 +1,16 @@
 package com.bsu.accounting.system.service;
 
+import com.bsu.accounting.system.dao.ApartmentDao;
+import com.bsu.accounting.system.dao.ApartmentDaoImpl;
+import com.bsu.accounting.system.model.Apartment;
+import com.bsu.accounting.system.model.Floor;
 import com.bsu.accounting.system.model.House;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class HouseService implements Comparator<House> {
 
@@ -22,32 +28,48 @@ public class HouseService implements Comparator<House> {
         int amount;
         amount = (int) (house.getHeight() / floorHeight);
         if (amount == 0) {
-            throw new ArithmeticException(String.format(THE_PROBLEM_IN_CREATING_A_HOME, house.getOneFloor().getFloorHeight()));
+            throw new ArithmeticException(String.format(THE_PROBLEM_IN_CREATING_A_HOME, house.getFirstFloor().getFloorHeight()));
         }
         return amount;
     }
 
     public int numberOfResidents(House house) {
         int residents = 0;
-        for (int i = 0; i < house.getOneFloor().getApartments().size(); i++) {
-            residents += house.getOneFloor().getApartments().get(i).getNumberOfResidents();
+        for (int i = 0; i < house.getFirstFloor().getApartments().size(); i++) {
+            residents += house.getFirstFloor().getApartments().get(i).getNumberOfResidents();
         }
-        return residents * numberOfFloors(house, house.getOneFloor().getFloorHeight());
+        return residents * numberOfFloors(house, house.getFirstFloor().getFloorHeight());
+    }
+
+    public void fillTheRemainingFloors(House house) {
+        Floor floor = house.getFirstFloor();
+        ApartmentDao apartmentDao = new ApartmentDaoImpl();
+
+        int count = house.getFirstFloor().getApartments().size();
+        List<Apartment> apartmentList = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            Apartment apartment = apartmentDao.create(floor.getApartment(i));
+            apartmentList.add(apartment);
+        }
+
+        floor.setApartments(apartmentList);
+        house.setFloors(floor);
     }
 
     public double totalHouseArea(House house) {
         double area = 0;
         ApartmentService apartmentService = new ApartmentService();
-        for (int i = 0; i < house.getOneFloor().getApartments().size(); i++) {
-            area += apartmentService.getTotalApartmentArea(house.getOneFloor().getApartments().get(i));
+        for (int i = 0; i < house.getFirstFloor().getApartments().size(); i++) {
+            area += apartmentService.getTotalApartmentArea(house.getFirstFloor().getApartments().get(i));
         }
         return area;
     }
 
     public void viewAllApartments(House house) {
         System.out.printf(APARTMENTS, house.getName());
-        for (int i = 0; i < numberOfFloors(house, house.getOneFloor().getFloorHeight()); i++) {
-            LOGGER.info(i + 1 + " " + house.getOneFloor() + ": " + house.getOneFloor().getApartments());
+        for (int i = 0; i < numberOfFloors(house, house.getFirstFloor().getFloorHeight()); i++) {
+            LOGGER.info(i + 1 + " " + house.getFirstFloor() + ": " + house.getFirstFloor().getApartments());
         }
     }
 
@@ -55,16 +77,16 @@ public class HouseService implements Comparator<House> {
         System.out.println(house);
         viewAllApartments(house);
         System.out.printf(NUMBER_OF_RESIDENTS_IN_THE_HOUSE + "%n", numberOfResidents(house));
-        System.out.printf(NUMBER_OF_FLOORS_IN_THE_HOUSE + "%n", numberOfFloors(house, house.getOneFloor().getFloorHeight()));
+        System.out.printf(NUMBER_OF_FLOORS_IN_THE_HOUSE + "%n", numberOfFloors(house, house.getFirstFloor().getFloorHeight()));
         System.out.printf(HOUSE_AREA + "%n", totalHouseArea(house));
     }
 
     @Override
     public int compare(House firstHouse, House secondHouse) {
-        if (firstHouse == null || secondHouse == null){
+        if (firstHouse == null || secondHouse == null) {
             throw new NullPointerException("House must be a not null value");
         }
-            LOGGER.info("\nCompare the {}(house) with {}(house) in terms of parameters", firstHouse.getName(), secondHouse.getName());
+        LOGGER.info("\nCompare the {}(house) with {}(house) in terms of parameters", firstHouse.getName(), secondHouse.getName());
 
         if (firstHouse.getLength() > secondHouse.getLength()) {
             LOGGER.info("{} longer than {}", firstHouse.getName(), secondHouse.getName());
@@ -90,11 +112,11 @@ public class HouseService implements Comparator<House> {
             LOGGER.info("{} lower than {}", firstHouse.getName(), secondHouse.getName());
         }
 
-        if (this.numberOfFloors(firstHouse, firstHouse.getOneFloor().getFloorHeight())
-                > this.numberOfFloors(secondHouse, secondHouse.getOneFloor().getFloorHeight())) {
+        if (this.numberOfFloors(firstHouse, firstHouse.getFirstFloor().getFloorHeight())
+                > this.numberOfFloors(secondHouse, secondHouse.getFirstFloor().getFloorHeight())) {
             LOGGER.info("The number of floors of the {} is more than that of the {}", firstHouse.getName(), secondHouse.getName());
-        } else if (this.numberOfFloors(firstHouse, firstHouse.getOneFloor().getFloorHeight())
-                == this.numberOfFloors(secondHouse, secondHouse.getOneFloor().getFloorHeight())) {
+        } else if (this.numberOfFloors(firstHouse, firstHouse.getFirstFloor().getFloorHeight())
+                == this.numberOfFloors(secondHouse, secondHouse.getFirstFloor().getFloorHeight())) {
             LOGGER.info("The number of floors in the houses are equal");
         } else {
             LOGGER.info("The number of floors of the {} is less than that of the {}", firstHouse.getName(), secondHouse.getName());

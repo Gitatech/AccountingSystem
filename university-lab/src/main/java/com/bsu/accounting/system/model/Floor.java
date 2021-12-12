@@ -33,8 +33,22 @@ public class Floor {
         return apartments;
     }
 
+    public Apartment getApartment(int index){
+        return apartments.get(index);
+    }
+
     public void setApartment(Apartment apartment) {
         this.apartments.add(apartment);
+    }
+
+    public void setApartment(int index, Apartment apartment) {
+        this.apartments.add(index, apartment);
+    }
+
+    public void setApartments(List<Apartment> apartmentList){
+        for (int i = 0; i < apartmentList.size(); i++) {
+            apartments.set(i, apartmentList.get(i));
+        }
     }
 
     @Override

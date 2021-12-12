@@ -18,8 +18,6 @@ public class Director {
     }
 
     public void constructArbitraryApartment(ApartmentBuilder builder) {
-        System.out.print("Apartment number: ");
-        builder.setApartmentId(scanner.nextInt());
         System.out.print("Number of residents in the apartment: ");
         builder.setNumberOfResidents(scanner.nextInt());
         System.out.print("The total length of the apartment(m): ");

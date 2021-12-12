@@ -12,23 +12,15 @@ public class ApartmentValidator {
     private static final String ILLEGAL_ID = "id must be > 0";
 
     public void checkWholeApartment(Apartment apartment) {
-        checkIdValue(apartment.getId());
         checkNumberOfResidentsValue(apartment.getNumberOfResidents());
         checkLengthValue(apartment.getTotalApartmentLength());
         checkWidthValue(apartment.getTotalApartmentWidth());
     }
 
-    public void checkWholeApartment(int id, int residents, double length, double width) {
-        checkIdValue(id);
+    public void checkWholeApartment(Integer id, int residents, double length, double width) {
         checkNumberOfResidentsValue(residents);
         checkLengthValue(length);
         checkWidthValue(width);
-    }
-
-    public void checkIdValue(int id) {
-        if (id <= 0) {
-            throw new IllegalArgumentException(ILLEGAL_ID);
-        }
     }
 
     public void checkNumberOfResidentsValue(int numberOfResidents) {
