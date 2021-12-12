@@ -16,52 +16,65 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class HouseServiceTest  {
 
-    static List<Flat> flats =  new ArrayList<Flat>();
-    static List<Ground> grounds = new ArrayList<Ground>();
-    static List<House> houses = new ArrayList<House>();
+    private House house;
 
-    @BeforeAll
-    static void setUp() throws Exception {
-        Flat flat = new FlatBilder()
-                .setSqrt(1)
-                .setNumberOfHuman(1)
-                .setNumOfFlat()
-                .bilder();
-        flats.add(flat);
-        Ground ground = new GroundBuilder()
-                .setGround(flats)
-                .setNumOfFlats(1)
-                .Builder();
-        grounds.add(ground);
-        House house = new HouseBuilder()
-                .setHouseName("First")
-                .setGrounds(grounds)
-                .setNumOfGrounds(3)
-                .builder();
-        houses.add(house);
+
+    @BeforeEach
+     void setUp() throws Exception {
+         house = new HouseBuilder().setHouseName("Alex").setNumOfGrounds(2).builder();
+
+        house.addGround(GroundService.getGroundService().createGround(2));
+        int firstFloor = 0;
+        for (int i = 1; i < 2; ++i) {
+            house.addGround(GroundService.getGroundService().cloneGround(house.getGround(firstFloor)));
+        }
+    }
+    @Test
+    void getAllTest(){
+        HouseService.getHouseService().save(house);
+        List<House> expList = HouseService.getHouseService().getAll();
+        Assertions.assertFalse(expList.isEmpty());
     }
 
-    @AfterAll
-    static void tearDown() throws Exception {
-        flats.clear();
-        grounds.clear();
-        houses.clear();
+    @Test
+    void saveTest(){
+        HouseService.getHouseService().save(house);
+        House expHouse = HouseService.getHouseService().getByInd(0);
+        Assertions.assertEquals(expHouse,house);
+    }
+
+    @Test
+    void deleteTest(){
+        HouseService.getHouseService().save(house);
+        HouseService.getHouseService().delete(house);
+        assertEquals(0,HouseService.getHouseService().getAll().size());
+    }
+
+    @Test
+    void updateTest(){
+        House expHouse = HouseService.getHouseService().createHouse(2,2,"Max");
+        HouseService.getHouseService().save(house);
+        String teor = "Max";
+        HouseService.getHouseService().update(house,expHouse);
+        House exp = HouseService.getHouseService().getByInd(0);
+        Assertions.assertEquals(exp.getHouseName(),teor);
     }
 
     @Test
      void testGetHouseArea() {
-        double teorHouseArea = 1;
-        double expHouseArea = HouseService.getHouseService().getHouseArea(houses.get(0));
+        double teorHouseArea = 40;
+        double expHouseArea = HouseService.getHouseService().getHouseArea(house);
         assertEquals(teorHouseArea,expHouseArea,0);
     }
 
     @Test
      void testGetNumberOfHuman() {
-        int teorNumber = 1;
-        int expNumber = HouseService.getHouseService().getNumberOfHuman(houses.get(0));
+        int teorNumber = 12;
+        int expNumber = HouseService.getHouseService().getNumberOfHuman(house);
         assertEquals(teorNumber, expNumber);
     }
     @Test
@@ -69,8 +82,49 @@ public class HouseServiceTest  {
         List<Integer> teor = new ArrayList<Integer>();
         teor.add(0);
         teor.add(0);
-        List<Integer> exp = new ArrayList<Integer>(HouseService.getHouseService().compareHouses(houses.get(0),houses.get(0)));
+        List<Integer> exp = new ArrayList<Integer>(HouseService.getHouseService().compareHouses(house,house));
         assertEquals(teor,exp);
+    }
+    @Test
+    void cloneHouseTest(){
+        House expHouse =  HouseService.getHouseService().cloneHouse(house);
+        Assertions.assertEquals(expHouse,house);
+    }
+    @Test
+    void createHouseTest(){
+        House expHouse = HouseService.getHouseService().createHouse(2,2,"Alex");
+        Assertions.assertEquals(expHouse,house);
+    }
+
+    @Test
+    void getByIndTest(){
+        HouseService.getHouseService().save(house);
+        House expHouse = HouseService.getHouseService().getByInd(0);
+        Assertions.assertEquals(expHouse,house);
+
+    }
+    @Test
+    void getNumberOfFlatsTest(){
+        int teorNum = 4;
+        int expNum =  HouseService.getHouseService().getNumberOfFlats(house);
+        assertEquals(expNum,teorNum);
+    }
+
+    @Test
+    void getFlatByNumberTest(){
+        Flat expFlat =  HouseService.getHouseService().getFlatByNumber(house,0);
+        int teorFlatNum = 0;
+        int expFlatNum = expFlat.getNumber();
+        assertEquals(teorFlatNum,expFlatNum);
+    }
+    @Test
+    void readHouseListTest(){
+        HouseService.getHouseService().save(house);
+        HouseService.getHouseService().writeHouseList("src\\test\\houseTest.txt");
+        HouseService.getHouseService().delete(house);
+        HouseService.getHouseService().readHouseList("src\\test\\houseTest.txt");
+        List<House> expList = HouseService.getHouseService().getAll();
+        Assertions.assertFalse(expList.isEmpty());
     }
 }
 

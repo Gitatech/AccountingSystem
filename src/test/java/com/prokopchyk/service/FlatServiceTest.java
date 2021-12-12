@@ -14,27 +14,36 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 public class FlatServiceTest{
-    static List<Flat> flats =  new ArrayList<Flat>();
+    private  Flat flat;
+    private final int numPeople = 3;
+    private final double area = 35;
 
-    @BeforeAll
-    static void setUp(){
-        Flat flat = new FlatBilder()
-                .setSqrt(1)
-                .setNumberOfHuman(1)
+    @BeforeEach
+     void setUp(){
+         flat = new FlatBilder()
+                .setSqrt(area)
+                .setNumberOfHuman(numPeople)
                 .setNumOfFlat()
                 .bilder();
-        flats.add(flat);
     }
-    @AfterAll
-    static void tearDown(){
-        flats.clear();
-    }
+
     @Test
-    public void compareFlats() {
+     void createFlat(){
+        Flat expFlat = FlatService.getFlatService().createFlat();
+        Assertions.assertEquals(expFlat,flat);
+    }
+
+    @Test
+     void compareFlats() {
         List<Integer> teor = new ArrayList<Integer>();
         teor.add(0);
         teor.add(0);
-        List<Integer> exp = new ArrayList<Integer> (FlatService.getFlatService().compareFlats(flats.get(0),flats.get(0)));
+        List<Integer> exp = new ArrayList<Integer> (FlatService.getFlatService().compareFlats(flat,flat));
         assertEquals(teor,exp);
+    }
+    @Test
+    void cloneFlat() {
+        Flat expFlat = FlatService.getFlatService().cloneFlat(flat);
+        Assertions.assertEquals(expFlat,flat);
     }
 }
