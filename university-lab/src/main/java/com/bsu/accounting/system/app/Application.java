@@ -9,6 +9,7 @@ import com.bsu.accounting.system.model.Floor;
 import com.bsu.accounting.system.model.House;
 import com.bsu.accounting.system.service.FloorService;
 import com.bsu.accounting.system.service.HouseService;
+import com.bsu.accounting.system.validation.HouseValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,6 +36,7 @@ public class Application {
         HouseService houseService = new HouseService();
         FloorService floorService = new FloorService();
         ApartmentFactory apartmentFactory = new ApartmentFactory();
+        HouseValidator houseValidator = new HouseValidator();
 
         LOGGER.info("Enter the parameters of the house:");
 
@@ -50,17 +52,17 @@ public class Application {
         while (tempWidth <= arbitraryHouse.getWidth() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA
                 && tempLength < arbitraryHouse.getLength() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA) {
 
-            availableArea(arbitraryHouse, tempLength);
+           houseValidator.availableArea(arbitraryHouse, tempLength);
 
             ApartmentType type = getApartmentType(scanner);
             Apartment apartment = apartmentFactory.createApartment(type);
 
-            if (checkApartmentWidthValue(arbitraryHouse, apartment)) {
-                LOGGER.error("The length of the apartment exceeds the available length of the house");
+            if (houseValidator.checkApartmentWidthValue(arbitraryHouse, apartment)) {
+                LOGGER.error("The width of the apartment exceeds the available width of the house");
                 break;
             }
-            if (checkApartmentLengthValue(arbitraryHouse, tempLength, apartment)) {
-                LOGGER.error("The width of the apartment exceeds the available length of the house");
+            if (houseValidator.checkApartmentLengthValue(arbitraryHouse, tempLength, apartment)) {
+                LOGGER.error("The length of the apartment exceeds the available length of the house");
                 break;
             }
 
@@ -83,20 +85,6 @@ public class Application {
         houseService.viewHouse(arbitraryHouse);
 
 
-    }
-
-    private static boolean checkApartmentWidthValue(House arbitraryHouse, Apartment apartment) {
-        return apartment.getTotalApartmentWidth() > arbitraryHouse.getWidth() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA;
-    }
-
-    private static boolean checkApartmentLengthValue(House arbitraryHouse, double tempLength, Apartment apartment) {
-        return apartment.getTotalApartmentLength() > arbitraryHouse.getLength() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA - tempLength;
-    }
-
-    private static void availableArea(House arbitraryHouse, double tempLength) {
-        System.out.printf(AVAILABLE_HOUSE_AREA,
-                (arbitraryHouse.getLength() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA - tempLength),
-                arbitraryHouse.getWidth() * PERCENTAGE_OF_NON_RESIDENTIAL_AREA);
     }
 
     private static ApartmentType getApartmentType(Scanner scanner) {

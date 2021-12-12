@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Apartment {
 
-    private final int id;
+    private final Integer id;
     private final int numberOfResidents;
     private final double totalApartmentLength;
     private final double totalApartmentWidth;
@@ -44,7 +44,7 @@ public class Apartment {
         return totalApartmentWidth;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -52,16 +52,19 @@ public class Apartment {
         return type;
     }
 
+    public Apartment withId(Integer id) {
+        return new Apartment(id, this.numberOfResidents, this.totalApartmentLength, this.totalApartmentWidth);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Apartment apartment = (Apartment) o;
-        return id == apartment.id
-                && numberOfResidents == apartment.numberOfResidents
+        return numberOfResidents == apartment.numberOfResidents
                 && Double.compare(apartment.totalApartmentLength, totalApartmentLength) == 0
                 && Double.compare(apartment.totalApartmentWidth, totalApartmentWidth) == 0
-                && type == apartment.type;
+                && Objects.equals(id, apartment.id) && type == apartment.type;
     }
 
     @Override

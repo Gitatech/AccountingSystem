@@ -6,7 +6,6 @@ import com.bsu.accounting.system.model.House;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class FloorService {
@@ -28,7 +27,7 @@ public class FloorService {
         final boolean comparison = floor.getFloorLength() > apartment.getTotalApartmentLength()
                 && floor.getFloorWidth() > apartment.getTotalApartmentWidth();
         if (comparison) {
-            floor.setApartments(apartment);
+            floor.setApartment(apartment);
         } else {
             LOGGER.error(apartment);
         }

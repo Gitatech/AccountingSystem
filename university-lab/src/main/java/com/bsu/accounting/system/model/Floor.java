@@ -33,7 +33,7 @@ public class Floor {
         return apartments;
     }
 
-    public void setApartments(Apartment apartment) {
+    public void setApartment(Apartment apartment) {
         this.apartments.add(apartment);
     }
 

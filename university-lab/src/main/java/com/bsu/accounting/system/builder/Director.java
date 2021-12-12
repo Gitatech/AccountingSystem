@@ -17,7 +17,7 @@ public class Director {
         builder.setHouseHeight(scanner.nextDouble());
     }
 
-    public void constructArbitraryApartment(ApartmentBuilder builder){
+    public void constructArbitraryApartment(ApartmentBuilder builder) {
         System.out.print("Apartment number: ");
         builder.setApartmentId(scanner.nextInt());
         System.out.print("Number of residents in the apartment: ");
