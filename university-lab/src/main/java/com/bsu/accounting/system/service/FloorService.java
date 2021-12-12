@@ -17,6 +17,18 @@ public class FloorService {
 
     Scanner scanner = new Scanner(System.in);
 
+    private FloorService() {
+
+    }
+
+    private static class SingletonHolder {
+        private static final FloorService FLOOR_SERVICE = new FloorService();
+    }
+
+    public static FloorService getInstance(){
+        return SingletonHolder.FLOOR_SERVICE;
+    }
+
     public Floor createFloor(House house) {
         System.out.print(HEIGHT_OF_THE_FLOOR_MSG);
         double height = scanner.nextDouble();

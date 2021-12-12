@@ -35,10 +35,10 @@ public class Application {
         Director director = new Director();
 
         HouseBuilderImpl builder = new HouseBuilderImpl();
-        HouseService houseService = new HouseService();
+        HouseService houseService = HouseService.getInstance();
         HouseValidator houseValidator = new HouseValidator();
 
-        FloorService floorService = new FloorService();
+        FloorService floorService = FloorService.getInstance();
 
         ApartmentFactory apartmentFactory = new ApartmentFactory();
 

@@ -10,13 +10,25 @@ public class ApartmentService implements Comparator<Apartment> {
 
     private static final Logger LOGGER = LogManager.getLogger(ApartmentService.class);
 
+    private ApartmentService() {
+
+    }
+
+    private static class SingletonHolder {
+        private static final ApartmentService APARTMENT_SERVICE = new ApartmentService();
+    }
+
+    public static ApartmentService getInstance() {
+        return SingletonHolder.APARTMENT_SERVICE;
+    }
+
     public double getTotalApartmentArea(Apartment apartment) {
         return apartment.getTotalApartmentLength() * apartment.getTotalApartmentWidth();
     }
 
     @Override
     public int compare(Apartment firstApartment, Apartment secondApartment) {
-        if(firstApartment == null || secondApartment == null){
+        if (firstApartment == null || secondApartment == null) {
             throw new NullPointerException("Apartment must be a not null value");
         }
 
@@ -24,7 +36,7 @@ public class ApartmentService implements Comparator<Apartment> {
 
         if (firstApartment.getTotalApartmentLength() > secondApartment.getTotalApartmentLength()) {
             LOGGER.info("Apartment {} longer than apartment {}", firstApartment.getId(), secondApartment.getId());
-        } else if (firstApartment.getTotalApartmentLength() == secondApartment.getTotalApartmentLength()){
+        } else if (firstApartment.getTotalApartmentLength() == secondApartment.getTotalApartmentLength()) {
             LOGGER.info("The length of the apartments are equal");
         } else {
             LOGGER.info("apartment {} less in length than apartment {}", firstApartment.getId(), secondApartment.getId());
