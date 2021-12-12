@@ -14,8 +14,7 @@ public class HouseBuilder {
     }
 
     public HouseBuilder setNumOfGrounds(int height) {
-        int numberOfGround = height / newHouse.getHeightOfGround();
-        newHouse.setNumberOfGrounds(numberOfGround);
+        newHouse.setNumberOfGrounds(height);
         return this;
     }
 

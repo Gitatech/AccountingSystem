@@ -1,23 +1,66 @@
 package com.prokopchyk.service;
 
+import com.prokopchyk.builder.HouseBuilder;
 import com.prokopchyk.building.Flat;
 import com.prokopchyk.building.Ground;
 import com.prokopchyk.building.House;
 import com.prokopchyk.building.houseComparator.AreaCompare;
 import com.prokopchyk.building.houseComparator.PersonsCompare;
+import com.prokopchyk.dao.HouseDaoImp;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
 public class HouseService  {
     private static  HouseService houseService;
-    private HouseService(){};
+    private static HouseDaoImp houseDaoImp;
+    private HouseService(){
+        houseDaoImp = new HouseDaoImp();
+    };
     public synchronized static HouseService getHouseService(){
         if(houseService == null)
             houseService = new HouseService();
         return houseService;
+    }
+
+    public List<House> getAll(){
+        return houseDaoImp.getAll();
+    }
+    public void save(House house){
+        houseDaoImp.save(house);
+    }
+
+    public void delete(House house){
+        houseDaoImp.delete(house);
+    }
+    public void update(House house,House houseNew){
+        houseDaoImp.update(house,houseNew);
+    }
+    public House getByInd(int ind){
+        return houseDaoImp.getByNumber(ind);
+    }
+
+    public House createHouse(int numOfGrounds, int numOfFlatsInGround,String name) {
+        House house = new HouseBuilder().setHouseName(name).setNumOfGrounds(numOfGrounds).builder();
+
+        house.addGround(GroundService.getGroundService().createGround(numOfFlatsInGround));
+        int firstFloor = 0;
+        for (int i = 1; i < numOfGrounds; ++i) {
+            house.addGround(GroundService.getGroundService().cloneGround(house.getGround(firstFloor)));
+        }
+
+        return house;
+    }
+
+    public House cloneHouse(House house) {
+        House newHouse = new HouseBuilder().setHouseName(house.getHouseName())
+                .setNumOfGrounds(house.getNumberOfGrounds()).builder();
+        for (Ground ground : house.getGrounds()) {
+            newHouse.addGround(GroundService.getGroundService().cloneGround(ground));
+        }
+
+        return newHouse;
     }
     public  double getHouseArea(House house) {
         int sqrt = 0;
@@ -73,4 +116,11 @@ public class HouseService  {
             }
         }
     }
+    public void readHouseList(String fileName){
+        HouseListService.getHouseListService().readHouseList(fileName);
+    }
+    public void writeHouseList(String fileName){
+        HouseListService.getHouseListService().writeHouseList(fileName);
+    }
+
 }

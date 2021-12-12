@@ -18,6 +18,9 @@ public class HouseDao implements Dao<House>{
         houses.add(object);
 
     }
+    public House getHouse(House house){
+         return null;
+    }
 
     @Override
     public void update(House object, House objectNew) {
@@ -30,12 +33,7 @@ public class HouseDao implements Dao<House>{
         houses.remove(object);
 
     }
-    public void printAllNames(){
-        int i = 1;
-        for(House house:houses){
-            System.out.println(  i +": " + house.getHouseName());
-        }
-    }
+
     public House getByNumber(int k){
         return houses.get(k);
     }
