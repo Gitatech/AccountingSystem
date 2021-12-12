@@ -17,19 +17,19 @@ public class HouseListService {
         return houseListService;
     }
 
-    public void readHouseList(List<House> houses, String fileName) {
+    public void readHouseList(String fileName) {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName))) {
             for (House house : (List<House>) objectInputStream.readObject()) {
-                houses.add(house);
+                HouseService.getHouseService().save(house);
             }
         } catch (Exception e) {
             System.out.println( "Error"+ e.getMessage());
         }
     }
 
-    public void writeHouseList(List<House> houses, String fileName) {
+    public void writeHouseList(String fileName) {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            objectOutputStream.writeObject(houses);
+            objectOutputStream.writeObject(HouseService.getHouseService().getAll());
         } catch (Exception e) {
             System.out.println( e.getMessage());
         }
