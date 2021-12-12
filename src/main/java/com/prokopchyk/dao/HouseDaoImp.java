@@ -5,7 +5,7 @@ import com.prokopchyk.building.House;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HouseDao implements Dao<House>{
+public class HouseDaoImp implements HouseDao{
     private static List<House> houses = new ArrayList<>();
 
     @Override
