@@ -25,6 +25,10 @@ public class Ground  implements Externalizable {
         this.flat.add(flat);
     }
 
+    public List<Flat> getFlat(){
+        return flat;
+    }
+
     public void setNumberOfFlatsInGround(int numberOfFlatsInGround) {
         NumberOfFlatsInGround = numberOfFlatsInGround;
     }
