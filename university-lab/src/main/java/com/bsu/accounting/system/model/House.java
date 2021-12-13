@@ -6,10 +6,10 @@ import java.util.Objects;
 
 public class House {
 
-    private final String name;
-    private final double length;
-    private final double width;
-    private final double height;
+    private String name;
+    private double length;
+    private double width;
+    private double height;
     private final List<Floor> floors = new ArrayList<>();
 
     public House(String name, double length, double width, double height) {
@@ -17,6 +17,9 @@ public class House {
         this.length = length;
         this.width = width;
         this.height = height;
+    }
+
+    public House() {
     }
 
     public double getLength() {

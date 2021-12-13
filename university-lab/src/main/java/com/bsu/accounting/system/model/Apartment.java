@@ -42,6 +42,13 @@ public class Apartment {
         this.type = type;
     }
 
+    public Apartment() {
+        id = null;
+        numberOfResidents = 0;
+        totalApartmentLength = 0;
+        totalApartmentWidth = 0;
+    }
+
     public int getNumberOfResidents() {
         return numberOfResidents;
     }

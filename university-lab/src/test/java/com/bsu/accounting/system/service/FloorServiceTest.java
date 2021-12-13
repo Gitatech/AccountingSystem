@@ -1,53 +1,49 @@
 package com.bsu.accounting.system.service;
 
-import com.bsu.accounting.system.dao.ApartmentDao;
 import com.bsu.accounting.system.dao.ApartmentDaoImpl;
 import com.bsu.accounting.system.model.Apartment;
-import com.bsu.accounting.system.model.ApartmentType;
 import com.bsu.accounting.system.model.Floor;
+import com.bsu.accounting.system.model.House;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 public class FloorServiceTest {
     private static final Logger LOGGER = LogManager.getLogger(FloorServiceTest.class);
-    private static final String PATH_TO_FILE = "AccountingSystem/university-lab/src/main/resources/results.ob";
+
+    private final FloorService floorService = FloorService.getInstance();
 
     @InjectMocks
-    ApartmentDao apartmentDao = new ApartmentDaoImpl();
+    private House house;
 
     @InjectMocks
-    private Apartment apartment = apartmentDao.create(new Apartment(6, 43, 18, ApartmentType.ONE_ROOM_APARTMENT));
+    ApartmentDaoImpl apartmentDao;
+
+    @Mock
+    private Apartment apartment;
 
     @Test
     public void createFloor_shouldReturnFloorObject() {
         LOGGER.info("createFloor");
 
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(PATH_TO_FILE))) {
-            final Floor savingFloor = (Floor) inputStream.readObject();
+        final Floor floor = floorService.createFloor(house);
 
-            assertNotNull(savingFloor);
-
-            LOGGER.info(savingFloor);
-        } catch (IOException | ClassNotFoundException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
+        assertNotNull(floor);
     }
 
     @Test
     public void addApartment_shouldAddApartmentToApartmentList() {
         Floor floor = new Floor(3.0, 70.0, 20.0);
 
+        apartmentDao.create(apartment);
+        floorService.addApartment(floor, apartment);
         floor.setApartment(0, apartment);
 
         assertNotNull(floor.getApartment(0));
