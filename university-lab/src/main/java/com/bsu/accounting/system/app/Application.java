@@ -2,8 +2,6 @@ package com.bsu.accounting.system.app;
 
 import com.bsu.accounting.system.builder.Director;
 import com.bsu.accounting.system.builder.HouseBuilderImpl;
-import com.bsu.accounting.system.dao.ApartmentDao;
-import com.bsu.accounting.system.dao.ApartmentDaoImpl;
 import com.bsu.accounting.system.factory.ApartmentFactory;
 import com.bsu.accounting.system.model.Apartment;
 import com.bsu.accounting.system.model.ApartmentType;
@@ -42,8 +40,6 @@ public class Application {
 
         ApartmentFactory apartmentFactory = new ApartmentFactory();
 
-        ApartmentDao apartmentDao = new ApartmentDaoImpl();
-
         LOGGER.info("Enter the parameters of the house:");
 
         director.constructArbitraryHouse(builder);
@@ -76,14 +72,12 @@ public class Application {
 
             if (tempLength > arbitraryHouse.getLength() || tempWidth > arbitraryHouse.getWidth()) break;
 
-            floorService.addApartment(floor, apartmentDao.create(apartment));
+            floorService.addApartment(floor, apartment);
             System.out.println();
         }
 
-        arbitraryHouse.setFloors(floor);
-
-        for (int i = 1; i < amountOfFloors; i++) {
-            houseService.fillTheRemainingFloors(arbitraryHouse);
+        for (int i = 0; i < amountOfFloors; i++) {
+            houseService.fillTheFloors(arbitraryHouse, floor);
         }
 
         System.out.println("The floors has been created\n");

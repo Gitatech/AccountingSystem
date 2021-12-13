@@ -1,21 +1,24 @@
 package com.bsu.accounting.system.model;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Floor implements Serializable {
+public class Floor implements Externalizable, Cloneable{
 
-    private final double floorHeight;
-    private final double floorLength;
-    private final double floorWidth;
-    private final List<Apartment> apartments = new ArrayList<>();
+    private double floorHeight;
+    private double floorLength;
+    private double floorWidth;
+    private List<Apartment> apartments = new ArrayList<>();
 
     public Floor(double floorHeight, double floorLength, double floorWidth) {
         this.floorHeight = floorHeight;
         this.floorLength = floorLength;
         this.floorWidth = floorWidth;
+    }
+
+    public Floor() {
     }
 
     public double getFloorHeight() {
@@ -73,5 +76,34 @@ public class Floor implements Serializable {
         return "Floor{" +
                 "floorHeight=" + floorHeight +
                 '}';
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput) throws IOException {
+        final Floor floor = this;
+        objectOutput.writeObject(floor.getFloorHeight());
+        objectOutput.writeInt((int) floor.getFloorLength());
+        objectOutput.writeInt((int) floor.getFloorWidth());
+        objectOutput.writeObject(floor.getApartments());
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
+        this.floorHeight = objectInput.readDouble();
+        this.floorLength = objectInput.readDouble();
+        this.floorWidth = objectInput.readDouble();
+        while (objectInput.read() != -1) {
+            this.apartments.add((Apartment) objectInput.readObject());
+
+        }
+    }
+
+    @Override
+    public Floor clone() {
+        try {
+            return (Floor) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

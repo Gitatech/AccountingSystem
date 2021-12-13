@@ -62,7 +62,7 @@ public class Apartment {
     }
 
     public Apartment withId(Integer id) {
-        return new Apartment(id, this.numberOfResidents, this.totalApartmentLength, this.totalApartmentWidth);
+        return new Apartment(id, this.numberOfResidents, this.totalApartmentLength, this.totalApartmentWidth, this.type);
     }
 
     @Override

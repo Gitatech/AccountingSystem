@@ -4,11 +4,14 @@ import com.bsu.accounting.system.model.Apartment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Comparator;
 
 public class ApartmentService implements Comparator<Apartment> {
 
     private static final Logger LOGGER = LogManager.getLogger(ApartmentService.class);
+    private static final String PATH_TO_FILE = "AccountingSystem/university-lab/src/main/resources/results.txt";
 
     private ApartmentService() {
 
@@ -24,7 +27,15 @@ public class ApartmentService implements Comparator<Apartment> {
 
     public double getTotalApartmentArea(Apartment apartment) {
 
-        return apartment.getTotalApartmentLength() * apartment.getTotalApartmentWidth();
+        final double area = apartment.getTotalApartmentLength() * apartment.getTotalApartmentWidth();
+        try {
+            FileWriter outputStream = new FileWriter(PATH_TO_FILE, true);
+            outputStream.write(String.valueOf(area) + '\n');
+            outputStream.close();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return area;
     }
 
     @Override
@@ -56,9 +67,9 @@ public class ApartmentService implements Comparator<Apartment> {
         } else if (firstApartment.getNumberOfResidents() == secondApartment.getNumberOfResidents()) {
             LOGGER.info("The number of people living in the apartment is the same");
         } else {
-            LOGGER.info("The number of people living in the {} apartment is less thn in the {} apartment", firstApartment.getId(), secondApartment.getId());
+            LOGGER.info("The number of people living in the {} apartment is less than in the {} apartment", firstApartment.getId(), secondApartment.getId());
         }
 
-        return Integer.parseInt(String.valueOf(true));
+        return 0;
     }
 }

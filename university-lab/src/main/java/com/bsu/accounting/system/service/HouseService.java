@@ -8,6 +8,8 @@ import com.bsu.accounting.system.model.House;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -22,6 +24,7 @@ public class HouseService implements Comparator<House> {
     private static final String APARTMENTS = "Apartments in the \"%s\":%n";
     private static final String NUMBER_OF_FLOORS_IN_THE_HOUSE = "Number of residential floors in the house: %s";
     private static final String HOUSE_AREA = "Total living house area: %.2f";
+    private static final String PATH_TO_FILE = "AccountingSystem/university-lab/src/main/resources/results.txt";
 
     private HouseService() {
 
@@ -41,6 +44,13 @@ public class HouseService implements Comparator<House> {
         if (amount == 0) {
             throw new ArithmeticException(String.format(THE_PROBLEM_IN_CREATING_A_HOME, house.getFirstFloor().getFloorHeight()));
         }
+        try {
+            FileWriter outputStream = new FileWriter(PATH_TO_FILE, true);
+            outputStream.write(String.valueOf(amount) + '\n');
+            outputStream.close();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
         return amount;
     }
 
@@ -49,18 +59,26 @@ public class HouseService implements Comparator<House> {
         for (int i = 0; i < house.getFirstFloor().getApartments().size(); i++) {
             residents += house.getFirstFloor().getApartments().get(i).getNumberOfResidents();
         }
+        final int numberOfResidents = residents * numberOfFloors(house, house.getFirstFloor().getFloorHeight());
 
-        return residents * numberOfFloors(house, house.getFirstFloor().getFloorHeight());
+        try {
+            FileWriter outputStream = new FileWriter(PATH_TO_FILE, true);
+            outputStream.write(String.valueOf(numberOfResidents) + '\n');
+            outputStream.close();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return numberOfResidents;
     }
 
-    public void fillTheRemainingFloors(House house) {
-        Floor floor = house.getFirstFloor();
+    public void fillTheFloors(House house, Floor currentFloor) {
         ApartmentDao apartmentDao = new ApartmentDaoImpl();
+        Floor floor = currentFloor.clone();
 
-        int count = house.getFirstFloor().getApartments().size();
         List<Apartment> apartmentList = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < floor.getApartments().size(); i++) {
             Apartment apartment = apartmentDao.create(floor.getApartment(i));
             apartmentList.add(apartment);
         }
@@ -74,6 +92,13 @@ public class HouseService implements Comparator<House> {
         ApartmentService apartmentService = ApartmentService.getInstance();
         for (int i = 0; i < house.getFirstFloor().getApartments().size(); i++) {
             area += apartmentService.getTotalApartmentArea(house.getFirstFloor().getApartments().get(i));
+        }
+        try {
+            FileWriter outputStream = new FileWriter(PATH_TO_FILE, true);
+            outputStream.write(String.valueOf(area) + '\n');
+            outputStream.close();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return area;
     }
@@ -134,6 +159,6 @@ public class HouseService implements Comparator<House> {
             LOGGER.info("The number of floors of the {} is less than that of the {}", firstHouse.getName(), secondHouse.getName());
         }
 
-        return Integer.parseInt(String.valueOf(true));
+        return 0;
     }
 }
