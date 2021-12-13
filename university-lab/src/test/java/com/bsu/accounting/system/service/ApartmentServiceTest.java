@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ApartmentServiceTest {
 
-    private static final Logger LOGGER = LogManager.getLogger(ApartmentService.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApartmentServiceTest.class);
 
     private static final Apartment APARTMENT_TEST = new Apartment(1, 5, 23.4, 18.0, ApartmentType.ONE_ROOM_APARTMENT);
     private final ApartmentService apartmentService = ApartmentService.getInstance();
