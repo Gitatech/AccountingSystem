@@ -32,13 +32,14 @@ public class Apartment {
         this.type = type;
     }
 
-    public Apartment(int numberOfResidents, double totalApartmentLength, double totalApartmentWidth) {
+    public Apartment(int numberOfResidents, double totalApartmentLength, double totalApartmentWidth, ApartmentType type) {
         ApartmentValidator validator = new ApartmentValidator();
         validator.checkWholeApartment(null, numberOfResidents, totalApartmentLength, totalApartmentWidth);
         this.id = null;
         this.numberOfResidents = numberOfResidents;
         this.totalApartmentLength = totalApartmentLength;
         this.totalApartmentWidth = totalApartmentWidth;
+        this.type = type;
     }
 
     public int getNumberOfResidents() {

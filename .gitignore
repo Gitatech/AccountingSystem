@@ -80,3 +80,6 @@ university-lab/.idea
 .env*
 *.txt
 *.ob
+
+### Main Application class
+app/
