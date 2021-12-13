@@ -78,4 +78,5 @@ university-lab/.idea
 
 ### Local env vars
 .env*
-
+*.txt
+*.ob

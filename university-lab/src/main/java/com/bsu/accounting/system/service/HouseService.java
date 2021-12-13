@@ -31,7 +31,7 @@ public class HouseService implements Comparator<House> {
         private static final HouseService HOUSE_SERVICE = new HouseService();
     }
 
-    public static HouseService getInstance(){
+    public static HouseService getInstance() {
         return SingletonHolder.HOUSE_SERVICE;
     }
 
@@ -49,6 +49,7 @@ public class HouseService implements Comparator<House> {
         for (int i = 0; i < house.getFirstFloor().getApartments().size(); i++) {
             residents += house.getFirstFloor().getApartments().get(i).getNumberOfResidents();
         }
+
         return residents * numberOfFloors(house, house.getFirstFloor().getFloorHeight());
     }
 
@@ -68,7 +69,7 @@ public class HouseService implements Comparator<House> {
         house.setFloors(floor);
     }
 
-    public double totalHouseArea(House house) {
+    public double totalHouseArea(House house){
         double area = 0;
         ApartmentService apartmentService = ApartmentService.getInstance();
         for (int i = 0; i < house.getFirstFloor().getApartments().size(); i++) {

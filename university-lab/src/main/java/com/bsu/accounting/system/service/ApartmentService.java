@@ -23,6 +23,7 @@ public class ApartmentService implements Comparator<Apartment> {
     }
 
     public double getTotalApartmentArea(Apartment apartment) {
+
         return apartment.getTotalApartmentLength() * apartment.getTotalApartmentWidth();
     }
 

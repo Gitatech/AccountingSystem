@@ -1,10 +1,11 @@
 package com.bsu.accounting.system.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Floor {
+public class Floor implements Serializable {
 
     private final double floorHeight;
     private final double floorLength;
@@ -33,7 +34,7 @@ public class Floor {
         return apartments;
     }
 
-    public Apartment getApartment(int index){
+    public Apartment getApartment(int index) {
         return apartments.get(index);
     }
 
@@ -45,7 +46,7 @@ public class Floor {
         this.apartments.add(index, apartment);
     }
 
-    public void setApartments(List<Apartment> apartmentList){
+    public void setApartments(List<Apartment> apartmentList) {
         for (int i = 0; i < apartmentList.size(); i++) {
             apartments.set(i, apartmentList.get(i));
         }

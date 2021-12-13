@@ -6,7 +6,6 @@ import com.bsu.accounting.system.model.House;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class FloorService {
@@ -25,7 +24,7 @@ public class FloorService {
         private static final FloorService FLOOR_SERVICE = new FloorService();
     }
 
-    public static FloorService getInstance(){
+    public static FloorService getInstance() {
         return SingletonHolder.FLOOR_SERVICE;
     }
 
@@ -33,6 +32,7 @@ public class FloorService {
         System.out.print(HEIGHT_OF_THE_FLOOR_MSG);
         double height = scanner.nextDouble();
         System.out.println();
+
         return new Floor(height, house.getLength(), house.getWidth());
     }
 
