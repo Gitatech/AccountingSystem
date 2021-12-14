@@ -1,6 +1,6 @@
-package entities.apartmentBuilder;
+package com.shakhnitski.accsystem.builder;
 
-import entities.Apartment;
+import com.shakhnitski.accsystem.entity.Apartment;
 
 public class ApartmentBuilder {
     private int number;

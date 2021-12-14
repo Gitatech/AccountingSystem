@@ -1,12 +1,9 @@
-package entities;
+package com.shakhnitski.accsystem.entity;
 
-import entities.validators.houseValidator.HouseValidator;
+import com.shakhnitski.accsystem.validator.HouseValidator;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class House implements Comparable<House>, Serializable {
     private final int number;
@@ -14,7 +11,10 @@ public class House implements Comparable<House>, Serializable {
 
     public House(int number) throws IllegalArgumentException {
         this.number = number;
-        HouseValidator.validate(this);
+        HouseValidator validator = new HouseValidator();
+        if (!validator.validate(this)) {
+            throw new IllegalArgumentException("Недопустимый номер дома");
+        }
         apartments = new TreeSet<>();
     }
 
@@ -23,7 +23,9 @@ public class House implements Comparable<House>, Serializable {
     }
 
     public void addApartment(Apartment apartment) {
-        apartments.add(apartment);
+        if (!containsApartment(apartment.getNumber())) {
+            apartments.add(apartment);
+        }
     }
 
     public int getNumber() {
@@ -40,6 +42,13 @@ public class House implements Comparable<House>, Serializable {
 
     public void removeApartment(Apartment apartment) {
         apartments.remove(apartment);
+    }
+
+    public void removeApartmentByNumber(int number) {
+        Apartment apartment = getApartmentByNumber(number);
+        if (apartment != null) {
+            apartments.remove(apartment);
+        }
     }
 
     public Apartment getApartmentByNumber(int number) {
