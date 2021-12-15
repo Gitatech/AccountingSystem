@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <property name="LOG_DIR">service_logs</property>
+        <property name="file_pattern">%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{1} - %msg%n</property>
+        <property name="file_name_pattern">${LOG_DIR}/${date:yyyy-MM-dd}/result_%i.log</property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="FileRolling" fileName="${LOG_DIR}/service_result.log" append="true" filePattern= "${file_name_pattern}">
+            <PatternLayout pattern="${file_pattern}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="15 KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="FileRolling"/>
+        </Root>
+    </Loggers>
+</Configuration>
