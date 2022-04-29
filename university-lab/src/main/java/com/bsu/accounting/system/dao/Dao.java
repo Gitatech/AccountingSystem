@@ -4,7 +4,7 @@ import com.bsu.accounting.system.exception.ApartmentNotFoundException;
 
 public interface Dao<T> {
 
-    T create(T entity);
+    T create(int id, T entity);
 
     T read(int id) throws ApartmentNotFoundException;
 

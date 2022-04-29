@@ -26,7 +26,7 @@ public class ApartmentDaoImpl implements ApartmentDao {
 
 
     @Override
-    public Apartment create(Apartment apartment) {
+    public Apartment create(int id, Apartment apartment) {
         Apartment apartmentWithId = apartment.withId(++maxId);
         if (apartmentHolder != null) {
             apartmentHolder.add(apartmentWithId);

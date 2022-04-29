@@ -5,7 +5,7 @@ import com.bsu.accounting.system.model.Apartment;
 
 public interface ApartmentDao extends Dao<Apartment> {
 
-    Apartment create(Apartment apartment);
+    Apartment create(int id, Apartment apartment);
 
     Apartment read(int id) throws ApartmentNotFoundException;
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Floor implements Externalizable, Cloneable{
+public class Floor implements Serializable {
 
     private double floorHeight;
     private double floorLength;
@@ -78,32 +78,11 @@ public class Floor implements Externalizable, Cloneable{
                 '}';
     }
 
-    @Override
-    public void writeExternal(ObjectOutput objectOutput) throws IOException {
-        final Floor floor = this;
-        objectOutput.writeObject(floor.getFloorHeight());
-        objectOutput.writeInt((int) floor.getFloorLength());
-        objectOutput.writeInt((int) floor.getFloorWidth());
-        objectOutput.writeObject(floor.getApartments());
+    private void writeObject (ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
     }
 
-    @Override
-    public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
-        this.floorHeight = objectInput.readDouble();
-        this.floorLength = objectInput.readDouble();
-        this.floorWidth = objectInput.readDouble();
-        while (objectInput.read() != -1) {
-            this.apartments.add((Apartment) objectInput.readObject());
-
-        }
-    }
-
-    @Override
-    public Floor clone() {
-        try {
-            return (Floor) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
     }
 }

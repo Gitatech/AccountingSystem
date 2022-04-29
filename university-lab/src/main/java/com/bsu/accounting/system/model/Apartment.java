@@ -2,9 +2,10 @@ package com.bsu.accounting.system.model;
 
 import com.bsu.accounting.system.validation.ApartmentValidator;
 
+import java.io.*;
 import java.util.Objects;
 
-public class Apartment {
+public class Apartment implements Serializable {
 
     private final Integer id;
     private final int numberOfResidents;
@@ -98,5 +99,13 @@ public class Apartment {
                 ", totalApartmentWidth=" + totalApartmentWidth +
                 ", type=" + type +
                 '}';
+    }
+
+    private void writeObject (ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+    }
+
+    private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
     }
 }

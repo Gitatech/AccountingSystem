@@ -8,7 +8,7 @@ public class Director {
 
     public void constructArbitraryHouse(HouseBuilder builder) {
         System.out.print("Name(Street and number of the house): ");
-        builder.setHouseName(scanner.next());
+        builder.setHouseName(scanner.nextLine());
         System.out.print("House length(m): ");
         builder.setHouseLength(scanner.nextDouble());
         System.out.print("House width(m): ");

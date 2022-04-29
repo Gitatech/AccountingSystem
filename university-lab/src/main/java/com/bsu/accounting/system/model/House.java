@@ -42,8 +42,8 @@ public class House {
         return floors;
     }
 
-    public Floor getFirstFloor() {
-        return floors.get(0);
+    public Floor getFloor(int index) {
+        return floors.get(index);
     }
 
     public void setFloors(Floor floor) {
