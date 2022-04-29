@@ -6,9 +6,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Comparator;
 
-public class ApartmentService implements Comparator<Apartment> {
+public class ApartmentService{
 
     private static final Logger LOGGER = LogManager.getLogger(ApartmentService.class);
     private static final String PATH_TO_FILE = "AccountingSystem/university-lab/src/main/resources/results.txt";
@@ -37,14 +36,14 @@ public class ApartmentService implements Comparator<Apartment> {
         }
         return area;
     }
-
-    @Override
-    public int compare(Apartment firstApartment, Apartment secondApartment) {
+    
+    public void compareInfo(Apartment firstApartment, Apartment secondApartment){
         if (firstApartment == null || secondApartment == null) {
             throw new NullPointerException("Apartment must be a not null value");
         }
 
-        LOGGER.info("\nCompare the {}(apartment id) with {}(apartment id) in terms of parameters", firstApartment.getId(), secondApartment.getId());
+        LOGGER.info("\nCompare the {}(apartment id) with {}(apartment id) in terms of parameters",
+                firstApartment.getId(), secondApartment.getId());
 
         if (firstApartment.getTotalApartmentLength() > secondApartment.getTotalApartmentLength()) {
             LOGGER.info("Apartment {} longer than apartment {}", firstApartment.getId(), secondApartment.getId());
@@ -69,7 +68,5 @@ public class ApartmentService implements Comparator<Apartment> {
         } else {
             LOGGER.info("The number of people living in the {} apartment is less than in the {} apartment", firstApartment.getId(), secondApartment.getId());
         }
-
-        return 0;
     }
 }
