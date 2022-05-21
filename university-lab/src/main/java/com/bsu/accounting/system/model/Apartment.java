@@ -14,15 +14,6 @@ public class Apartment implements Serializable {
 
     public ApartmentType type;
 
-    public Apartment(Integer id, int numberOfResidents, double totalApartmentLength, double totalApartmentWidth) {
-        ApartmentValidator validator = new ApartmentValidator();
-        validator.checkWholeApartment(id, numberOfResidents, totalApartmentLength, totalApartmentWidth);
-        this.id = id;
-        this.numberOfResidents = numberOfResidents;
-        this.totalApartmentLength = totalApartmentLength;
-        this.totalApartmentWidth = totalApartmentWidth;
-    }
-
     public Apartment(Integer id, int numberOfResidents, double totalApartmentLength, double totalApartmentWidth, ApartmentType type) {
         ApartmentValidator validator = new ApartmentValidator();
         validator.checkWholeApartment(id, numberOfResidents, totalApartmentLength, totalApartmentWidth);
@@ -33,21 +24,16 @@ public class Apartment implements Serializable {
         this.type = type;
     }
 
+    public Apartment(Integer id, int numberOfResidents, double totalApartmentLength, double totalApartmentWidth) {
+        this(id, numberOfResidents, totalApartmentLength, totalApartmentWidth, null);
+    }
+
     public Apartment(int numberOfResidents, double totalApartmentLength, double totalApartmentWidth, ApartmentType type) {
-        ApartmentValidator validator = new ApartmentValidator();
-        validator.checkWholeApartment(null, numberOfResidents, totalApartmentLength, totalApartmentWidth);
-        this.id = null;
-        this.numberOfResidents = numberOfResidents;
-        this.totalApartmentLength = totalApartmentLength;
-        this.totalApartmentWidth = totalApartmentWidth;
-        this.type = type;
+        this(null, numberOfResidents, totalApartmentLength, totalApartmentWidth, type);
     }
 
     public Apartment() {
-        id = null;
-        numberOfResidents = 0;
-        totalApartmentLength = 0;
-        totalApartmentWidth = 0;
+        this(null, 0, 0, 0, null);
     }
 
     public int getNumberOfResidents() {
@@ -64,10 +50,6 @@ public class Apartment implements Serializable {
 
     public Integer getId() {
         return id;
-    }
-
-    public ApartmentType getType() {
-        return type;
     }
 
     public Apartment withId(Integer id) {
@@ -101,11 +83,11 @@ public class Apartment implements Serializable {
                 '}';
     }
 
-    private void writeObject (ObjectOutputStream out) throws IOException {
+    private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
     }
 
-    private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
     }
 }

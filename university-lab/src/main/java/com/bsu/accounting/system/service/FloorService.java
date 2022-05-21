@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.Scanner;
+import java.util.List;
 
 public class FloorService {
 
@@ -20,8 +20,6 @@ public class FloorService {
     private static final double PERCENTAGE_OF_NON_RESIDENTIAL_AREA = 0.9;
 
     private static final String PATH_TO_FILE = "AccountingSystem/university-lab/src/main/resources/results.ob";
-
-    Scanner scanner = new Scanner(System.in);
 
     private FloorService() {
 
@@ -35,22 +33,18 @@ public class FloorService {
         return SingletonHolder.FLOOR_SERVICE;
     }
 
-    public Floor createFloor(House house) {
+    public Floor createFloor(House house, double height) {
         System.out.print(HEIGHT_OF_THE_FLOOR_MSG);
-        double height = scanner.nextDouble();
         System.out.println();
 
         final Floor savingFloor = new Floor(height, house.getLength(), house.getWidth());
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(PATH_TO_FILE, true))) {
-            outputStream.writeObject(savingFloor);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
+
+        keepFloorOnFile(savingFloor);
 
         return savingFloor;
     }
 
-    public void addApartment(Floor floor, Apartment apartment) {
+    public Floor addApartment(Floor floor, Apartment apartment) {
 
         final boolean comparison = floor.getFloorLength() > apartment.getTotalApartmentLength()
                 && floor.getFloorWidth() > apartment.getTotalApartmentWidth();
@@ -60,6 +54,8 @@ public class FloorService {
         } else {
             LOGGER.error(apartment);
         }
+
+        return floor;
     }
 
     public double availableFloorArea(House arbitraryHouse, double tempLength) {
@@ -71,14 +67,20 @@ public class FloorService {
         return availableLength;
     }
 
-    public void viewFloorContent(Floor floor) {
-        LOGGER.info(floor.getApartments());
-    }
-
-    public void fillTheSecondPartOfTheHouse(Floor currentFloor) {
+    public List<Apartment> fillTheSecondPartOfTheHouse(Floor currentFloor) {
         int countApartmentsOnSecondHalf = currentFloor.getApartments().size();
         for (int i = 0; i < countApartmentsOnSecondHalf; i++) {
             this.addApartment(currentFloor, currentFloor.getApartment(i));
+        }
+
+        return currentFloor.getApartments();
+    }
+
+    private void keepFloorOnFile(Floor savingFloor) {
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(PATH_TO_FILE, true))) {
+            outputStream.writeObject(savingFloor);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
         }
     }
 }

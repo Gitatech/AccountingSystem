@@ -28,6 +28,13 @@ public class ApartmentService {
     public double getTotalApartmentArea(Apartment apartment) {
 
         final double area = apartment.getTotalApartmentLength() * apartment.getTotalApartmentWidth();
+
+        keepOnFile(area);
+
+        return area;
+    }
+
+    private void keepOnFile(double area) {
         try {
             FileWriter outputStream = new FileWriter(PATH_TO_FILE, true);
             outputStream.write(String.valueOf(area) + '\n');
@@ -35,7 +42,6 @@ public class ApartmentService {
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return area;
     }
 
 }

@@ -1,8 +1,8 @@
-package com.bsu.accounting.system.dao;
+package com.bsu.accounting.system.repository;
 
 import com.bsu.accounting.system.exception.ApartmentNotFoundException;
 
-public interface Dao<T> {
+public interface Repository<T> {
 
     T create(int id, T entity);
 

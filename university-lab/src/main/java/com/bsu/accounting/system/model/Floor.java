@@ -7,10 +7,10 @@ import java.util.Objects;
 
 public class Floor implements Serializable {
 
-    private double floorHeight;
-    private double floorLength;
-    private double floorWidth;
-    private List<Apartment> apartments = new ArrayList<>();
+    private final double floorHeight;
+    private final double floorLength;
+    private final double floorWidth;
+    private final List<Apartment> apartments = new ArrayList<>();
 
     public Floor(double floorHeight, double floorLength, double floorWidth) {
         this.floorHeight = floorHeight;
@@ -19,6 +19,7 @@ public class Floor implements Serializable {
     }
 
     public Floor() {
+        this(0,0,0);
     }
 
     public double getFloorHeight() {
@@ -43,10 +44,6 @@ public class Floor implements Serializable {
 
     public void setApartment(Apartment apartment) {
         this.apartments.add(apartment);
-    }
-
-    public void setApartment(int index, Apartment apartment) {
-        this.apartments.add(index, apartment);
     }
 
     public void setApartments(List<Apartment> apartmentList) {

@@ -1,7 +1,7 @@
 package com.bsu.accounting.system.service;
 
-import com.bsu.accounting.system.dao.ApartmentDao;
-import com.bsu.accounting.system.dao.ApartmentDaoImpl;
+import com.bsu.accounting.system.repository.ApartmentRepository;
+import com.bsu.accounting.system.repository.ApartmentRepositoryImpl;
 import com.bsu.accounting.system.model.Apartment;
 import com.bsu.accounting.system.model.Floor;
 import com.bsu.accounting.system.model.House;
@@ -9,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,18 +44,13 @@ public class HouseService {
     }
 
     public int numberOfFloors(House house, double floorHeight) {
-        int amount;
-        amount = (int) (house.getHeight() / floorHeight);
+        int amount = (int) (house.getHeight() / floorHeight);
+
         if (amount == 0) {
-            throw new ArithmeticException(String.format(THE_PROBLEM_IN_CREATING_A_HOME, house.getFloor(0).getFloorHeight()));
+            throw new ArithmeticException(String.format(THE_PROBLEM_IN_CREATING_A_HOME, house.getHeight()));
         }
-        try {
-            FileWriter outputStream = new FileWriter(PATH_TO_FILE, true);
-            outputStream.write(String.valueOf(amount) + '\n');
-            outputStream.close();
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
+
+        keepOnFile(String.valueOf(amount));
         return amount;
     }
 
@@ -65,50 +62,34 @@ public class HouseService {
 
         final int numberOfResidents = residents * numberOfFloors(house, house.getFloor(0).getFloorHeight());
 
-        try {
-            FileWriter outputStream = new FileWriter(PATH_TO_FILE, true);
-            outputStream.write(String.valueOf(numberOfResidents) + '\n');
-            outputStream.close();
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
+        keepOnFile(String.valueOf(numberOfResidents));
 
         return numberOfResidents;
     }
 
-    public void fillTheFloors(House house, Floor currentFloor) {
-        ApartmentDao apartmentDao = new ApartmentDaoImpl();
+    public House fillTheFloors(House house, Floor currentFloor) {
+        ApartmentRepository apartmentRepository = new ApartmentRepositoryImpl();
         List<Apartment> apartmentList = new ArrayList<>();
 
         Floor floor = new Floor();
 
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(FLOOR_OB, false))) {
-            LOGGER.info("serialization start");
-            outputStream.writeObject(currentFloor);
-        } catch (IOException e) {
-            LOGGER.error("Object output error: {}", e.getMessage());
-        }
-
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FLOOR_OB))) {
-            LOGGER.info("deserialization start");
-            floor = (Floor) inputStream.readObject();
-            LOGGER.info("{} {}", floor, floor.getApartments());
-        } catch (IOException | ClassNotFoundException e) {
-            LOGGER.error("Object input error: {}", e.getMessage());
-        }
+        floor = deepCloning(currentFloor, floor);
 
         for (int i = 1; i <= floor.getApartments().size(); i++) {
             if (currentFloor.getApartment(i - 1).getId() == null) {
-                Apartment apartment = apartmentDao.create(i, floor.getApartment(i - 1));
+                Apartment apartment = apartmentRepository.create(i, floor.getApartment(i - 1));
                 apartmentList.add(apartment);
             } else {
-                Apartment apartment = apartmentDao.create(i + currentFloor.getApartment(floor.getApartments().size() - 1).getId(), floor.getApartment(i - 1));
+                Apartment apartment = apartmentRepository.create(
+                        i + currentFloor.getApartment(floor.getApartments().size() - 1).getId(), floor.getApartment(i - 1));
                 apartmentList.add(apartment);
             }
         }
 
         floor.setApartments(apartmentList);
         house.setFloors(floor);
+
+        return house;
     }
 
     public double totalHouseArea(House house) {
@@ -117,13 +98,7 @@ public class HouseService {
         for (int i = 0; i < house.getFloor(0).getApartments().size(); i++) {
             area += apartmentService.getTotalApartmentArea(house.getFloor(0).getApartments().get(i));
         }
-        try {
-            FileWriter outputStream = new FileWriter(PATH_TO_FILE, true);
-            outputStream.write(String.valueOf(area) + '\n');
-            outputStream.close();
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
+        keepOnFile(String.valueOf(area));
         return area;
     }
 
@@ -150,5 +125,33 @@ public class HouseService {
         System.out.printf(NUMBER_OF_RESIDENTS_IN_THE_HOUSE + "%n", numberOfResidents(house));
         System.out.printf(NUMBER_OF_FLOORS_IN_THE_HOUSE + "%n", numberOfFloors(house, house.getFloor(0).getFloorHeight()));
         System.out.printf(HOUSE_AREA + "%n", totalHouseArea(house));
+    }
+
+    private void keepOnFile(String numberOfResidents) {
+        try {
+            FileWriter outputStream = new FileWriter(PATH_TO_FILE, true);
+            outputStream.write(numberOfResidents + '\n');
+            outputStream.close();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    private Floor deepCloning(Floor currentFloor, Floor floor) {
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(FLOOR_OB, false))) {
+            LOGGER.info("serialization start");
+            outputStream.writeObject(currentFloor);
+        } catch (IOException e) {
+            LOGGER.error("Object output error: {}", e.getMessage());
+        }
+
+        try (ObjectInputStream inputStream = new ObjectInputStream(Files.newInputStream(Paths.get(FLOOR_OB)))) {
+            LOGGER.info("deserialization start");
+            floor = (Floor) inputStream.readObject();
+            LOGGER.info("{} {}", floor, floor.getApartments());
+        } catch (IOException | ClassNotFoundException e) {
+            LOGGER.error("Object input error: {}", e.getMessage());
+        }
+        return floor;
     }
 }

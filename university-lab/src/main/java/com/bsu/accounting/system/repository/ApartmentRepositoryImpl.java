@@ -1,4 +1,4 @@
-package com.bsu.accounting.system.dao;
+package com.bsu.accounting.system.repository;
 
 import com.bsu.accounting.system.exception.ApartmentNotFoundException;
 import com.bsu.accounting.system.model.Apartment;
@@ -8,19 +8,19 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApartmentDaoImpl implements ApartmentDao {
+public class ApartmentRepositoryImpl implements ApartmentRepository {
 
-    private static final Logger LOGGER = LogManager.getLogger(ApartmentDaoImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApartmentRepositoryImpl.class);
     private static final String APARTMENT_NOT_FOUND_MSG = "Apartment with %s id not found";
 
     private final List<Apartment> apartmentHolder;
     private static int maxId = 0;
 
-    public ApartmentDaoImpl(List<Apartment> apartments) {
+    public ApartmentRepositoryImpl(List<Apartment> apartments) {
         apartmentHolder = apartments;
     }
 
-    public ApartmentDaoImpl() {
+    public ApartmentRepositoryImpl() {
         apartmentHolder = new ArrayList<>();
     }
 

@@ -2,7 +2,7 @@ package com.bsu.accounting.system.builder;
 
 public interface HouseBuilder {
 
-    void setHouseName(String name);
+    void setHouseName(String street, String number);
 
     void setHouseLength(double length);
 

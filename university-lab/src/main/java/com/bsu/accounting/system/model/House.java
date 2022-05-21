@@ -6,13 +6,13 @@ import java.util.Objects;
 
 public class House {
 
-    private String name;
+    private HouseName name;
     private double length;
     private double width;
     private double height;
     private final List<Floor> floors = new ArrayList<>();
 
-    public House(String name, double length, double width, double height) {
+    public House(HouseName name, double length, double width, double height) {
         this.name = name;
         this.length = length;
         this.width = width;
@@ -34,7 +34,7 @@ public class House {
         return height;
     }
 
-    public String getName() {
+    public HouseName getName() {
         return name;
     }
 

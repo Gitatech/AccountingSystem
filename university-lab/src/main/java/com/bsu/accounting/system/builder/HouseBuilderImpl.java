@@ -1,17 +1,18 @@
 package com.bsu.accounting.system.builder;
 
 import com.bsu.accounting.system.model.House;
+import com.bsu.accounting.system.model.HouseName;
 
 public class HouseBuilderImpl implements HouseBuilder {
 
-    private String name;
+    private HouseName name;
     private double length;
     private double width;
     private double height;
 
     @Override
-    public void setHouseName(String name) {
-        this.name = name;
+    public void setHouseName(String street, String number) {
+        name = new HouseName(street, number);
     }
 
     @Override
