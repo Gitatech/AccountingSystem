@@ -7,19 +7,29 @@ import java.util.Objects;
 
 public class Floor implements Serializable {
 
+    private long floorId;
     private final double floorHeight;
     private final double floorLength;
     private final double floorWidth;
-    private final List<Apartment> apartments = new ArrayList<>();
+    private List<Apartment> apartments = new ArrayList<>();
 
-    public Floor(double floorHeight, double floorLength, double floorWidth) {
+    public Floor(long floorId, double floorHeight, double floorLength, double floorWidth) {
+        this.floorId = floorId;
         this.floorHeight = floorHeight;
         this.floorLength = floorLength;
         this.floorWidth = floorWidth;
     }
 
+    public Floor(double floorHeight, double floorLength, double floorWidth) {
+        this(0, floorHeight, floorLength, floorWidth);
+    }
+
     public Floor() {
-        this(0,0,0);
+        this(0,0, 0, 0);
+    }
+
+    public long getFloorId() {
+        return floorId;
     }
 
     public double getFloorHeight() {
@@ -40,6 +50,12 @@ public class Floor implements Serializable {
 
     public Apartment getApartment(int index) {
         return apartments.get(index);
+    }
+
+    public Floor withId (long id){
+        final Floor floorWithId = new Floor(id, this.getFloorHeight(), this.getFloorLength(), this.getFloorWidth());
+        floorWithId.apartments = this.apartments;
+        return floorWithId;
     }
 
     public void setApartment(Apartment apartment) {
@@ -75,11 +91,11 @@ public class Floor implements Serializable {
                 '}';
     }
 
-    private void writeObject (ObjectOutputStream out) throws IOException {
+    private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
     }
 
-    private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
     }
 }

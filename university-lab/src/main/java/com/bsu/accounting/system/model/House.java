@@ -6,13 +6,17 @@ import java.util.Objects;
 
 public class House {
 
+    private final long houseId;
     private HouseName name;
     private double length;
     private double width;
     private double height;
     private final List<Floor> floors = new ArrayList<>();
 
+    private static long idCount = 1;
+
     public House(HouseName name, double length, double width, double height) {
+        this.houseId = idCount++;
         this.name = name;
         this.length = length;
         this.width = width;
@@ -20,6 +24,11 @@ public class House {
     }
 
     public House() {
+        this.houseId = 0;
+    }
+
+    public long getHouseId() {
+        return houseId;
     }
 
     public double getLength() {

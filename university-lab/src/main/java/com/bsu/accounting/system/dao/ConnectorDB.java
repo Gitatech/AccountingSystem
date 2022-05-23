@@ -10,25 +10,25 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
 
-public class DBConnector {
+public class ConnectorDB {
 
-    private static final Logger LOGGER = LogManager.getLogger(DBConnector.class);
+    private static final Logger LOGGER = LogManager.getLogger(ConnectorDB.class);
 
-    ResourceBundle resource = ResourceBundle.getBundle("database");
-    private final String dbUrl = resource.getString("db.url");
-    private final String dbUser = resource.getString("db.user");
-    private final String dbPassword = resource.getString("db.password");
+    private static final ResourceBundle resource = ResourceBundle.getBundle("database");
+    private static final String dbUrl = resource.getString("db.url");
+    private static final String dbUser = resource.getString("db.user");
+    private static final String dbPassword = resource.getString("db.password");
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         try {
-            return DriverManager.getConnection(dbUrl);
+            return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
         } catch (SQLException e) {
-            LOGGER.error("connection error", e);
+            LOGGER.error("unsuccessful attempt to connect", e);
             return null;
         }
     }
 
-    public void registerDrivers() {
+    public static void registerDrivers() {
         LOGGER.trace("registering sql drivers");
 
         try {
@@ -39,7 +39,7 @@ public class DBConnector {
         }
     }
 
-    public void deregisterDrivers() {
+    public static void deregisterDrivers() {
         LOGGER.trace("unregistering sql drivers");
 
         final Enumeration<Driver> drivers = DriverManager.getDrivers();

@@ -34,10 +34,7 @@ public class FloorService {
     }
 
     public Floor createFloor(House house, double height) {
-        System.out.print(HEIGHT_OF_THE_FLOOR_MSG);
-        System.out.println();
-
-        final Floor savingFloor = new Floor(height, house.getLength(), house.getWidth());
+        Floor savingFloor = new Floor(height, house.getLength(), house.getWidth());
 
         keepFloorOnFile(savingFloor);
 
@@ -45,7 +42,6 @@ public class FloorService {
     }
 
     public Floor addApartment(Floor floor, Apartment apartment) {
-
         final boolean comparison = floor.getFloorLength() > apartment.getTotalApartmentLength()
                 && floor.getFloorWidth() > apartment.getTotalApartmentWidth();
 

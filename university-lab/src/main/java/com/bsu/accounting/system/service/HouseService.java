@@ -67,13 +67,14 @@ public class HouseService {
         return numberOfResidents;
     }
 
-    public House fillTheFloors(House house, Floor currentFloor) {
+    public House fillTheFloors(House house, Floor currentFloor, long floorId) {
         ApartmentRepository apartmentRepository = new ApartmentRepositoryImpl();
         List<Apartment> apartmentList = new ArrayList<>();
 
         Floor floor = new Floor();
 
         floor = deepCloning(currentFloor, floor);
+        floor = floor.withId(floorId);
 
         for (int i = 1; i <= floor.getApartments().size(); i++) {
             if (currentFloor.getApartment(i - 1).getId() == null) {
@@ -81,7 +82,9 @@ public class HouseService {
                 apartmentList.add(apartment);
             } else {
                 Apartment apartment = apartmentRepository.create(
-                        i + currentFloor.getApartment(floor.getApartments().size() - 1).getId(), floor.getApartment(i - 1));
+                        i + currentFloor.getApartment(floor.getApartments().size() - 1).getId(),
+                        floor.getApartment(i - 1)
+                );
                 apartmentList.add(apartment);
             }
         }
@@ -115,7 +118,7 @@ public class HouseService {
     public void viewAllApartments(House house) {
         System.out.printf(APARTMENTS, house.getName());
         for (int i = 0; i < numberOfFloors(house, house.getFloor(0).getFloorHeight()); i++) {
-            LOGGER.info(i + 1 + " " + house.getFloor(0) + ": " + house.getFloor(i).getApartments());
+            LOGGER.info(house.getFloor(i).getFloorId() + " " + house.getFloor(0) + ": " + house.getFloor(i).getApartments());
         }
     }
 
