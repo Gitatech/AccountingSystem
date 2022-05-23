@@ -12,11 +12,8 @@ public class ApartmentDaoImpl implements AbstractDAO<Apartment, Number> {
 
     private static final Logger LOGGER = LogManager.getLogger(ApartmentDaoImpl.class);
 
-    private static final String NO_FOUND_MSG = "could not extract apartments";
-    private static final String COULD_NOT_EXTRACT_VALUE_MSG = "could not extract value from result set";
-    private static final String SQL_ERROR_MSG = "sql error occurred working with apartments";
     private static final String NOT_FOUND_APARTMENTS_MSG = "did not found apartments";
-    private static final String DB_CONNECTION_ERROR = "database connection error";
+    private static final String COULD_NOT_FIND_THE_APARTMENT_WITH_GIVEN_ID = "could not find the apartment with given id";
 
     private static final String ID_COLUMN = "id";
     private static final String RESIDENTS_COLUMN = "ap_residents";
@@ -31,19 +28,18 @@ public class ApartmentDaoImpl implements AbstractDAO<Apartment, Number> {
     private static final String FIND_APARTMENT_BY_ID_FROM_DB_SQL =
             " select ap.id as id, a.ap_residents as ap_residents," +
                     " a.ap_length as ap_length, a.ap_width as ap_width, ap.floor_id as f_id" +
-                    " from acc_system_apartment ap join ap_params a on ? = a.ap_id;";
+                    " from acc_system_apartment ap join ap_params a on ap.id = a.ap_id" +
+                    " where ap.id = ?;";
 
-    private static final String FILL_APARTMENTS_INFO_INTO_DB =
+    private static final String DELETE_APARTMENT_BY_ID_FROM_DB =
+            "delete from acc_system_apartment ap where ap.id = ?";
+
+    private static final String INSERT_APARTMENTS_INTO_DB =
             "insert into acc_system_apartment (id, floor_id)" +
                     "values (?,?);" +
                     "insert into ap_params (ap_residents, ap_length, ap_width, ap_id)" +
                     "values (?,?,?,?);";
 
-    private static final String DELETE_APARTMENT_BY_ID_FROM_DB =
-            "delete from acc_system_apartment ap where ap.id = ?";
-
-
-    private static final String COULD_NOT_FIND_THE_APARTMENT_WITH_GIVEN_ID = "could not find the apartment with given id";
 
     @Override
     public List<Apartment> findAll() {
@@ -98,20 +94,8 @@ public class ApartmentDaoImpl implements AbstractDAO<Apartment, Number> {
 
     @Override
     public boolean delete(Number id) {
-        final Connection connection = ConnectorDB.getConnection();
-        if (connection != null) {
-            try (final PreparedStatement preparedStatement =
-                         connection.prepareStatement(DELETE_APARTMENT_BY_ID_FROM_DB)) {
-                preparedStatement.setInt(1, (int) id);
-                return preparedStatement.executeUpdate() == 1;
-            } catch (SQLException e) {
-                LOGGER.error(SQL_ERROR_MSG);
-            }
-        } else {
-            LOGGER.error(DB_CONNECTION_ERROR);
-        }
-
-        return false;
+        AbstractDAO<Apartment, Number> abstractDAO = new ApartmentDaoImpl();
+        return abstractDAO.delete(id, DELETE_APARTMENT_BY_ID_FROM_DB);
     }
 
     @Override
@@ -119,7 +103,7 @@ public class ApartmentDaoImpl implements AbstractDAO<Apartment, Number> {
         final Connection connection = ConnectorDB.getConnection();
         if (connection != null) {
             try (final PreparedStatement preparedStatement =
-                         connection.prepareStatement(FILL_APARTMENTS_INFO_INTO_DB)) {
+                         connection.prepareStatement(INSERT_APARTMENTS_INTO_DB)) {
                 preparedStatement.setInt(1, Integer.parseInt(String.valueOf(entity.getId())));
                 preparedStatement.setInt(2, (int) numberOfFloor);
                 preparedStatement.setInt(3, entity.getNumberOfResidents());
@@ -173,7 +157,6 @@ public class ApartmentDaoImpl implements AbstractDAO<Apartment, Number> {
     }
 
     private Optional<Apartment> extractApartment(ResultSet resultSet) {
-
         try {
             return Optional.of(new Apartment(
                     resultSet.getInt(ID_COLUMN),

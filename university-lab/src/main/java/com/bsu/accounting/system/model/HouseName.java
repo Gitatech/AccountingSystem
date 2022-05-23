@@ -12,6 +12,14 @@ public class HouseName {
         this.houseNumber = houseNumber;
     }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
