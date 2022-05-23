@@ -27,7 +27,7 @@ public interface AbstractDAO<T, K extends Number> {
         if (connection != null) {
             try (final PreparedStatement preparedStatement =
                          connection.prepareStatement(sql)) {
-                preparedStatement.setInt(1, (int) id);
+                preparedStatement.setInt(1, (Integer) id);
                 return preparedStatement.executeUpdate() == 1;
             } catch (SQLException e) {
                 throw new RuntimeException(SQL_ERROR_MSG, e);

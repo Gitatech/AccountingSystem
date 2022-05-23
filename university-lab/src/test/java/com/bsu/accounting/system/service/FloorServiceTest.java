@@ -1,52 +1,56 @@
 package com.bsu.accounting.system.service;
 
-import com.bsu.accounting.system.dao.ApartmentDaoImpl;
 import com.bsu.accounting.system.model.Apartment;
 import com.bsu.accounting.system.model.Floor;
 import com.bsu.accounting.system.model.House;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.bsu.accounting.system.model.HouseName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.List;
 
-@ExtendWith(MockitoExtension.class)
+import static org.junit.jupiter.api.Assertions.*;
+
 public class FloorServiceTest {
-    private static final Logger LOGGER = LogManager.getLogger(FloorServiceTest.class);
+
+    private static final Floor TEST_FLOOR = new Floor(3.0, 70.0, 20.0);
+    private static final Apartment TEST_APARTMENT = new Apartment(1, 5, 23.2, 18.0);
+    private static final House TEST_HOUSE = new House(new HouseName("test", "1"), 70.9, 18.4, 10.2);
 
     private final FloorService floorService = FloorService.getInstance();
 
-    @InjectMocks
-    private House house;
-
-    @InjectMocks
-    ApartmentDaoImpl apartmentDao;
-
-    @Mock
-    private Apartment apartment;
-
     @Test
     public void createFloor_shouldReturnFloorObject() {
-        LOGGER.info("createFloor");
 
-        final Floor floor = floorService.createFloor(house);
+        final Floor floor = floorService.createFloor(TEST_HOUSE, 3);
 
         assertNotNull(floor);
     }
 
     @Test
     public void addApartment_shouldAddApartmentToApartmentList() {
-        Floor floor = new Floor(3.0, 70.0, 20.0);
 
-        apartmentDao.create(apartment);
-        floorService.addApartment(floor, apartment);
-        floor.setApartment(0, apartment);
+        final Floor currentFloor = floorService.addApartment(TEST_FLOOR, TEST_APARTMENT);
 
-        assertNotNull(floor.getApartment(0));
-        LOGGER.info(floor.getApartments());
+        assertNotNull(currentFloor.getApartment(0));
+        assertSame(currentFloor, TEST_FLOOR);
+    }
+
+    @Test
+    public void availableFloorArea_shouldReturnValidData_always() {
+        double length = 24.2;
+
+        final double actualResult = floorService.availableFloorArea(TEST_HOUSE, length);
+
+        assertTrue(actualResult >= 0);
+    }
+
+    @Test
+    public void fillTheSecondPartOfTheHouse_shouldFillFloor_always() {
+        final Floor currentFloor = floorService.addApartment(TEST_FLOOR, TEST_APARTMENT);
+
+        final List<Apartment> apartmentList = floorService.fillTheSecondPartOfTheHouse(currentFloor);
+
+        assertNotNull(apartmentList);
+        assertTrue(apartmentList.size() > 0);
     }
 }
