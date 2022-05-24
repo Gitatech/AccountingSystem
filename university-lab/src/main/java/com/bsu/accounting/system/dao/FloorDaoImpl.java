@@ -42,9 +42,14 @@ public class FloorDaoImpl implements AbstractDAO<Floor, Number> {
                     "insert into f_params(f_height, f_length, f_width, floor_id)" +
                     " values (?,?,?,?);";
 
+    private final Connection connection;
+
+    public FloorDaoImpl() {
+        connection = ConnectorDB.getConnection();
+    }
+
     @Override
     public List<Floor> findAll() {
-        Connection connection = ConnectorDB.getConnection();
         if (connection != null) {
             try (final Statement statement = connection.createStatement();
                  final ResultSet resultSet = statement.executeQuery(FIND_ALL_FLOORS_FROM_DB_SQL)) {
@@ -69,7 +74,6 @@ public class FloorDaoImpl implements AbstractDAO<Floor, Number> {
 
     @Override
     public Floor findEntityById(Number id) {
-        final Connection connection = ConnectorDB.getConnection();
         if (connection != null) {
             try (final PreparedStatement preparedStatement =
                          connection.prepareStatement(FIND_FLOOR_BY_ID_FROM_DB_SQL)) {
@@ -101,7 +105,6 @@ public class FloorDaoImpl implements AbstractDAO<Floor, Number> {
 
     @Override
     public boolean create(Floor entity, Number houseId) {
-        final Connection connection = ConnectorDB.getConnection();
         if (connection != null) {
             try (final PreparedStatement preparedStatement =
                          connection.prepareStatement(INSERT_FLOOR_INTO_DB)) {
@@ -126,7 +129,6 @@ public class FloorDaoImpl implements AbstractDAO<Floor, Number> {
     public Floor update(Floor entity) {
         Floor floor = findEntityById(entity.getFloorId());
         if (floor != null) {
-            final Connection connection = ConnectorDB.getConnection();
             if (connection != null) {
                 try (final PreparedStatement preparedStatement =
                              connection.prepareStatement(FIND_FLOOR_BY_ID_FROM_DB_SQL,

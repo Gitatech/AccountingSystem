@@ -40,10 +40,14 @@ public class ApartmentDaoImpl implements AbstractDAO<Apartment, Number> {
                     "insert into ap_params (ap_residents, ap_length, ap_width, ap_id)" +
                     "values (?,?,?,?);";
 
+    private final Connection connection;
+
+    public ApartmentDaoImpl() {
+        connection = ConnectorDB.getConnection();
+    }
 
     @Override
     public List<Apartment> findAll() {
-        Connection connection = ConnectorDB.getConnection();
         if (connection != null) {
             try (final Statement statement = connection.createStatement();
                  final ResultSet resultSet = statement.executeQuery(FIND_ALL_APARTMENTS_FROM_DB_SQL)) {
@@ -68,7 +72,6 @@ public class ApartmentDaoImpl implements AbstractDAO<Apartment, Number> {
 
     @Override
     public Apartment findEntityById(Number id) {
-        final Connection connection = ConnectorDB.getConnection();
         if (connection != null) {
             try (final PreparedStatement preparedStatement =
                          connection.prepareStatement(FIND_APARTMENT_BY_ID_FROM_DB_SQL)) {
@@ -100,7 +103,6 @@ public class ApartmentDaoImpl implements AbstractDAO<Apartment, Number> {
 
     @Override
     public boolean create(Apartment entity, Number numberOfFloor) {
-        final Connection connection = ConnectorDB.getConnection();
         if (connection != null) {
             try (final PreparedStatement preparedStatement =
                          connection.prepareStatement(INSERT_APARTMENTS_INTO_DB)) {
@@ -125,7 +127,6 @@ public class ApartmentDaoImpl implements AbstractDAO<Apartment, Number> {
     public Apartment update(Apartment entity) {
         Apartment apartment = findEntityById(entity.getId());
         if (apartment != null) {
-            final Connection connection = ConnectorDB.getConnection();
             if (connection != null) {
                 try (final PreparedStatement preparedStatement =
                              connection.prepareStatement(FIND_APARTMENT_BY_ID_FROM_DB_SQL,

@@ -41,9 +41,14 @@ public class HouseDaoImpl implements AbstractDAO<House, Number> {
             "insert into acc_system_house (street, h_number) values (?,?);" +
                     "insert into h_params (h_length, h_width, h_height, house_id) values (?,?,?,?);";
 
+    private final Connection connection;
+
+    public HouseDaoImpl() {
+        this.connection = ConnectorDB.getConnection();
+    }
+
     @Override
     public List<House> findAll() {
-        Connection connection = ConnectorDB.getConnection();
         if (connection != null) {
             try (final Statement statement = connection.createStatement();
                  final ResultSet resultSet = statement.executeQuery(FIND_ALL_HOUSES_FROM_DB_SQL)) {
@@ -68,7 +73,6 @@ public class HouseDaoImpl implements AbstractDAO<House, Number> {
 
     @Override
     public House findEntityById(Number id) {
-        final Connection connection = ConnectorDB.getConnection();
         if (connection != null) {
             try (final PreparedStatement preparedStatement =
                          connection.prepareStatement(FIND_HOUSE_BY_ID_FROM_DB_SQL)) {
@@ -100,7 +104,6 @@ public class HouseDaoImpl implements AbstractDAO<House, Number> {
 
     @Override
     public boolean create(House entity, Number id) {
-        final Connection connection = ConnectorDB.getConnection();
         if (connection != null) {
             try (final PreparedStatement preparedStatement =
                          connection.prepareStatement(INSERT_HOUSE_INTO_DB)) {
@@ -125,7 +128,6 @@ public class HouseDaoImpl implements AbstractDAO<House, Number> {
     public House update(House entity) {
         House house = findEntityById(entity.getHouseId());
         if (house != null) {
-            final Connection connection = ConnectorDB.getConnection();
             if (connection != null) {
                 try (final PreparedStatement preparedStatement =
                              connection.prepareStatement(FIND_HOUSE_BY_ID_FROM_DB_SQL,
