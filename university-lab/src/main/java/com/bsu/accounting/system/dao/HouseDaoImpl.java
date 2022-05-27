@@ -38,8 +38,10 @@ public class HouseDaoImpl implements AbstractDAO<House, Number> {
             "delete from acc_system_house h where h.id = ?;";
 
     private static final String INSERT_HOUSE_INTO_DB =
-            "insert into acc_system_house (street, h_number) values (?,?);" +
-                    "insert into h_params (h_length, h_width, h_height, house_id) values (?,?,?,?);";
+            "insert into acc_system_house (id, street, h_number) values (?,?,?);";
+
+    private static final String INSERT_HOUSE_PARAMS_INTO_DB =
+            "insert into h_params (h_length, h_width, h_height, house_id) values (?,?,?,?);";
 
     private final Connection connection;
 
@@ -105,18 +107,8 @@ public class HouseDaoImpl implements AbstractDAO<House, Number> {
     @Override
     public boolean create(House entity, Number id) {
         if (connection != null) {
-            try (final PreparedStatement preparedStatement =
-                         connection.prepareStatement(INSERT_HOUSE_INTO_DB)) {
-                preparedStatement.setString(1, entity.getName().getStreet());
-                preparedStatement.setString(2, entity.getName().getHouseNumber());
-                preparedStatement.setDouble(3, entity.getLength());
-                preparedStatement.setDouble(4, entity.getWidth());
-                preparedStatement.setDouble(5, entity.getHeight());
-                preparedStatement.setInt(6, (int) entity.getHouseId());
-                preparedStatement.executeUpdate();
-                return true;
-            } catch (SQLException e) {
-                LOGGER.error(SQL_ERROR_MSG);
+            if (insertHouseIntoDB(entity)) {
+                return insertHouseParamsIntoDB(entity);
             }
         } else {
             LOGGER.error(DB_CONNECTION_ERROR);
@@ -157,6 +149,35 @@ public class HouseDaoImpl implements AbstractDAO<House, Number> {
             throw new NoSuchElementException(COULD_NOT_FIND_THE_HOUSE_WITH_GIVEN_ID);
         }
         return null;
+    }
+
+    private boolean insertHouseIntoDB(House entity) {
+        try (final PreparedStatement preparedStatement =
+                     connection.prepareStatement(INSERT_HOUSE_INTO_DB, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+            preparedStatement.setInt(1, (int) entity.getHouseId());
+            preparedStatement.setString(2, entity.getName().getStreet());
+            preparedStatement.setString(3, entity.getName().getHouseNumber());
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+        return false;
+    }
+
+    private boolean insertHouseParamsIntoDB(House entity) {
+        try (final PreparedStatement preparedStatement =
+                     connection.prepareStatement(INSERT_HOUSE_PARAMS_INTO_DB, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+            preparedStatement.setDouble(1, entity.getLength());
+            preparedStatement.setDouble(2, entity.getWidth());
+            preparedStatement.setDouble(3, entity.getHeight());
+            preparedStatement.setInt(4, (int) entity.getHouseId());
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+        return false;
     }
 
     private Optional<House> extractHouse(ResultSet resultSet) {

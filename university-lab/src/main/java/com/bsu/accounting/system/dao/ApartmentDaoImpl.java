@@ -36,8 +36,10 @@ public class ApartmentDaoImpl implements AbstractDAO<Apartment, Number> {
 
     private static final String INSERT_APARTMENTS_INTO_DB =
             "insert into acc_system_apartment (id, floor_id)" +
-                    "values (?,?);" +
-                    "insert into ap_params (ap_residents, ap_length, ap_width, ap_id)" +
+                    "values (?,?);";
+
+    private static final String INSERT_APARTMENT_PARAMS_INTO_DB =
+            "insert into ap_params (ap_residents, ap_length, ap_width, ap_id)" +
                     "values (?,?,?,?);";
 
     private final Connection connection;
@@ -104,18 +106,8 @@ public class ApartmentDaoImpl implements AbstractDAO<Apartment, Number> {
     @Override
     public boolean create(Apartment entity, Number numberOfFloor) {
         if (connection != null) {
-            try (final PreparedStatement preparedStatement =
-                         connection.prepareStatement(INSERT_APARTMENTS_INTO_DB)) {
-                preparedStatement.setInt(1, Integer.parseInt(String.valueOf(entity.getId())));
-                preparedStatement.setInt(2, (int) numberOfFloor);
-                preparedStatement.setInt(3, entity.getNumberOfResidents());
-                preparedStatement.setDouble(4, entity.getTotalApartmentLength());
-                preparedStatement.setDouble(5, entity.getTotalApartmentLength());
-                preparedStatement.setInt(6, entity.getId());
-                preparedStatement.executeUpdate();
-                return true;
-            } catch (SQLException e) {
-                LOGGER.error(SQL_ERROR_MSG);
+            if (insertApartmentIntoDB(entity, (int) numberOfFloor)) {
+                return insertApartmentParamsIntoDB(entity);
             }
         } else {
             LOGGER.error(DB_CONNECTION_ERROR);
@@ -155,6 +147,34 @@ public class ApartmentDaoImpl implements AbstractDAO<Apartment, Number> {
             throw new NoSuchElementException(COULD_NOT_FIND_THE_APARTMENT_WITH_GIVEN_ID);
         }
         return null;
+    }
+
+    private boolean insertApartmentParamsIntoDB(Apartment entity) {
+        try (final PreparedStatement preparedStatement =
+                     connection.prepareStatement(INSERT_APARTMENT_PARAMS_INTO_DB, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+            preparedStatement.setInt(1, entity.getNumberOfResidents());
+            preparedStatement.setDouble(2, entity.getTotalApartmentLength());
+            preparedStatement.setDouble(3, entity.getTotalApartmentLength());
+            preparedStatement.setInt(4, entity.getId());
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error(SQL_ERROR_MSG);
+        }
+        return false;
+    }
+
+    private boolean insertApartmentIntoDB(Apartment entity, int numberOfFloor) {
+        try (final PreparedStatement preparedStatement =
+                     connection.prepareStatement(INSERT_APARTMENTS_INTO_DB, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+            preparedStatement.setInt(1, Integer.parseInt(String.valueOf(entity.getId())));
+            preparedStatement.setInt(2, numberOfFloor);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error(SQL_ERROR_MSG);
+        }
+        return false;
     }
 
     private Optional<Apartment> extractApartment(ResultSet resultSet) {

@@ -38,8 +38,10 @@ public class FloorDaoImpl implements AbstractDAO<Floor, Number> {
 
     private static final String INSERT_FLOOR_INTO_DB =
             "insert into acc_system_floor(f_number, house_id)" +
-                    " values (?,?);" +
-                    "insert into f_params(f_height, f_length, f_width, floor_id)" +
+                    " values (?,?);";
+
+    private static final String INSERT_FLOOR_PARAMS_INTO_DB =
+            "insert into f_params(f_height, f_length, f_width, floor_id)" +
                     " values (?,?,?,?);";
 
     private final Connection connection;
@@ -106,18 +108,8 @@ public class FloorDaoImpl implements AbstractDAO<Floor, Number> {
     @Override
     public boolean create(Floor entity, Number houseId) {
         if (connection != null) {
-            try (final PreparedStatement preparedStatement =
-                         connection.prepareStatement(INSERT_FLOOR_INTO_DB)) {
-                preparedStatement.setInt(1, Integer.parseInt(String.valueOf(entity.getFloorId())));
-                preparedStatement.setInt(2, (int) houseId);
-                preparedStatement.setInt(3, (int) entity.getFloorHeight());
-                preparedStatement.setDouble(4, entity.getFloorLength());
-                preparedStatement.setDouble(5, entity.getFloorWidth());
-                preparedStatement.setInt(6, (int) entity.getFloorId());
-                preparedStatement.executeUpdate();
-                return true;
-            } catch (SQLException e) {
-                LOGGER.error(SQL_ERROR_MSG);
+            if (insertFloorIntoDB(entity, (int) houseId)) {
+                return insertFloorParamsIntoDB(entity);
             }
         } else {
             LOGGER.error(DB_CONNECTION_ERROR);
@@ -157,6 +149,34 @@ public class FloorDaoImpl implements AbstractDAO<Floor, Number> {
             throw new NoSuchElementException(COULD_NOT_FIND_THE_FLOOR_WITH_GIVEN_ID);
         }
         return null;
+    }
+
+    private boolean insertFloorParamsIntoDB(Floor entity) {
+        try (final PreparedStatement preparedStatement =
+                     connection.prepareStatement(INSERT_FLOOR_PARAMS_INTO_DB)) {
+            preparedStatement.setInt(1, (int) entity.getFloorHeight());
+            preparedStatement.setDouble(2, entity.getFloorLength());
+            preparedStatement.setDouble(3, entity.getFloorWidth());
+            preparedStatement.setInt(4, (int) entity.getFloorId());
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error(SQL_ERROR_MSG);
+        }
+        return false;
+    }
+
+    private boolean insertFloorIntoDB(Floor entity, int houseId) {
+        try (final PreparedStatement preparedStatement =
+                     connection.prepareStatement(INSERT_FLOOR_INTO_DB)) {
+            preparedStatement.setInt(1, Integer.parseInt(String.valueOf(entity.getFloorId())));
+            preparedStatement.setInt(2, houseId);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error(SQL_ERROR_MSG);
+        }
+        return false;
     }
 
     private Optional<Floor> extractFloor(ResultSet resultSet) {
